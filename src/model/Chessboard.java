@@ -1,5 +1,7 @@
 package model;
 
+import view.ChessboardComponent;
+
 /**
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
@@ -101,14 +103,19 @@ public class Chessboard {
         if (getChessPieceAt(src) == null || getChessPieceAt(dest) != null) {
             return false;
         }
+        if (ChessboardComponent.riverCell.contains(dest) && !getChessPieceAt(src).getName().equals("Rat")) {
+            return false;
+        }
         return calculateDistance(src, dest) == 1;
     }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
+        //bug:鼠鼠在河里会被吃掉，鼠鼠在河里也可以吃掉象
         if (getChessPieceAt(src) == null || getChessPieceAt(dest) == null) {
             return false;
         }
+
         if (getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
                 return true;

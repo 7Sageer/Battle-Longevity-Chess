@@ -20,7 +20,7 @@ public class ChessPiece {
             return false;
         if(this.rank == 1 && target.rank == 8)
             return true;
-        if(this.rank > target.rank)
+        if(this.rank >= target.rank)
             return true;
         else
             return false;
