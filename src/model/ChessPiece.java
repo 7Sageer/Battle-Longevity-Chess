@@ -6,7 +6,7 @@ public class ChessPiece {
     private PlayerColor owner;
 
     // Elephant? Cat? Dog? ...
-    private String name;
+    public String name;
     private int rank;
 
     public ChessPiece(PlayerColor owner, String name, int rank) {
