@@ -80,10 +80,14 @@ public class Chessboard {
     }
 
     public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) {
-        if (isValidCapture(src, dest)) {
-            throw new IllegalArgumentException("Illegal chess capture!");
-        }
         // TODO: Finish the method.
+        if (!isValidCapture(src, dest)) {
+            throw new IllegalArgumentException("Illegal chess capture!");
+        }else{
+            removeChessPiece(dest);
+            setChessPiece(dest, removeChessPiece(src));
+        }
+        
     }
 
     public Cell[][] getGrid() {
@@ -102,7 +106,14 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-        // TODO:Fix this method
+        if (getChessPieceAt(src) == null || getChessPieceAt(dest) == null) {
+            return false;
+        }
+        if (getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
+            if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
+                return true;
+            }
+        }
         return false;
     }
 }

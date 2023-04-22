@@ -83,7 +83,15 @@ public class GameController implements GameListener {
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
+        } else {
+            model.captureChessPiece(selectedPoint, point);
+            view.removeChessComponentAtGrid(point);
+            view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
+            selectedPoint = null;
+            swapColor();
+            view.repaint();
         }
-        // TODO: Implement capture function
+        // TODO: Implement capture function  做完了
+
     }
 }
