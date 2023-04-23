@@ -1,6 +1,7 @@
 package view;
 
 import controller.GameController;
+import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,8 @@ public class ChessGameFrame extends JFrame {
     private final int HEIGTH;
 
     private final int ONE_CHESS_SIZE;
+    private GameController gameController;
+
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
@@ -21,6 +24,7 @@ public class ChessGameFrame extends JFrame {
         this.WIDTH = width;
         this.HEIGTH = height;
         this.ONE_CHESS_SIZE = (HEIGTH * 4 / 5) / 9;
+        
 
         setSize(WIDTH, HEIGTH);
         setLocationRelativeTo(null); // Center the window.
@@ -30,7 +34,7 @@ public class ChessGameFrame extends JFrame {
 
         addChessboard();
         addLabel();
-        addHelloButton();
+        addRestartButton();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -72,6 +76,24 @@ public class ChessGameFrame extends JFrame {
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
+    }
+
+    private void addRestartButton() {
+        JButton button = new JButton("Restart");
+        button.setLocation(HEIGTH , HEIGTH / 10 + 120);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click restart");
+            dispose();
+            ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame);
+            mainFrame.setVisible(true);
+            
+        });
+        
     }
     
     public void showWinDialog(String player){

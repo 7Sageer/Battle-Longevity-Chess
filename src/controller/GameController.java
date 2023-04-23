@@ -31,6 +31,10 @@ public class GameController implements GameListener {
 
     //增加了构造器的参数（添加game用于显示对话框）
     public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game) {
+        start(view, model, game);
+    }
+
+    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game){
         this.view = view;
         this.model = model;
         this.game = game;
