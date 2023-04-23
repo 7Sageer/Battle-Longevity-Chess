@@ -22,8 +22,9 @@ public class ChessboardComponent extends JComponent {
     private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     public final static Set<ChessboardPoint> riverCell = new HashSet<>();
-    private final Set<ChessboardPoint> trapCell = new HashSet<>();
-    private final Set<ChessboardPoint> home = new HashSet<>();
+    public final static Set<ChessboardPoint> trapCell = new HashSet<>();
+    public final static Set<ChessboardPoint> blueDenCell = new HashSet<>();
+    public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
 
     private GameController gameController;
 
@@ -125,8 +126,8 @@ public class ChessboardComponent extends JComponent {
         trapCell.add(new ChessboardPoint(8,4));
         trapCell.add(new ChessboardPoint(7,3));
 
-        home.add(new ChessboardPoint(0,3));
-        home.add(new ChessboardPoint(8,3));
+        blueDenCell.add(new ChessboardPoint(0,3));
+        redDenCell.add(new ChessboardPoint(8,3));
 
 
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
@@ -139,8 +140,11 @@ public class ChessboardComponent extends JComponent {
                 } else if (trapCell.contains(temp)) {
                     cell = new CellComponent(Color.ORANGE, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
-                } else if (home.contains(temp)) {
-                    cell = new CellComponent(Color.GREEN, calculatePoint(i, j), CHESS_SIZE);
+                } else if (blueDenCell.contains(temp)) {
+                    cell = new CellComponent(Color.BLUE, calculatePoint(i, j), CHESS_SIZE);
+                    this.add(cell);
+                }else if(redDenCell.contains(temp)){
+                    cell = new CellComponent(Color.RED, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 } else
                 {

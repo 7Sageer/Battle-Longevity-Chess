@@ -11,7 +11,7 @@ public class Chessboard {
 
     public Chessboard() {
         this.grid =
-                new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];//19X19
+                new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];//19X19放屁
 
         initGrid();
         initPieces();
@@ -106,6 +106,13 @@ public class Chessboard {
         if (ChessboardComponent.riverCell.contains(dest) && !getChessPieceAt(src).getName().equals("Rat")) {
             return false;
         }
+
+        if(ChessboardComponent.redDenCell.contains(dest)&&getChessPieceAt(src).getOwner()==PlayerColor.RED)
+            return false;
+        
+        if(ChessboardComponent.blueDenCell.contains(dest)&&getChessPieceAt(src).getOwner()==PlayerColor.BLUE)
+            return false;
+
         
         if (canJumpRiver(src, dest) == true) {
             return true;
