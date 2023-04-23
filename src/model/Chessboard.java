@@ -106,21 +106,77 @@ public class Chessboard {
         if (ChessboardComponent.riverCell.contains(dest) && !getChessPieceAt(src).getName().equals("Rat")) {
             return false;
         }
+        
+        if (canJumpRiver(src, dest) == true) {
+            return true;
+        }
+    
         return calculateDistance(src, dest) == 1;
     }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-        //bug:鼠鼠在河里会被吃掉，鼠鼠在河里也可以吃掉象
+        if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest))
+            return false;
+
         if (getChessPieceAt(src) == null || getChessPieceAt(dest) == null) {
             return false;
         }
 
+        if(canJumpRiver(src, dest) && getChessPieceAt(src).canCapture(getChessPieceAt(dest))){
+            System.out.println("jump!");
+            return true;
+        }
+
         if (getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
-                return true;
+                return calculateDistance(src, dest) == 1;
             }
         }
+        return false;
+    }
+    public boolean canJumpRiver(ChessboardPoint src, ChessboardPoint dest){
+        //狮子和老虎能跳过河流
+        if(getChessPieceAt(src).getName().equals("Lion")||getChessPieceAt(src).getName().equals("Tiger")){
+            ChessboardPoint temp1 = src;
+            ChessboardPoint temp2 = dest;
+            if(src.getRow()==dest.getRow()&&calculateDistance(src, dest) > 1){
+                if(src.getCol() > dest.getCol()){
+                    temp1 = dest;
+                    temp2 = src;
+                }else{
+                    temp1 = src;
+                    temp2 = dest;
+                }
+                for(int i = temp1.getCol() + 1;i < temp2.getCol();i++){
+                    System.out.println(i);
+                    if(getChessPieceAt(new ChessboardPoint(src.getRow(),i))!=null){
+                        return false;
+                    }
+                    if(!ChessboardComponent.riverCell.contains(new ChessboardPoint(src.getRow(),i))){
+                        return false;
+                    }
+                }
+                return true;
+            }else if(src.getCol()==dest.getCol()&&calculateDistance(src, dest) > 1){
+                if(src.getRow() > dest.getRow()){
+                    temp1 = dest;
+                    temp2 = src;
+                }else{
+                    temp1 = src;
+                    temp2 = dest;
+                }
+                for(int i = temp1.getRow() + 1;i < temp2.getRow();i++){
+                    if(getChessPieceAt(new ChessboardPoint(i,src.getCol()))!=null){
+                        return false;
+                    }
+                    if(!ChessboardComponent.riverCell.contains(new ChessboardPoint(i,src.getCol()))){
+                        return false;
+                    }
+                }
+                return true;
+            }
+    }
         return false;
     }
 }
