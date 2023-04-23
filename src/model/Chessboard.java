@@ -1,6 +1,9 @@
 package model;
 
 import view.ChessboardComponent;
+import java.util.ArrayList;
+
+import model.Action.type;
 
 /**
  * This class store the real chess information.
@@ -26,7 +29,9 @@ public class Chessboard {
     }
 
     private void initPieces() {
-        //棋子初始化
+        //棋子初始化,这里的初始化是写死的，后面可能要改成读档
+        // grid[6][0].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
+        // grid[6][1].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
         grid[6][0].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
         grid[2][6].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
 
@@ -133,6 +138,7 @@ public class Chessboard {
 
         if (ChessboardComponent.blueTrapCell.contains(dest)||ChessboardComponent.redTrapCell.contains(dest)||getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
             //原谅这坨大便，我刚刚才看到陷阱要分阵营
+            //刚刚修了一下好一些了，之前的if语句有两倍长
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
                 return calculateDistance(src, dest) == 1;
             }
@@ -182,5 +188,34 @@ public class Chessboard {
             }
     }
         return false;
+    }
+
+    public ArrayList<Action> getAllValidAction(PlayerColor playerColor) {
+        ArrayList<Action> validMoves = new ArrayList<>();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 7; col++) {
+                ChessboardPoint src = new ChessboardPoint(row, col);
+                if (getChessPieceAt(src) != null && getChessPieceAt(src).getOwner() == playerColor) {
+                    validMoves.addAll(getValidAction(src));
+                }
+            }
+        }
+        System.out.println(validMoves);
+        return validMoves;
+    }
+    public ArrayList<Action> getValidAction(ChessboardPoint src) {
+        ArrayList<Action> validMoves = new ArrayList<>();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 7; col++) {
+                ChessboardPoint dest = new ChessboardPoint(row, col);
+                if (isValidMove(src, dest)) {
+                    validMoves.add(new Action(src, dest,getChessPieceAt(src),type.MOVE));
+                }
+                if (isValidCapture(src, dest)) {
+                    validMoves.add(new Action(src, dest,getChessPieceAt(src),type.CAPTURE));
+                }
+            }
+        }
+        return validMoves;
     }
 }

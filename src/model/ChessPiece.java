@@ -33,4 +33,8 @@ public class ChessPiece {
     public PlayerColor getOwner() {
         return owner;
     }
+    @Override
+    public String toString() {
+        return owner + " " + name;
+    }
 }

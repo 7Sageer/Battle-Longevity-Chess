@@ -67,7 +67,8 @@ public class GameController implements GameListener {
         
         if(model.getGrid()[8][3].getPiece()!=null)
             return 1;
-        
+        if(model.getAllValidAction(currentPlayer).isEmpty())
+            return currentPlayer == PlayerColor.BLUE ? 2 : 1;
         
         return 0;
     }
@@ -80,15 +81,17 @@ public class GameController implements GameListener {
             model.moveChessPiece(selectedPoint, point);
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
-            if (win() == 1) {
+            swapColor();
+            int temp = win();
+            view.repaint();
+            if (temp == 1) {
                 System.out.println("Blue Win!");
                 game.showWinDialog("Blue Win!");
-            } else if (win() == 2) {
+            } else if (temp == 2) {
                 System.out.println("Red Win!");
                 game.showWinDialog("Red Win!");
             }
-            swapColor();
-            view.repaint();
+            
             
             // TODO: if the chess enter Dens or Traps and so on
             //写在chessBoard的isValidCaptured里面
@@ -115,7 +118,16 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
             swapColor();
+            int temp = win();
             view.repaint();
+            if (temp == 1) {
+                System.out.println("Blue Win!");
+                game.showWinDialog("Blue Win!");
+            } else if (temp == 2) {
+                System.out.println("Red Win!");
+                game.showWinDialog("Red Win!");
+            }
+            
         }
         // TODO: Implement capture function  做完了
 

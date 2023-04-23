@@ -38,6 +38,6 @@ public class ChessboardPoint {
 
     @Override
     public String toString() {
-        return "("+row + ","+col+") " + "on the chessboard is clicked!";
+        return "("+row + ","+col+") ";
     }
 }
