@@ -123,19 +123,16 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-        if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest))
+        if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest)||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
             return false;
-
-        if (getChessPieceAt(src) == null || getChessPieceAt(dest) == null) {
-            return false;
-        }
 
         if(canJumpRiver(src, dest) && getChessPieceAt(src).canCapture(getChessPieceAt(dest))){
             System.out.println("jump!");
             return true;
         }
 
-        if (getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
+        if (ChessboardComponent.blueTrapCell.contains(dest)||ChessboardComponent.redTrapCell.contains(dest)||getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
+            //原谅这坨大便，我刚刚才看到陷阱要分阵营
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
                 return calculateDistance(src, dest) == 1;
             }
@@ -156,7 +153,7 @@ public class Chessboard {
                     temp2 = dest;
                 }
                 for(int i = temp1.getCol() + 1;i < temp2.getCol();i++){
-                    System.out.println(i);
+                    //System.out.println(i);
                     if(getChessPieceAt(new ChessboardPoint(src.getRow(),i))!=null){
                         return false;
                     }

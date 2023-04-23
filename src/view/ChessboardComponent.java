@@ -22,7 +22,8 @@ public class ChessboardComponent extends JComponent {
     private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     public final static Set<ChessboardPoint> riverCell = new HashSet<>();
-    public final static Set<ChessboardPoint> trapCell = new HashSet<>();
+    public final static Set<ChessboardPoint> blueTrapCell = new HashSet<>();
+    public final static Set<ChessboardPoint> redTrapCell = new HashSet<>();
     public final static Set<ChessboardPoint> blueDenCell = new HashSet<>();
     public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
 
@@ -118,13 +119,13 @@ public class ChessboardComponent extends JComponent {
         riverCell.add(new ChessboardPoint(5,4));
         riverCell.add(new ChessboardPoint(5,5));
 
-        trapCell.add(new ChessboardPoint(0,2));
-        trapCell.add(new ChessboardPoint(0,4));
-        trapCell.add(new ChessboardPoint(1,3));
+        blueTrapCell.add(new ChessboardPoint(0,2));
+        blueTrapCell.add(new ChessboardPoint(0,4));
+        blueTrapCell.add(new ChessboardPoint(1,3));
 
-        trapCell.add(new ChessboardPoint(8,2));
-        trapCell.add(new ChessboardPoint(8,4));
-        trapCell.add(new ChessboardPoint(7,3));
+        redTrapCell.add(new ChessboardPoint(8,2));
+        redTrapCell.add(new ChessboardPoint(8,4));
+        redTrapCell.add(new ChessboardPoint(7,3));
 
         blueDenCell.add(new ChessboardPoint(0,3));
         redDenCell.add(new ChessboardPoint(8,3));
@@ -137,7 +138,7 @@ public class ChessboardComponent extends JComponent {
                 if (riverCell.contains(temp)) {
                     cell = new CellComponent(Color.CYAN, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
-                } else if (trapCell.contains(temp)) {
+                } else if (redTrapCell.contains(temp)||blueTrapCell.contains(temp)) {
                     cell = new CellComponent(Color.ORANGE, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 } else if (blueDenCell.contains(temp)) {
