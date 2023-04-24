@@ -37,6 +37,7 @@ public class ChessGameFrame extends JFrame {
         addLabel();
         addRestartButton();
         addSaveButton();
+        addLoadButton();
     }
     public void setGameController(GameController gameController){
         this.gameController = gameController;
@@ -68,19 +69,6 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(statusLabel);
-    }
-
-    /**
-     * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
-     */
-
-    private void addHelloButton() {
-        JButton button = new JButton("Show Hello Here");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
-        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
-        button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(button);
     }
 
     private void addRestartButton() {
@@ -124,19 +112,23 @@ public class ChessGameFrame extends JFrame {
        });
     }
 
-//    private void addLoadButton() {
-//        JButton button = new JButton("Load");
-//        button.setLocation(HEIGTH, HEIGTH / 10 + 240);
-//        button.setSize(200, 60);
-//        button.setFont(new Font("Rockwell", Font.BOLD, 20));
-//        add(button);
+   private void addLoadButton() {
+       JButton button = new JButton("Load");
+       button.setLocation(HEIGTH, HEIGTH / 10 + 360);
+       button.setSize(200, 60);
+       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       add(button);
 
-//        button.addActionListener(e -> {
-//            System.out.println("Click load");
-//            String path = JOptionPane.showInputDialog(this,"Input Path here");
-//            gameController.loadGameFromFile(path);
-//        });
-//    }
+       button.addActionListener(e -> {
+           System.out.println("Click load");
+           String path = JOptionPane.showInputDialog(this,"Input Path here");
+           try {
+            gameController.loadGame(path);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+       });
+   }
 
 
 }

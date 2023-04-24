@@ -1,11 +1,14 @@
 package controller;
 
 import java.io.*;
+import java.nio.*;
 import java.util.*;
+import java.util.regex.*;
 
 import listener.GameListener;
 import model.Constant;
 import model.PlayerColor;
+import model.Action.Type;
 import model.Chessboard;
 import model.ChessboardPoint;
 import model.Action;
@@ -42,6 +45,7 @@ public class GameController implements GameListener {
         this.model = model;
         this.game = game;
         this.currentPlayer = PlayerColor.BLUE;
+        
 
         view.registerController(this);
         initialize();
@@ -146,5 +150,62 @@ public class GameController implements GameListener {
         }
     writer.close();
         
+    }
+    public void loadGame(String path) throws IOException {
+        System.out.println(extractActions(path));
+        this.model.initialize();
+        
+        ArrayList<Action> loadAction = extractActions(path);
+        for (int i = 0; i < loadAction.size(); i++) {
+            if (loadAction.get(i).getType() == Type.MOVE){
+                model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
+
+            }else{
+                model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                view.removeChessComponentAtGrid(loadAction.get(i).getTo());
+                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
+                }
+            swapColor();
+            view.repaint();
+        }
+
+    }
+    public static ArrayList<Action> extractActions(String filePath) throws IOException {
+        ArrayList<Action> actions = new ArrayList<>();
+        File file = new File(filePath);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+    
+        StringBuilder sb = new StringBuilder();
+        char[] buf = new char[8192]; 
+        int len; 
+        while((len = br.read(buf)) != -1) {
+            sb.append(buf, 0, len); 
+        }    
+        String content = sb.toString();
+        //String patternString = "\{from=\((\d+),(\d+)\) ,to=\((\d+),(\d+)\) ,chessPiece=(RED|BLUE) (?:\w+) ,type=(MOVE|CAPTURE)(?:,capturedChessPiece=(RED|BLUE) (?:\w+))?\}";
+
+        Pattern pattern = Pattern.compile("\\{from=\\((\\d+),(\\d+)\\) ,to=\\((\\d+),(\\d+)\\) ,chessPiece=(RED|BLUE) (\\w+)\\b,type=(MOVE|CAPTURE)(?:,capturedChessPiece=(RED|BLUE) (\\w+))?\\}");
+        
+        Matcher matcher = pattern.matcher(content);
+
+        while (matcher.find()) {
+            int fromX = Integer.parseInt(matcher.group(1));
+            int fromY = Integer.parseInt(matcher.group(2));
+            int toX = Integer.parseInt(matcher.group(3));
+            int toY = Integer.parseInt(matcher.group(4));
+            PlayerColor color = matcher.group(5).equals("BLUE") ? PlayerColor.BLUE : PlayerColor.RED;
+            if(matcher.group(7).toUpperCase().equals("MOVE"))
+                actions.add(new Action(new ChessboardPoint(fromX, fromY), new ChessboardPoint(toX, toY), Type.MOVE));
+            else
+                actions.add(new Action(new ChessboardPoint(fromX, fromY), new ChessboardPoint(toX, toY), Type.CAPTURE));
+            
+        }
+
+        br.close();
+
+
+        return actions;
     }
 }
