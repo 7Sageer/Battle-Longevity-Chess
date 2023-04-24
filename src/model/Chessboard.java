@@ -11,6 +11,7 @@ import model.Action.type;
  */
 public class Chessboard {
     private Cell[][] grid;
+    public static ArrayList<Action> historyAction = new ArrayList<Action>();
 
     public Chessboard() {
         this.grid =
@@ -26,10 +27,10 @@ public class Chessboard {
                 grid[i][j] = new Cell();
             }
         }
+        Action.ChessBoard = this;
     }
 
     private void initPieces() {
-        //棋子初始化,这里的初始化是写死的，后面可能要改成读档
         // grid[6][0].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
         // grid[6][1].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
         grid[6][0].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
@@ -55,9 +56,11 @@ public class Chessboard {
 
         grid[2][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Rat",1));
         grid[6][6].setPiece(new ChessPiece(PlayerColor.RED, "Rat",1));
+
+
     }
 
-    private ChessPiece getChessPieceAt(ChessboardPoint point) {
+    public ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
     }
 
@@ -83,6 +86,7 @@ public class Chessboard {
         if (!isValidMove(src, dest)) {
             throw new IllegalArgumentException("Illegal chess move!");
         }
+        historyAction.add(new Action(src,dest,type.MOVE));
         setChessPiece(dest, removeChessPiece(src));
     }
 
@@ -91,6 +95,7 @@ public class Chessboard {
         if (!isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");
         }else{
+            historyAction.add(new Action(src,dest,type.CAPTURE));
             removeChessPiece(dest);
             setChessPiece(dest, removeChessPiece(src));
         }
@@ -209,10 +214,10 @@ public class Chessboard {
             for (int col = 0; col < 7; col++) {
                 ChessboardPoint dest = new ChessboardPoint(row, col);
                 if (isValidMove(src, dest)) {
-                    validMoves.add(new Action(src, dest,getChessPieceAt(src),type.MOVE));
+                    validMoves.add(new Action(src, dest,type.MOVE));
                 }
                 if (isValidCapture(src, dest)) {
-                    validMoves.add(new Action(src, dest,getChessPieceAt(src),type.CAPTURE));
+                    validMoves.add(new Action(src, dest,type.CAPTURE));
                 }
             }
         }

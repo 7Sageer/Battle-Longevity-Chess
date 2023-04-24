@@ -1,11 +1,14 @@
 package controller;
 
+import java.io.*;
+import java.util.*;
 
 import listener.GameListener;
 import model.Constant;
 import model.PlayerColor;
 import model.Chessboard;
 import model.ChessboardPoint;
+import model.Action;
 import view.CellComponent;
 import view.ChessComponent;
 import view.ChessGameFrame;
@@ -94,7 +97,7 @@ public class GameController implements GameListener {
             
             
             // TODO: if the chess enter Dens or Traps and so on
-            //写在chessBoard的isValidCaptured里面
+            //写在chessBoard的isValidCaptured和win里面
             
         }
     }
@@ -113,6 +116,7 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         } else {
+
             model.captureChessPiece(selectedPoint, point);
             view.removeChessComponentAtGrid(point);
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
@@ -131,5 +135,16 @@ public class GameController implements GameListener {
         }
         // TODO: Implement capture function  做完了
 
+    }
+    public void saveGame(String path) throws IOException {
+        File file = new File(path);
+        FileWriter writer = new FileWriter(file);
+        for (int i = 0; i < Chessboard.historyAction.size(); i++) {
+            writer.write(Chessboard.historyAction.get(i).toString());
+            System.out.println(Chessboard.historyAction.get(i));
+            writer.write("\r");
+        }
+    writer.close();
+        
     }
 }

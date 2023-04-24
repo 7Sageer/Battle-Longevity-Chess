@@ -5,6 +5,7 @@ import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -35,6 +36,10 @@ public class ChessGameFrame extends JFrame {
         addChessboard();
         addLabel();
         addRestartButton();
+        addSaveButton();
+    }
+    public void setGameController(GameController gameController){
+        this.gameController = gameController;
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -90,6 +95,7 @@ public class ChessGameFrame extends JFrame {
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
             GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame);
+            mainFrame.setGameController(gameController);
             mainFrame.setVisible(true);
             
         });
@@ -100,13 +106,31 @@ public class ChessGameFrame extends JFrame {
         JOptionPane.showMessageDialog(this, player+" win!");
     }
 
+    private void addSaveButton(){
+        JButton button = new JButton("Save");
+       button.setLocation(HEIGTH, HEIGTH / 10 + 240);
+       button.setSize(200, 60);
+       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       add(button);
+
+       button.addActionListener(e -> {
+           System.out.println("Click load");
+           String path = JOptionPane.showInputDialog(this,"Input Path here");
+           try {
+            gameController.saveGame(path);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+       });
+    }
+
 //    private void addLoadButton() {
 //        JButton button = new JButton("Load");
 //        button.setLocation(HEIGTH, HEIGTH / 10 + 240);
 //        button.setSize(200, 60);
 //        button.setFont(new Font("Rockwell", Font.BOLD, 20));
 //        add(button);
-//
+
 //        button.addActionListener(e -> {
 //            System.out.println("Click load");
 //            String path = JOptionPane.showInputDialog(this,"Input Path here");
