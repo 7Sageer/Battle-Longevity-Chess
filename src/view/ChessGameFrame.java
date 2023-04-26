@@ -23,7 +23,7 @@ public class ChessGameFrame extends JFrame {
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
-        setTitle("2023 CS109 Project Demo"); //设置标题
+        setTitle("斗寿棋"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
         this.ONE_CHESS_SIZE = (HEIGTH * 4 / 5) / 9;
@@ -41,6 +41,8 @@ public class ChessGameFrame extends JFrame {
         addRestartButton();
         addSaveButton();
         addLoadButton();
+        addUndoButton();
+
     }
     public void setGameController(GameController gameController){
         this.gameController = gameController;
@@ -135,6 +137,19 @@ public class ChessGameFrame extends JFrame {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+       });
+   }
+
+   private void addUndoButton(){
+       JButton button = new JButton("Undo");
+       button.setLocation(HEIGTH, HEIGTH / 10 + 480);
+       button.setSize(200, 60);
+       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       add(button);
+
+       button.addActionListener(e -> {
+           System.out.println("Click undo");
+           gameController.undo();
        });
    }
 

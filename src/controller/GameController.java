@@ -211,4 +211,24 @@ public class GameController implements GameListener {
 
         return actions;
     }
+
+    public void undo() {
+        if (Chessboard.historyAction.size() > 0) {
+            Action action = Chessboard.historyAction.get(Chessboard.historyAction.size() - 1);
+            if (action.getType() == Type.MOVE) {
+                model.moveChessPiece(action.getTo(), action.getFrom());
+                view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+            } else {
+                model.moveChessPiece(action.getTo(), action.getFrom());
+                model.setChessPiece(action.getTo(),action.getCapturedChessPiece());
+                view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+                view.setChessComponentAtGrid(action.getTo(), view.addChessComponent(action.getTo(),action.getCapturedChessPiece()));
+                
+            }
+            swapColor();
+            view.repaint();
+            Chessboard.historyAction.remove(Chessboard.historyAction.size() - 1);
+            Chessboard.historyAction.remove(Chessboard.historyAction.size() - 1);
+        }
+    }
 }

@@ -78,13 +78,13 @@ public class Chessboard {
         return chessPiece;
     }
 
-    private void setChessPiece(ChessboardPoint point, ChessPiece chessPiece) {
+    public void setChessPiece(ChessboardPoint point, ChessPiece chessPiece) {
         getGridAt(point).setPiece(chessPiece);
     }
 
     public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest) {
         if (!isValidMove(src, dest)) {
-            throw new IllegalArgumentException("Illegal chess move!");
+            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
         }
         System.out.println(new Action(src,dest,Type.MOVE).toString());
         historyAction.add(new Action(src,dest,Type.MOVE));
@@ -139,13 +139,12 @@ public class Chessboard {
             return false;
 
         if(canJumpRiver(src, dest) && getChessPieceAt(src).canCapture(getChessPieceAt(dest))){
-            System.out.println("jump!");
+            //System.out.println("jump!");
             return true;
         }
 
         if (ChessboardComponent.blueTrapCell.contains(dest)||ChessboardComponent.redTrapCell.contains(dest)||getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
-            //原谅这坨大便，我刚刚才看到陷阱要分阵营
-            //刚刚修了一下好一些了，之前的if语句有两倍长
+
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
                 return calculateDistance(src, dest) == 1;
             }
@@ -199,8 +198,8 @@ public class Chessboard {
 
     public ArrayList<Action> getAllValidAction(PlayerColor playerColor) {
         ArrayList<Action> validMoves = new ArrayList<>();
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int row = 0; row < Constant.CHESSBOARD_ROW_SIZE.getNum(); row++) {
+            for (int col = 0; col < Constant.CHESSBOARD_COL_SIZE.getNum(); col++) {
                 ChessboardPoint src = new ChessboardPoint(row, col);
                 if (getChessPieceAt(src) != null && getChessPieceAt(src).getOwner() == playerColor) {
                     validMoves.addAll(getValidAction(src));
@@ -212,8 +211,8 @@ public class Chessboard {
     }
     public ArrayList<Action> getValidAction(ChessboardPoint src) {
         ArrayList<Action> validMoves = new ArrayList<>();
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int row = 0; row < Constant.CHESSBOARD_ROW_SIZE.getNum(); row++) {
+            for (int col = 0; col < Constant.CHESSBOARD_COL_SIZE.getNum(); col++) {
                 ChessboardPoint dest = new ChessboardPoint(row, col);
                 if (isValidMove(src, dest)) {
                     validMoves.add(new Action(src, dest,Type.MOVE));

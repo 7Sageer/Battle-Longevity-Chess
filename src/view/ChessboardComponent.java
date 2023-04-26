@@ -58,52 +58,35 @@ public class ChessboardComponent extends JComponent {
                 if (grid[i][j].getPiece() != null) {
                     ChessPiece chessPiece = grid[i][j].getPiece();
                     System.out.println(chessPiece.getName());
-                    if (chessPiece.getName() == "Elephant"&&gridComponents[i][j].getComponents().length==0){
+                    if (gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
-                                        CHESS_SIZE,"象"));
-                    }else if (chessPiece.getName() == "Lion"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"狮"));
-                    }else if (chessPiece.getName() == "Tiger"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"虎"));
-                    }else if (chessPiece.getName() == "Leopard"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"豹"));
-                    }else if (chessPiece.getName() == "Wolf"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"狼"));
-                    }else if (chessPiece.getName() == "Dog"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"狗"));
-                    }else if (chessPiece.getName() == "Cat"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"猫"));
-                    }else if (chessPiece.getName() == "Rat"&&gridComponents[i][j].getComponents().length==0){
-                        gridComponents[i][j].add(
-                                new ChessComponent(
-                                        chessPiece.getOwner(),
-                                        CHESS_SIZE,"鼠"));
+                                        CHESS_SIZE,chessJudge(chessPiece)));
                     }
 
                 }
             }
         }
 
+    }
+    private String chessJudge(ChessPiece chess){
+        if(chess.getName() == "Elephant")
+            return "象";
+        else if(chess.getName() == "Lion")
+            return "狮";
+        else if(chess.getName() == "Tiger")
+            return "虎";
+        else if(chess.getName() == "Leopard")
+            return "豹";
+        else if(chess.getName() == "Wolf")
+            return "狼";
+        else if(chess.getName() == "Dog")
+            return "狗";
+        else if(chess.getName() == "Cat")
+            return "猫";
+        else
+            return "鼠";
     }
 
     public void initiateGridComponents() {
@@ -175,6 +158,15 @@ public class ChessboardComponent extends JComponent {
         getGridComponentAt(point).revalidate();
         chess.setSelected(false);
         return chess;
+    }
+    public ChessComponent addChessComponent(ChessboardPoint point, ChessPiece piece){
+        
+        ChessComponent chess = new ChessComponent(
+            piece.getOwner(),
+            CHESS_SIZE,chessJudge(piece));
+        gridComponents[point.getRow()][point.getCol()].add(chess);
+        return chess;
+        
     }
 
     private CellComponent getGridComponentAt(ChessboardPoint point) {
