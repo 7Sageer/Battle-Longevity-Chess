@@ -7,6 +7,7 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,13 +20,16 @@ import static model.Constant.CHESSBOARD_ROW_SIZE;
  * This class represents the checkerboard component object on the panel
  */
 public class ChessboardComponent extends JComponent {
-    private CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
+    private static CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     public final static Set<ChessboardPoint> riverCell = new HashSet<>();
     public final static Set<ChessboardPoint> blueTrapCell = new HashSet<>();
     public final static Set<ChessboardPoint> redTrapCell = new HashSet<>();
     public final static Set<ChessboardPoint> blueDenCell = new HashSet<>();
     public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
+
+    public ArrayList<CellComponent> possibleMoveCell = new ArrayList<>();
+    private ArrayList<CellComponent> removedComponents = new ArrayList<>();
 
     private GameController gameController;
 
@@ -52,7 +56,6 @@ public class ChessboardComponent extends JComponent {
         
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
-                // TODO: Implement the initialization checkerboard
                 gridComponents[i][j].removeAll();
 
                 if (grid[i][j].getPiece() != null) {
@@ -87,6 +90,33 @@ public class ChessboardComponent extends JComponent {
             return "猫";
         else
             return "鼠";
+    }
+    public void renderPossibleMove(ArrayList<ChessboardPoint> possibleMovePoint){
+        CellComponent cell;
+        for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(possibleMovePoint.contains(new ChessboardPoint(i,j))){
+                    cell = new CellComponent(Color.GREEN, calculatePoint(i, j), CHESS_SIZE);
+                    possibleMoveCell.add(cell);
+                    removedComponents.add(gridComponents[i][j]);
+                    this.remove(gridComponents[i][j]);
+                    this.add(cell);
+                }
+            }
+        }
+        repaint();
+
+    }
+    public void removePossibleMove(){
+        CellComponent cell;
+        for(CellComponent c:removedComponents){
+            this.add(c);
+        }
+        for(CellComponent c:possibleMoveCell){
+            this.remove(c);
+        }
+        removedComponents.clear();
+        repaint();
     }
 
     public void initiateGridComponents() {
@@ -183,7 +213,7 @@ public class ChessboardComponent extends JComponent {
 
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         super.validate();
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -65,6 +65,7 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
     }
 
@@ -114,11 +115,22 @@ public class GameController implements GameListener {
         if (selectedPoint == null) {
             if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                 selectedPoint = point;
+                //
+                ArrayList<Action> validAction = model.getValidAction(point);
+                ArrayList<ChessboardPoint> validPoint = new ArrayList<ChessboardPoint>();
+                for (int i = 0; i < validAction.size(); i++) {
+                    if (validAction.get(i).getType() == Type.MOVE)
+                        validPoint.add(validAction.get(i).getTo());
+                }
+                System.out.println(validPoint);
+                view.renderPossibleMove(validPoint);
+                //
                 component.setSelected(true);
                 component.repaint();
             }
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
+            view.removePossibleMove();
             component.setSelected(false);
             component.repaint();
         } else {
@@ -139,7 +151,6 @@ public class GameController implements GameListener {
             }
             
         }
-        // TODO: Implement capture function  做完了
 
     }
     public void saveGame(String path) throws IOException {
@@ -167,7 +178,8 @@ public class GameController implements GameListener {
             }else{
                 model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                 view.removeChessComponentAtGrid(loadAction.get(i).getTo());
-                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                }
+                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+            }
             swapColor();
             view.paintImmediately(0,0,2000,2000);
             Thread.sleep(100);

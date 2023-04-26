@@ -28,7 +28,6 @@ public class ChessComponent extends JComponent {
         setSize(size/2, size/2);
         setLocation(0,0);
         setVisible(true);
-        //setDoubleBuffered(false); 
         // try {
         //     image = ImageIO.read(new File("resource\\Elephant-blue.png"));
         // } catch (Exception e) {
