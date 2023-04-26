@@ -14,6 +14,7 @@ public class ChessGameFrame extends JFrame {
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
+    private final int BUTTON_INTERVAL = 80;
 
     private final int ONE_CHESS_SIZE;
     private GameController gameController;
@@ -82,7 +83,7 @@ public class ChessGameFrame extends JFrame {
 
     private void addRestartButton() {
         JButton button = new JButton("Restart");
-        button.setLocation(HEIGTH , HEIGTH / 10 + 120);
+        button.setLocation(HEIGTH , HEIGTH / 10 + BUTTON_INTERVAL);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -105,7 +106,7 @@ public class ChessGameFrame extends JFrame {
 
     private void addSaveButton(){
         JButton button = new JButton("Save");
-       button.setLocation(HEIGTH, HEIGTH / 10 + 240);
+       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 2);
        button.setSize(200, 60);
        button.setFont(new Font("Rockwell", Font.BOLD, 20));
        add(button);
@@ -123,7 +124,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addLoadButton() {
        JButton button = new JButton("Load");
-       button.setLocation(HEIGTH, HEIGTH / 10 + 360);
+       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 3);
        button.setSize(200, 60);
        button.setFont(new Font("Rockwell", Font.BOLD, 20));
        add(button);
@@ -143,7 +144,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addUndoButton(){
        JButton button = new JButton("Undo");
-       button.setLocation(HEIGTH, HEIGTH / 10 + 480);
+       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 4);
        button.setSize(200, 60);
        button.setFont(new Font("Rockwell", Font.BOLD, 20));
        add(button);
@@ -156,7 +157,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addRedoButton(){
        JButton button = new JButton("Redo");
-       button.setLocation(HEIGTH, HEIGTH / 10 + 600);
+       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 5);
        button.setSize(200, 60);
        button.setFont(new Font("Rockwell", Font.BOLD, 20));
        add(button);

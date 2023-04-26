@@ -168,6 +168,7 @@ public class GameController implements GameListener {
         System.out.println(extractActions(path));
         this.model.initialize();
         this.view.initiateChessComponent(model);
+        Chessboard.currentTurn = 0;
         
         ArrayList<Action> loadAction = extractActions(path);
         for (int i = 0; i < loadAction.size(); i++) {
