@@ -12,6 +12,7 @@ import model.Action.Type;
 public class Chessboard {
     private Cell[][] grid;
     public static ArrayList<Action> historyAction = new ArrayList<Action>();
+    public static int currentTurn = 0;
 
     public Chessboard() {
         initialize();
@@ -86,13 +87,41 @@ public class Chessboard {
         if (!isValidMove(src, dest)) {
             throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
         }
-        System.out.println(new Action(src,dest,Type.MOVE).toString());
+        
+        if(historyAction.size() != 0 && historyAction.size() > currentTurn && historyAction.get(currentTurn).getTo()!=dest){
+            historyAction.subList(currentTurn, historyAction.size()).clear();
+            System.out.println("clear");
+        }
         historyAction.add(new Action(src,dest,Type.MOVE));
         setChessPiece(dest, removeChessPiece(src));
+        currentTurn++;
+    }
+    public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest, boolean isUndo) {
+        if (!isValidMove(src, dest)) {
+            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
+        }
+        historyAction.add(new Action(src,dest,Type.MOVE));
+        setChessPiece(dest, removeChessPiece(src));
+        currentTurn++;
     }
 
     public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) {
-        // TODO: Finish the method.
+        if (!isValidCapture(src, dest)) {
+            throw new IllegalArgumentException("Illegal chess capture!");
+        }else{
+            System.out.println(new Action(src,dest,Type.CAPTURE).toString());
+            if(historyAction.size() != 0 && historyAction.get(currentTurn - 1).getTo()!=dest){
+                historyAction.subList(historyAction.size() + currentTurn - historyAction.size(), historyAction.size()).clear();
+                System.out.println("clear");
+            }
+            historyAction.add(new Action(src,dest,Type.CAPTURE));
+            removeChessPiece(dest);
+            setChessPiece(dest, removeChessPiece(src));
+            currentTurn++;
+        }
+        
+    }
+    public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest, boolean isUndo) {
         if (!isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");
         }else{
@@ -100,6 +129,7 @@ public class Chessboard {
             historyAction.add(new Action(src,dest,Type.CAPTURE));
             removeChessPiece(dest);
             setChessPiece(dest, removeChessPiece(src));
+            currentTurn++;
         }
         
     }

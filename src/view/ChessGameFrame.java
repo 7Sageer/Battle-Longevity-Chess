@@ -37,11 +37,12 @@ public class ChessGameFrame extends JFrame {
 
         addChessboard();
         addLabel();
-        setTurnLabel("Turn: BLUE");
+        setTurnLabel("Turn1: BLUE");
         addRestartButton();
         addSaveButton();
         addLoadButton();
         addUndoButton();
+        addRedoButton();
 
     }
     public void setGameController(GameController gameController){
@@ -150,6 +151,19 @@ public class ChessGameFrame extends JFrame {
        button.addActionListener(e -> {
            System.out.println("Click undo");
            gameController.undo();
+       });
+   }
+
+   private void addRedoButton(){
+       JButton button = new JButton("Redo");
+       button.setLocation(HEIGTH, HEIGTH / 10 + 600);
+       button.setSize(200, 60);
+       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       add(button);
+
+       button.addActionListener(e -> {
+           System.out.println("Click redo");
+           gameController.redo();
        });
    }
 

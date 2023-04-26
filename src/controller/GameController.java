@@ -57,6 +57,7 @@ public class GameController implements GameListener {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                 //目前没想到怎么用，用于读档？
+                //读档写完了，好像还是没用
             }
         }
     }
@@ -64,7 +65,7 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
-        game.setTurnLabel("Turn: " + currentPlayer);
+        game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
     }
 
     //这里原本返回值是布尔型
@@ -187,8 +188,6 @@ public class GameController implements GameListener {
             sb.append(buf, 0, len); 
         }    
         String content = sb.toString();
-        //String patternString = "\{from=\((\d+),(\d+)\) ,to=\((\d+),(\d+)\) ,chessPiece=(RED|BLUE) (?:\w+) ,type=(MOVE|CAPTURE)(?:,capturedChessPiece=(RED|BLUE) (?:\w+))?\}";
-
         Pattern pattern = Pattern.compile("\\{from=\\((\\d+),(\\d+)\\) ,to=\\((\\d+),(\\d+)\\) ,chessPiece=(RED|BLUE) (\\w+)\\b,type=(MOVE|CAPTURE)(?:,capturedChessPiece=(RED|BLUE) (\\w+))?\\}");
         
         Matcher matcher = pattern.matcher(content);
@@ -214,21 +213,38 @@ public class GameController implements GameListener {
 
     public void undo() {
         if (Chessboard.historyAction.size() > 0) {
-            Action action = Chessboard.historyAction.get(Chessboard.historyAction.size() - 1);
+            Action action = Chessboard.historyAction.get(Chessboard.currentTurn - 1);
             if (action.getType() == Type.MOVE) {
-                model.moveChessPiece(action.getTo(), action.getFrom());
+                model.moveChessPiece(action.getTo(), action.getFrom(),true);
                 view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
             } else {
-                model.moveChessPiece(action.getTo(), action.getFrom());
+                model.moveChessPiece(action.getTo(), action.getFrom(),true);
                 model.setChessPiece(action.getTo(),action.getCapturedChessPiece());
                 view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
                 view.setChessComponentAtGrid(action.getTo(), view.addChessComponent(action.getTo(),action.getCapturedChessPiece()));
                 
             }
+            Chessboard.currentTurn -= 2;
             swapColor();
             view.repaint();
-            Chessboard.historyAction.remove(Chessboard.historyAction.size() - 1);
-            Chessboard.historyAction.remove(Chessboard.historyAction.size() - 1);
+            Chessboard.historyAction.remove(Chessboard.historyAction.size()-1);
+            System.out.println(Chessboard.historyAction);
+            
+        }
+    }
+    public void redo(){
+        if(Chessboard.historyAction.size() > Chessboard.currentTurn){
+            Action action = Chessboard.historyAction.get(Chessboard.currentTurn);
+            if (action.getType() == Type.MOVE) {
+                model.moveChessPiece(action.getFrom(), action.getTo(),true);
+                view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+            } else {
+                model.captureChessPiece(action.getFrom(), action.getTo(),true);
+                view.removeChessComponentAtGrid(action.getTo());
+                view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+            }
+            swapColor();
+            view.repaint();
         }
     }
 }
