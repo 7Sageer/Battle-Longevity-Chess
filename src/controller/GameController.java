@@ -167,10 +167,10 @@ public class GameController implements GameListener {
             }else{
                 model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                 view.removeChessComponentAtGrid(loadAction.get(i).getTo());
-                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
-                }
+                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                }
             swapColor();
-            view.repaint();
+            view.paintImmediately(0,0,2000,2000);
+            Thread.sleep(100);
             
         }
 

@@ -12,12 +12,12 @@ public class TitleScreen extends JFrame {
     private JButton exitButton;
 
     public TitleScreen() {
-        super("Chess Game");
+        super("Jungle Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(400, 250));
 
         JPanel panel = new JPanel(new FlowLayout());
-        JLabel titleLabel = new JLabel("Welcome to Chess Game!");
+        JLabel titleLabel = new JLabel("Welcome to Jungle Chess!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
         startButton = new JButton("Start Game");
