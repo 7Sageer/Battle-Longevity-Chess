@@ -233,7 +233,7 @@ public class GameController implements GameListener {
         }
     }
     public void redo(){
-        if(Chessboard.historyAction.size() > Chessboard.currentTurn){
+        if(Chessboard.historyAction.size() - 1 > Chessboard.currentTurn){
             Action action = Chessboard.historyAction.get(Chessboard.currentTurn);
             if (action.getType() == Type.MOVE) {
                 model.moveChessPiece(action.getFrom(), action.getTo(),true);

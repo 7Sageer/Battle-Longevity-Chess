@@ -96,6 +96,8 @@ public class Chessboard {
         setChessPiece(dest, removeChessPiece(src));
         currentTurn++;
     }
+    
+    //这可不能悔棋，我把悔棋写到了gamecontroller里面，因为要配合redo而且懒得改了所以就这样了
     public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest, boolean isUndo) {
         if (!isValidMove(src, dest)) {
             throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
@@ -121,6 +123,8 @@ public class Chessboard {
         }
         
     }
+
+    //这里同上
     public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest, boolean isUndo) {
         if (!isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");

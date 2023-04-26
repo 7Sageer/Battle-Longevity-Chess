@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TitleScreen",
+            "request": "launch",
+            "mainClass": "view.TitleScreen",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
