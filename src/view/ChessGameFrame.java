@@ -18,6 +18,8 @@ public class ChessGameFrame extends JFrame {
     private final int ONE_CHESS_SIZE;
     private GameController gameController;
 
+    private JLabel turnLabel = new JLabel();
+
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
@@ -35,6 +37,7 @@ public class ChessGameFrame extends JFrame {
 
         addChessboard();
         addLabel();
+        setTurnLabel("Turn: BLUE");
         addRestartButton();
         addSaveButton();
         addLoadButton();
@@ -64,11 +67,14 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        JLabel statusLabel = new JLabel("Sample label");
-        statusLabel.setLocation(HEIGTH, HEIGTH / 10);
-        statusLabel.setSize(200, 60);
-        statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(statusLabel);
+        
+        turnLabel.setLocation(HEIGTH, HEIGTH / 10);
+        turnLabel.setSize(200, 60);
+        turnLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(turnLabel);
+    }
+    public void setTurnLabel(String text){
+        turnLabel.setText(text);
     }
 
     private void addRestartButton() {
@@ -90,8 +96,8 @@ public class ChessGameFrame extends JFrame {
         
     }
     
-    public void showWinDialog(String player){
-        JOptionPane.showMessageDialog(this, player+" win!");
+    public void showDialog(String player){
+        JOptionPane.showMessageDialog(this, player);
     }
 
     private void addSaveButton(){
@@ -125,6 +131,8 @@ public class ChessGameFrame extends JFrame {
            try {
             gameController.loadGame(path);
         } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
        });

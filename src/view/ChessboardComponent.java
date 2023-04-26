@@ -19,7 +19,7 @@ import static model.Constant.CHESSBOARD_ROW_SIZE;
  * This class represents the checkerboard component object on the panel
  */
 public class ChessboardComponent extends JComponent {
-    private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
+    private CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     public final static Set<ChessboardPoint> riverCell = new HashSet<>();
     public final static Set<ChessboardPoint> blueTrapCell = new HashSet<>();
@@ -48,49 +48,52 @@ public class ChessboardComponent extends JComponent {
      */
     public void initiateChessComponent(Chessboard chessboard) {
         Cell[][] grid = chessboard.getGrid();
+        //gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
+        
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
                 // TODO: Implement the initialization checkerboard
+                gridComponents[i][j].removeAll();
 
                 if (grid[i][j].getPiece() != null) {
                     ChessPiece chessPiece = grid[i][j].getPiece();
                     System.out.println(chessPiece.getName());
-                    if (chessPiece.getName() == "Elephant"){
+                    if (chessPiece.getName() == "Elephant"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"象"));
-                    }else if (chessPiece.getName() == "Lion"){
+                    }else if (chessPiece.getName() == "Lion"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"狮"));
-                    }else if (chessPiece.getName() == "Tiger"){
+                    }else if (chessPiece.getName() == "Tiger"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"虎"));
-                    }else if (chessPiece.getName() == "Leopard"){
+                    }else if (chessPiece.getName() == "Leopard"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"豹"));
-                    }else if (chessPiece.getName() == "Wolf"){
+                    }else if (chessPiece.getName() == "Wolf"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"狼"));
-                    }else if (chessPiece.getName() == "Dog"){
+                    }else if (chessPiece.getName() == "Dog"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"狗"));
-                    }else if (chessPiece.getName() == "Cat"){
+                    }else if (chessPiece.getName() == "Cat"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE,"猫"));
-                    }else if (chessPiece.getName() == "Rat"){
+                    }else if (chessPiece.getName() == "Rat"&&gridComponents[i][j].getComponents().length==0){
                         gridComponents[i][j].add(
                                 new ChessComponent(
                                         chessPiece.getOwner(),

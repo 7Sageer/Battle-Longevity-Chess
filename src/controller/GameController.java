@@ -64,6 +64,7 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        game.setTurnLabel("Turn: " + currentPlayer);
     }
 
     //这里原本返回值是布尔型
@@ -93,10 +94,10 @@ public class GameController implements GameListener {
             view.repaint();
             if (temp == 1) {
                 System.out.println("Blue Win!");
-                game.showWinDialog("Blue Win!");
+                game.showDialog("Blue Win!");
             } else if (temp == 2) {
                 System.out.println("Red Win!");
-                game.showWinDialog("Red Win!");
+                game.showDialog("Red Win!");
             }
             
             
@@ -130,10 +131,10 @@ public class GameController implements GameListener {
             view.repaint();
             if (temp == 1) {
                 System.out.println("Blue Win!");
-                game.showWinDialog("Blue Win!");
+                game.showDialog("Blue Win!");
             } else if (temp == 2) {
                 System.out.println("Red Win!");
-                game.showWinDialog("Red Win!");
+                game.showDialog("Red Win!");
             }
             
         }
@@ -151,9 +152,10 @@ public class GameController implements GameListener {
     writer.close();
         
     }
-    public void loadGame(String path) throws IOException {
+    public void loadGame(String path) throws IOException, InterruptedException {
         System.out.println(extractActions(path));
         this.model.initialize();
+        this.view.initiateChessComponent(model);
         
         ArrayList<Action> loadAction = extractActions(path);
         for (int i = 0; i < loadAction.size(); i++) {
@@ -168,6 +170,7 @@ public class GameController implements GameListener {
                 }
             swapColor();
             view.repaint();
+            
         }
 
     }
