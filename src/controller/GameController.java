@@ -76,36 +76,34 @@ public class GameController implements GameListener {
         }
     }
 
-    // after a valid move swap the player 即下个回合
+    // after a valid move swap the player 即下个回合(包含AI)
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
+
         if(isAI){
             if(currentPlayer == AIcolor){
                 Action action = AI.findAction(model, 1, AIcolor);
                 if(action.type == Type.MOVE){
-                    model.moveChessPiece(action.getFrom(), action.getTo());
-                    view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+                    move(action.getFrom(), action.getTo());
                 }
                 else if(action.type == Type.CAPTURE){
-                    model.captureChessPiece(action.getFrom(), action.getTo());
-                    view.removeChessComponentAtGrid(action.getTo());
-                    view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+                    capture(action.getFrom(), action.getTo());
                 }
-                
+                currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
                 swapColor();
-                int temp = win();
+                checkWin();
                 view.repaint();
-                if (temp == 1) {
-                    System.out.println("Blue Win!");
-                    game.showDialog("Blue Win!");
-                } else if (temp == 2) {
-                    System.out.println("Red Win!");
-                    game.showDialog("Red Win!");
-                }
             }
         }
+    }
+    //重载一个没有AI的swapColor
+    private void swapColor(boolean AI){
+        currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        view.removePossibleMove();
+        game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
+        view.repaint();
     }
 
     //这里原本返回值是布尔型
@@ -121,30 +119,46 @@ public class GameController implements GameListener {
         
         return 0;
     }
+    private void checkWin(){
+        int temp = win();
+        if (temp == 1) {
+            System.out.println("Blue Win!");
+            game.showDialog("Blue Win!");
+            System.exit(0);
+        } else if (temp == 2) {
+            System.out.println("Red Win!");
+            game.showDialog("Red Win!");
+            System.exit(0);
+        }
+    }
+
+    private void capture(ChessboardPoint from, ChessboardPoint to){
+
+        model.captureChessPiece(from, to);
+        view.removeChessComponentAtGrid(to);
+        view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
+        selectedPoint = null;
+        swapColor();
+        checkWin();
+        view.repaint();
+    }
+
+    
+    private void move(ChessboardPoint from, ChessboardPoint to){
+            model.moveChessPiece(from, to);
+            view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
+            selectedPoint = null;
+            swapColor();
+            checkWin();
+            view.repaint();
+    }
 
 
     // click an empty cell
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
-            model.moveChessPiece(selectedPoint, point);
-            view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
-            selectedPoint = null;
-            swapColor();
-            int temp = win();
-            view.repaint();
-            if (temp == 1) {
-                System.out.println("Blue Win!");
-                game.showDialog("Blue Win!");
-            } else if (temp == 2) {
-                System.out.println("Red Win!");
-                game.showDialog("Red Win!");
-            }
-            
-            
-            // TODO: if the chess enter Dens or Traps and so on
-            //写在chessBoard的isValidCaptured和win里面
-            
+            move(selectedPoint, point);
         }
     }
 
@@ -174,20 +188,7 @@ public class GameController implements GameListener {
             component.repaint();
         } else {
 
-            model.captureChessPiece(selectedPoint, point);
-            view.removeChessComponentAtGrid(point);
-            view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
-            selectedPoint = null;
-            swapColor();
-            int temp = win();
-            view.repaint();
-            if (temp == 1) {
-                System.out.println("Blue Win!");
-                game.showDialog("Blue Win!");
-            } else if (temp == 2) {
-                System.out.println("Red Win!");
-                game.showDialog("Red Win!");
-            }
+            capture(selectedPoint, point);
             
         }
 
@@ -277,7 +278,7 @@ public class GameController implements GameListener {
                 
             }
             Chessboard.currentTurn -= 2;
-            swapColor();
+            swapColor(false);
             view.repaint();
             Chessboard.historyAction.remove(Chessboard.historyAction.size()-1);
             System.out.println(Chessboard.historyAction);
@@ -295,7 +296,7 @@ public class GameController implements GameListener {
                 view.removeChessComponentAtGrid(action.getTo());
                 view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
             }
-            swapColor();
+            swapColor(false);
             view.repaint();
         }
     }

@@ -61,8 +61,8 @@ public class TitleScreen extends JFrame {
         //startButton.setBounds(100, 100, 50, 50);需要四个参数，分别是按钮的 x 坐标、y 坐标、宽度和高度
 
         panel.add(titleLabel);
-        panel.add(startButton);
         panel.add(aiButton);
+        panel.add(startButton);
         panel.add(exitButton);
         
 
