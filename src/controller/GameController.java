@@ -49,11 +49,16 @@ public class GameController implements GameListener {
         this.game = game;
         this.currentPlayer = PlayerColor.BLUE;
         this.isAI = isAI;
+        view.registerController(this);
+        initialize();
+        view.initiateChessComponent(model);
+        view.repaint();
         if (isAI) {
             //random color
             if (Math.random() > 0.5) {
                 AIcolor = PlayerColor.BLUE;
                 game.showDialog("You are Red, AI is Blue");
+                AImove();
             } else {
                 AIcolor = PlayerColor.RED;
                 game.showDialog("You are Blue, AI is Red");
@@ -61,10 +66,7 @@ public class GameController implements GameListener {
         }
         
 
-        view.registerController(this);
-        initialize();
-        view.initiateChessComponent(model);
-        view.repaint();
+
     }
 
     private void initialize() {
@@ -84,19 +86,22 @@ public class GameController implements GameListener {
 
         if(isAI){
             if(currentPlayer == AIcolor){
-                Action action = AI.findAction(model, 1, AIcolor);
-                if(action.type == Type.MOVE){
-                    move(action.getFrom(), action.getTo());
-                }
-                else if(action.type == Type.CAPTURE){
-                    capture(action.getFrom(), action.getTo());
-                }
-                currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
-                swapColor();
-                checkWin();
-                view.repaint();
+                AImove();
             }
         }
+    }
+    private void AImove(){
+        Action action = AI.findAction(model, 1, AIcolor);
+        if(action.type == Type.MOVE){
+            move(action.getFrom(), action.getTo());
+        }
+        else if(action.type == Type.CAPTURE){
+            capture(action.getFrom(), action.getTo());
+        }
+        currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        swapColor();
+        checkWin();
+        view.repaint();
     }
     //重载一个没有AI的swapColor
     private void swapColor(boolean AI){
@@ -221,7 +226,7 @@ public class GameController implements GameListener {
                 view.removeChessComponentAtGrid(loadAction.get(i).getTo());
                 view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
             }
-            swapColor();
+            swapColor(false);
             view.paintImmediately(0,0,2000,2000);
             Thread.sleep(100);
             
@@ -300,4 +305,5 @@ public class GameController implements GameListener {
             view.repaint();
         }
     }
+    public boolean getIsAI(){return isAI;}
 }
