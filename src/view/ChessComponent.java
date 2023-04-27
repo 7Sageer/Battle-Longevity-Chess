@@ -26,7 +26,7 @@ public class ChessComponent extends JComponent {
         this.name = name;
         this.selected = false;
         setSize(size/2, size/2);
-        setLocation(0,0);
+        //setLocation(0,0);
         setVisible(true);
         // try {
         //     image = ImageIO.read(new File("resource\\Elephant-blue.png"));

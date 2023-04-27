@@ -119,7 +119,7 @@ public class GameController implements GameListener {
                 ArrayList<Action> validAction = model.getValidAction(point);
                 ArrayList<ChessboardPoint> validPoint = new ArrayList<ChessboardPoint>();
                 for (int i = 0; i < validAction.size(); i++) {
-                    if (validAction.get(i).getType() == Type.MOVE)
+                    //if (validAction.get(i).getType() == Type.MOVE)
                         validPoint.add(validAction.get(i).getTo());
                 }
                 System.out.println(validPoint);

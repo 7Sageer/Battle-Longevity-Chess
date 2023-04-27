@@ -28,7 +28,7 @@ public class ChessboardComponent extends JComponent {
     public final static Set<ChessboardPoint> blueDenCell = new HashSet<>();
     public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
 
-    public ArrayList<CellComponent> possibleMoveCell = new ArrayList<>();
+    public ArrayList<SelectComponent> possibleMoveCell = new ArrayList<>();
     private ArrayList<CellComponent> removedComponents = new ArrayList<>();
 
     private GameController gameController;
@@ -92,15 +92,21 @@ public class ChessboardComponent extends JComponent {
             return "鼠";
     }
     public void renderPossibleMove(ArrayList<ChessboardPoint> possibleMovePoint){
-        CellComponent cell;
+        SelectComponent cell;
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
                 if(possibleMovePoint.contains(new ChessboardPoint(i,j))){
-                    cell = new CellComponent(Color.GREEN, calculatePoint(i, j), CHESS_SIZE);
-                    possibleMoveCell.add(cell);
-                    removedComponents.add(gridComponents[i][j]);
-                    this.remove(gridComponents[i][j]);
+                    cell = new SelectComponent(Color.BLACK, calculatePoint(i, j), CHESS_SIZE);
+                    possibleMoveCell.add((SelectComponent) cell);
+                    
                     this.add(cell);
+                    // if(gridComponents[i][j].getComponents().length!=0){
+                    //     this.setComponentZOrder(cell, 1);
+                    // }else{
+                    //     this.setComponentZOrder(cell, 0);
+                    // }
+                                      
+                    
                 }
             }
         }
@@ -109,13 +115,9 @@ public class ChessboardComponent extends JComponent {
     }
     public void removePossibleMove(){
         CellComponent cell;
-        for(CellComponent c:removedComponents){
-            this.add(c);
-        }
         for(CellComponent c:possibleMoveCell){
             this.remove(c);
         }
-        removedComponents.clear();
         repaint();
     }
 
