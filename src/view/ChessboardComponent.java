@@ -98,15 +98,7 @@ public class ChessboardComponent extends JComponent {
                 if(possibleMovePoint.contains(new ChessboardPoint(i,j))){
                     cell = new SelectComponent(Color.BLACK, calculatePoint(i, j), CHESS_SIZE);
                     possibleMoveCell.add((SelectComponent) cell);
-                    
                     this.add(cell);
-                    // if(gridComponents[i][j].getComponents().length!=0){
-                    //     this.setComponentZOrder(cell, 1);
-                    // }else{
-                    //     this.setComponentZOrder(cell, 0);
-                    // }
-                                      
-                    
                 }
             }
         }

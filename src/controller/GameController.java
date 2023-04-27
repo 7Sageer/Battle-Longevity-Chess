@@ -12,6 +12,7 @@ import model.Action.Type;
 import model.Chessboard;
 import model.ChessboardPoint;
 import model.Action;
+import model.AI;
 import view.CellComponent;
 import view.ChessComponent;
 import view.ChessGameFrame;
@@ -31,20 +32,33 @@ public class GameController implements GameListener {
     private ChessboardComponent view;
     private PlayerColor currentPlayer;
     private ChessGameFrame game;
+    private boolean isAI = false;
+    private PlayerColor AIcolor;
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
 
     //增加了构造器的参数（添加game用于显示对话框）
-    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game) {
-        start(view, model, game);
+    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game, boolean isAI) {
+        start(view, model, game, isAI);
     }
 
-    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game){
+    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, boolean isAI) {
         this.view = view;
         this.model = model;
         this.game = game;
         this.currentPlayer = PlayerColor.BLUE;
+        this.isAI = isAI;
+        if (isAI) {
+            //random color
+            if (Math.random() > 0.5) {
+                AIcolor = PlayerColor.BLUE;
+                game.showDialog("You are Red, AI is Blue");
+            } else {
+                AIcolor = PlayerColor.RED;
+                game.showDialog("You are Blue, AI is Red");
+            }
+        }
         
 
         view.registerController(this);
@@ -67,6 +81,31 @@ public class GameController implements GameListener {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
+        if(isAI){
+            if(currentPlayer == AIcolor){
+                Action action = AI.findAction(model, 1, AIcolor);
+                if(action.type == Type.MOVE){
+                    model.moveChessPiece(action.getFrom(), action.getTo());
+                    view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+                }
+                else if(action.type == Type.CAPTURE){
+                    model.captureChessPiece(action.getFrom(), action.getTo());
+                    view.removeChessComponentAtGrid(action.getTo());
+                    view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+                }
+                
+                swapColor();
+                int temp = win();
+                view.repaint();
+                if (temp == 1) {
+                    System.out.println("Blue Win!");
+                    game.showDialog("Blue Win!");
+                } else if (temp == 2) {
+                    System.out.println("Red Win!");
+                    game.showDialog("Red Win!");
+                }
+            }
+        }
     }
 
     //这里原本返回值是布尔型

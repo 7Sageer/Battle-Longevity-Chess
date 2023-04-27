@@ -10,6 +10,7 @@ import model.Chessboard;
 public class TitleScreen extends JFrame {
     private JButton startButton;
     private JButton exitButton;
+    private JButton aiButton;
 
     public TitleScreen() {
         super("Jungle Chess");
@@ -20,12 +21,12 @@ public class TitleScreen extends JFrame {
         JLabel titleLabel = new JLabel("Welcome to Jungle Chess!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
-        startButton = new JButton("Start Game");
+        startButton = new JButton("Start 2p Game");
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame);
+                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, false);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 dispose();
@@ -41,6 +42,18 @@ public class TitleScreen extends JFrame {
             }
         });
 
+        aiButton = new JButton("Start 1p Game");
+        aiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, true);
+                mainFrame.setGameController(gameController);
+                mainFrame.setVisible(true);
+                dispose();
+            }
+        });
+
         ImageIcon imageIcon = new ImageIcon("resource\\Elephant-red.png");
         JLabel imageLabel = new JLabel(imageIcon);
         panel.add(imageLabel);
@@ -49,6 +62,7 @@ public class TitleScreen extends JFrame {
 
         panel.add(titleLabel);
         panel.add(startButton);
+        panel.add(aiButton);
         panel.add(exitButton);
         
 

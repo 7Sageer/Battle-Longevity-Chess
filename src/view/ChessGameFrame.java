@@ -92,7 +92,7 @@ public class ChessGameFrame extends JFrame {
             System.out.println("Click restart");
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame);
+            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame,false);
             mainFrame.setGameController(gameController);
             mainFrame.setVisible(true);
             

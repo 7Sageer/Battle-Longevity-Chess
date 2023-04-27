@@ -15,13 +15,16 @@ public class SelectComponent extends CellComponent {
         this.background = background;
     }
 
-    
+
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
         g.setColor(background);
-        // 绘制一个空心正方形
-        g.drawRect(0, 0, getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g;
+        //g2d.setColor(new Color(255, 255, 255, 255));
+        // 设置线条宽度
+        g2d.setStroke(new BasicStroke(1.1f));
+        g2d.drawRect(0, 0, getWidth(), getHeight());
     }
 }
