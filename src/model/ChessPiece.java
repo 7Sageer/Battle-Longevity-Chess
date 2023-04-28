@@ -7,7 +7,7 @@ public class ChessPiece {
 
     // Elephant? Cat? Dog? ...
     public String name;
-    private int rank;
+    int rank;
 
     public ChessPiece(PlayerColor owner, String name, int rank) {
         this.owner = owner;
@@ -33,8 +33,15 @@ public class ChessPiece {
     public PlayerColor getOwner() {
         return owner;
     }
+    public ChessPiece clone() {
+        return new ChessPiece(owner, name, rank);
+    }
     @Override
     public String toString() {
         return owner + " " + name;
+    }
+
+    public int getRank() {
+        return this.rank;
     }
 }

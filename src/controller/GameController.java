@@ -91,7 +91,7 @@ public class GameController implements GameListener {
         }
     }
     private void AImove(){
-        Action action = AI.findAction(model, 1, AIcolor);
+        Action action = AI.findBestAction(model, 4, AIcolor);
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
         }
@@ -112,7 +112,7 @@ public class GameController implements GameListener {
     }
 
     //这里原本返回值是布尔型
-    private int win() {
+    public int win() {
         // TODO: Check the board if there is a winner
         if(model.getGrid()[0][3].getPiece()!=null)
             return 2;
@@ -150,12 +150,13 @@ public class GameController implements GameListener {
 
     
     private void move(ChessboardPoint from, ChessboardPoint to){
-            model.moveChessPiece(from, to);
-            view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
-            selectedPoint = null;
-            swapColor();
-            checkWin();
-            view.repaint();
+
+        model.moveChessPiece(from, to);
+        view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
+        selectedPoint = null;
+        swapColor();
+        checkWin();
+        view.repaint();
     }
 
 

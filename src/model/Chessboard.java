@@ -65,6 +65,20 @@ public class Chessboard {
         return getGridAt(point).getPiece();
     }
 
+    public ChessPiece[] getAllChessPiece(){
+        ChessPiece[] chessPieces = new ChessPiece[32];
+        int count = 0;
+        for(int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++){
+            for(int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++){
+                if(grid[i][j].getPiece() != null){
+                    chessPieces[count] = grid[i][j].getPiece();
+                    count++;
+                }
+            }
+        }
+        return chessPieces;
+    }
+
     private Cell getGridAt(ChessboardPoint point) {
         return grid[point.getRow()][point.getCol()];
     }
@@ -76,6 +90,7 @@ public class Chessboard {
     private ChessPiece removeChessPiece(ChessboardPoint point) {
         ChessPiece chessPiece = getChessPieceAt(point);
         getGridAt(point).removePiece();
+        //System.out.print("remove" + point.toString() + chessPiece.toString());
         return chessPiece;
     }
 
@@ -85,7 +100,7 @@ public class Chessboard {
 
     public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest) {
         if (!isValidMove(src, dest)) {
-            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
+            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + getGridAt(src).getPiece().toString() +" " + dest.toString() + getGridAt(dest).getPiece().toString());
         }
         
         if(historyAction.size() != 0 && historyAction.size() > currentTurn && historyAction.get(currentTurn).getTo()!=dest){
@@ -100,7 +115,7 @@ public class Chessboard {
     //这可不能悔棋，我把悔棋写到了gamecontroller里面，因为要配合redo而且懒得改了所以就这样了
     public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest, boolean isUndo) {
         if (!isValidMove(src, dest)) {
-            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + " " + dest.toString());
+            throw new IllegalArgumentException("Illegal chess move!" + src.toString() + getGridAt(src).getPiece().toString() + " " + dest.toString() + getGridAt(dest).getPiece().toString());
         }
         historyAction.add(new Action(src,dest,Type.MOVE));
         setChessPiece(dest, removeChessPiece(src));
@@ -258,7 +273,62 @@ public class Chessboard {
         }
         return validMoves;
     }
+    public int AImove(Action action){
+        if (action.type == Type.MOVE){
+            if(isValidMove(action.getFrom(),action.getTo())){
+                setChessPiece(action.getTo(),removeChessPiece(action.getFrom()));
+                //setChessPiece(dest, removeChessPiece(src));
 
+            }else{
+                System.out.println("Invalid move" + action.toString() + getGridAt(action.getFrom()).getPiece().toString() +" " + getGridAt(action.getTo()).getPiece().toString());
+                return 0;
+            }
+            
+        }else if(action.type == Type.CAPTURE){
+            if(isValidCapture(action.getFrom(),action.getTo())){
+                removeChessPiece(action.getTo());
+                setChessPiece(action.getTo(),removeChessPiece(action.getFrom()));
+            }else{
+                System.out.println("Invalid capture"+action.toString() + getGridAt(action.getFrom()).getPiece().toString() +" " + getGridAt(action.getTo()).getPiece().toString());
+                return 0;
+            }
+
+        }
+        
+        return 1;
+    }
+    public int win(){
+        if(ChessboardComponent.redDenCell.contains(new ChessboardPoint(3,8))){
+            return 1;
+        }
+        if(ChessboardComponent.blueDenCell.contains(new ChessboardPoint(3,0))){
+            return 2;
+        }
+        return 0;
+    }
+
+    public Chessboard clone(){
+        // 创建一个新的棋盘对象
+        Chessboard clonedBoard = new Chessboard();
+        // 遍历整个棋盘
+        for (int row = 0; row < Constant.CHESSBOARD_ROW_SIZE.getNum(); row++) {
+            for (int col = 0; col < Constant.CHESSBOARD_COL_SIZE.getNum(); col++) {
+                ChessboardPoint point = new ChessboardPoint(row, col);
+                // 获取当前位置的棋子
+                ChessPiece piece = getChessPieceAt(point);
+                clonedBoard.grid[row][col] = new Cell();
+                if (piece != null) {
+                    // 如果当前位置有棋子，就将其克隆并添加到新的棋盘对象中
+
+                    clonedBoard.setChessPiece(point, piece.clone());
+                    clonedBoard.grid[row][col].setPiece(piece.clone());
+                    //System.out.println(clonedBoard.getChessPieceAt(point).toString());
+                }
+            }
+        }
+        // 返回新的棋盘对象
+        return clonedBoard;
+    }
 
 
 }
