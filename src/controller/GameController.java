@@ -55,14 +55,14 @@ public class GameController implements GameListener {
         view.repaint();
         if (isAI) {
             //random color
-            if (Math.random() > 0.5) {
+            // if (Math.random() > 0.5) {
                 AIcolor = PlayerColor.BLUE;
                 game.showDialog("You are Red, AI is Blue");
                 AImove();
-            } else {
-                AIcolor = PlayerColor.RED;
-                game.showDialog("You are Blue, AI is Red");
-            }
+            // } else {
+            //     AIcolor = PlayerColor.RED;
+            //     game.showDialog("You are Blue, AI is Red");
+            // }
         }
         
 
@@ -91,7 +91,8 @@ public class GameController implements GameListener {
         }
     }
     private void AImove(){
-        Action action = AI.findBestAction(model, 4, AIcolor);
+        checkWin();
+        Action action = AI.findBestAction(model, 5, AIcolor);
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
         }
@@ -100,11 +101,11 @@ public class GameController implements GameListener {
         }
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         swapColor();
-        checkWin();
         view.repaint();
     }
     //重载一个没有AI的swapColor
     private void swapColor(boolean AI){
+        checkWin();
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);

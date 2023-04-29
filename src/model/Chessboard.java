@@ -66,7 +66,7 @@ public class Chessboard {
     }
 
     public ChessPiece[] getAllChessPiece(){
-        ChessPiece[] chessPieces = new ChessPiece[32];
+        ChessPiece[] chessPieces = new ChessPiece[16];
         int count = 0;
         for(int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++){
             for(int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++){
@@ -297,14 +297,17 @@ public class Chessboard {
         
         return 1;
     }
-    public int win(){
-        if(ChessboardComponent.redDenCell.contains(new ChessboardPoint(3,8))){
-            return 1;
+    public boolean isRedWin(){
+        if(grid[0][3].getPiece()!=null){
+            return true;
         }
-        if(ChessboardComponent.blueDenCell.contains(new ChessboardPoint(3,0))){
-            return 2;
+        return false;
+    }
+    public boolean isBlueWin(){
+        if(grid[8][3].getPiece()!=null){
+            return true;
         }
-        return 0;
+        return false;
     }
 
     public Chessboard clone(){
@@ -329,6 +332,25 @@ public class Chessboard {
         // 返回新的棋盘对象
         return clonedBoard;
     }
+    public int getEnemyDistance(ChessPiece chessPiece) {
+        ChessboardPoint point = getChessPieChessboardPoint(chessPiece);
+        if(chessPiece.getOwner() == PlayerColor.BLUE)
+            return calculateDistance(point, new ChessboardPoint(8, 3));
+        else
+            return calculateDistance(point, new ChessboardPoint(0, 3));
+    }
+
+    public ChessboardPoint getChessPieChessboardPoint(ChessPiece chessPiece){
+        for(int row = 0;row < Constant.CHESSBOARD_ROW_SIZE.getNum();row++){
+            for(int col = 0;col < Constant.CHESSBOARD_COL_SIZE.getNum();col++){
+                if(grid[row][col].getPiece() == chessPiece){
+                    return new ChessboardPoint(row,col);
+                }
+            }
+        }
+        return null;
+    }
+
 
 
 }
