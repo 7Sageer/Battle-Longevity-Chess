@@ -32,28 +32,28 @@ public class GameController implements GameListener {
     private ChessboardComponent view;
     private PlayerColor currentPlayer;
     private ChessGameFrame game;
-    private boolean isAI = false;
+    private int AIDepth = 0;
     private PlayerColor AIcolor;
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
 
     //增加了构造器的参数（添加game用于显示对话框）
-    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game, boolean isAI) {
-        start(view, model, game, isAI);
+    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
+        start(view, model, game, AIDepth);
     }
 
-    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, boolean isAI) {
+    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
         this.view = view;
         this.model = model;
         this.game = game;
         this.currentPlayer = PlayerColor.BLUE;
-        this.isAI = isAI;
+        this.AIDepth = AIDepth;
         view.registerController(this);
         initialize();
         view.initiateChessComponent(model);
         view.repaint();
-        if (isAI) {
+        if (AIDepth != 0) {
             //random color
             // if (Math.random() > 0.5) {
                 AIcolor = PlayerColor.BLUE;
@@ -84,7 +84,7 @@ public class GameController implements GameListener {
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
 
-        if(isAI){
+        if(AIDepth != 0){
             if(currentPlayer == AIcolor){
                 AImove();
             }
@@ -92,7 +92,7 @@ public class GameController implements GameListener {
     }
     private void AImove(){
         checkWin();
-        Action action = AI.findBestAction(model, 5, AIcolor);
+        Action action = AI.findBestAction(model, AIDepth, AIcolor);
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
         }
@@ -269,7 +269,7 @@ public class GameController implements GameListener {
 
     public void undo() {
         int i = 1;
-        if(isAI)
+        if(AIDepth != 0&&Chessboard.currentTurn!=1)
             i = 2;
         for(int j = 0; j < i; j++){
             if (Chessboard.historyAction.size() > 0) {
@@ -297,7 +297,7 @@ public class GameController implements GameListener {
 
     public void redo(){
         int i = 1;
-        if(isAI)
+        if(AIDepth != 0)
             i = 2;
         for(int j = 0; j < i; j++){
             if(Chessboard.historyAction.size() - 1 > Chessboard.currentTurn){
@@ -315,5 +315,5 @@ public class GameController implements GameListener {
             }
     }
     }
-    public boolean getIsAI(){return isAI;}
+    public int getAIDepth(){return AIDepth;}
 }

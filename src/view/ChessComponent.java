@@ -50,7 +50,7 @@ public class ChessComponent extends JComponent {
         Graphics2D g2 = (Graphics2D) g;
         //g2.drawImage( image,null, getFocusCycleRootAncestor());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Font font = new Font("楷体", Font.PLAIN, getWidth() / 2);
+        Font font = new Font("黑体", Font.PLAIN, getWidth() / 2);
         
         g2.setFont(font);
         FontMetrics metrics = g2.getFontMetrics(font);

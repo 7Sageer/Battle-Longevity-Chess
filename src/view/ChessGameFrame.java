@@ -85,16 +85,17 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("Restart");
         button.setLocation(HEIGTH , HEIGTH / 10 + BUTTON_INTERVAL);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setBackground(Color.LIGHT_GRAY);
         add(button);
 
         button.addActionListener(e -> {
             System.out.println("Click restart");
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-            boolean isAI = gameController.getIsAI();
+            int AIdepth = gameController.getAIDepth();
             Chessboard.currentTurn = 0;
-            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, isAI);
+            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, AIdepth);
             mainFrame.setGameController(gameController);
             mainFrame.setVisible(true);
             
@@ -102,15 +103,33 @@ public class ChessGameFrame extends JFrame {
         
     }
     
-    public void showDialog(String player){
-        JOptionPane.showMessageDialog(this, player);
+    public void showDialog(String msg){
+        JDialog dialog = new JDialog(this, "Jungle", true);
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(400, 200));
+        JLabel label = new JLabel(msg, SwingConstants.CENTER);
+        label.setFont(new Font("Rockwell", Font.BOLD, 30));
+        panel.add(label, BorderLayout.CENTER);
+        JButton button = new JButton("OK");
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setBackground(Color.LIGHT_GRAY);
+        button.addActionListener(e -> {
+            dialog.dispose();
+        });
+        panel.add(button, BorderLayout.SOUTH);
+        dialog.getContentPane().add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     private void addSaveButton(){
         JButton button = new JButton("Save");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 2);
        button.setSize(200, 60);
-       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
        button.addActionListener(e -> {
@@ -128,7 +147,8 @@ public class ChessGameFrame extends JFrame {
        JButton button = new JButton("Load");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 3);
        button.setSize(200, 60);
-       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
        button.addActionListener(e -> {
@@ -148,7 +168,8 @@ public class ChessGameFrame extends JFrame {
        JButton button = new JButton("Undo");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 4);
        button.setSize(200, 60);
-       button.setFont(new Font("Rockwell", Font.BOLD, 20));
+       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
        button.addActionListener(e -> {
@@ -160,8 +181,9 @@ public class ChessGameFrame extends JFrame {
    private void addRedoButton(){
        JButton button = new JButton("Redo");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 5);
+       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setBackground(Color.LIGHT_GRAY);
        button.setSize(200, 60);
-       button.setFont(new Font("Rockwell", Font.BOLD, 20));
        add(button);
 
        button.addActionListener(e -> {
