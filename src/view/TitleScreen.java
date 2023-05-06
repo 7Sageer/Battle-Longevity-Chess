@@ -11,6 +11,7 @@ public class TitleScreen extends JFrame {
     private JButton startButton;
     private JButton exitButton;
     private JButton aiButton;
+    private JButton settingButton;
 
     public TitleScreen() {
         super("Jungle Chess");
@@ -58,6 +59,18 @@ public class TitleScreen extends JFrame {
             }
         });
 
+        settingButton = new JButton("Setting");
+        settingButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        settingButton.setBackground(Color.LIGHT_GRAY);
+        settingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingFrame settingFrame = new SettingFrame();
+            }
+        });
+
+        
+
         ImageIcon imageIcon = new ImageIcon("resource\\Elephant-red.png");
         JLabel imageLabel = new JLabel(imageIcon);
         panel.add(imageLabel, BorderLayout.NORTH);
@@ -68,6 +81,7 @@ public class TitleScreen extends JFrame {
         buttonPanel.add(titleLabel);
         buttonPanel.add(aiButton);
         buttonPanel.add(startButton);
+        buttonPanel.add(settingButton);
         buttonPanel.add(exitButton);
         panel.add(buttonPanel, BorderLayout.CENTER);
 

@@ -94,16 +94,16 @@ public class AI {
         int score = 0;
         if (chessboard.isRedWin()) {
             if (player == PlayerColor.BLUE) {
-                return Integer.MAX_VALUE;
-            } else {
                 return Integer.MIN_VALUE;
+            } else {
+                return Integer.MAX_VALUE;
             }
         }
         if (chessboard.isBlueWin()) {
             if (player == PlayerColor.RED) {
-                return Integer.MAX_VALUE;
-            } else {
                 return Integer.MIN_VALUE;
+            } else {
+                return Integer.MAX_VALUE;
             }
         }
         ChessPiece chessPieces[] = chessboard.getAllChessPiece();

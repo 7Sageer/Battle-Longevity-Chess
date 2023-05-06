@@ -5,7 +5,9 @@ import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -153,7 +155,12 @@ public class ChessGameFrame extends JFrame {
 
        button.addActionListener(e -> {
            System.out.println("Click load");
-           String path = JOptionPane.showInputDialog(this,"Input Path here");
+           JFileChooser chooser = new JFileChooser();
+           chooser.setCurrentDirectory(new File("."));
+           chooser.showOpenDialog(chooser);
+           File file = chooser.getSelectedFile();
+           
+           String path = file.toPath().toString();
            try {
             gameController.loadGame(path);
         } catch (IOException e1) {
