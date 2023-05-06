@@ -115,9 +115,13 @@ public class AI {
                 continue;
             }
             if (chessPiece.getOwner() == player) {
-                score += chessPiece.rank * 1000  + chessboard.getEnemyDistance(chessPiece);
+                score += 800;
+                score += chessPiece.rank * 100;
+                score -= chessboard.getEnemyDistance(chessPiece) * chessPiece.rank;
             } else {
-                score -= chessPiece.rank * 1000  - chessboard.getEnemyDistance(chessPiece);
+                score -= 800;
+                score -= chessPiece.rank * 100;
+                score += chessboard.getEnemyDistance(chessPiece) * chessPiece.rank;
             }
         }
         return score;

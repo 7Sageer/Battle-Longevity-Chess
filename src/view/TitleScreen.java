@@ -20,6 +20,7 @@ public class TitleScreen extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JLabel titleLabel = new JLabel("Welcome to Jungle Chess!");
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
         startButton = new JButton("Start 2p Game");

@@ -27,7 +27,7 @@ public class AIFrame extends JFrame {
 
         JLabel titleLabel = new JLabel("Choose the level of AI!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         // 对按钮进行美化处理
         backButton = new JButton("Back");
@@ -46,7 +46,6 @@ public class AIFrame extends JFrame {
         easyButton = new JButton("Easy");
         easyButton.setPreferredSize(new Dimension(100, 40));
         easyButton.setBackground(Color.LIGHT_GRAY);
-        easyButton.setBorder(BorderFactory.createLineBorder(new Color(51, 97, 129), 2));
         easyButton.setFocusPainted(false);
         easyButton.addActionListener(new ActionListener() {
             @Override
@@ -62,7 +61,6 @@ public class AIFrame extends JFrame {
         normalButton = new JButton("Normal");
         normalButton.setPreferredSize(new Dimension(100, 40));
         normalButton.setBackground(Color.LIGHT_GRAY);
-        normalButton.setBorder(BorderFactory.createLineBorder(new Color(51, 97, 129), 2));
         normalButton.setFocusPainted(false);
         normalButton.addActionListener(new ActionListener() {
             @Override
@@ -78,7 +76,6 @@ public class AIFrame extends JFrame {
         hardButton = new JButton("Hard");
         hardButton.setPreferredSize(new Dimension(100, 40));
         hardButton.setBackground(Color.LIGHT_GRAY);
-        hardButton.setBorder(BorderFactory.createLineBorder(new Color(51, 97, 129), 2));
         hardButton.setFocusPainted(false);
         hardButton.addActionListener(new ActionListener() {
             @Override
@@ -93,10 +90,12 @@ public class AIFrame extends JFrame {
 
         // 对页面标签进行美化处理
         panel.add(titleLabel, BorderLayout.CENTER);
+        ImageIcon imageIcon = new ImageIcon("resource\\Elephant-blue.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        panel.add(imageLabel, BorderLayout.NORTH);
         // 对按钮进行布局
         JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 20, 20));
         buttonPanel.setBackground(new Color(236, 242, 246));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
         buttonPanel.add(easyButton);
         buttonPanel.add(normalButton);
         buttonPanel.add(hardButton);
