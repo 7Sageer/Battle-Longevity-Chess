@@ -1,5 +1,6 @@
 package model;
 
+import view.ChessComponent;
 import view.ChessboardComponent;
 import java.util.ArrayList;
 
@@ -184,6 +185,8 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
+        if((ChessboardComponent.redTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.BLUE)||(ChessboardComponent.blueTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.RED))
+            return false;
         if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest)||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
             return false;
 
@@ -192,7 +195,7 @@ public class Chessboard {
             return true;
         }
 
-        if (ChessboardComponent.blueTrapCell.contains(dest)||ChessboardComponent.redTrapCell.contains(dest)||getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
+        if ((ChessboardComponent.blueTrapCell.contains(dest))||ChessboardComponent.redTrapCell.contains(dest)||getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
 
             if (getChessPieceAt(dest).getOwner() != getChessPieceAt(src).getOwner()) {
                 return calculateDistance(src, dest) == 1;

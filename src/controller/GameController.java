@@ -112,17 +112,13 @@ public class GameController implements GameListener {
         view.repaint();
     }
 
-    //这里原本返回值是布尔型
     public int win() {
-        // TODO: Check the board if there is a winner
         if(model.getGrid()[0][3].getPiece()!=null)
             return 2;
-        
         if(model.getGrid()[8][3].getPiece()!=null)
             return 1;
         if(model.getAllValidAction(currentPlayer).isEmpty())
             return currentPlayer == PlayerColor.BLUE ? 2 : 1;
-        
         return 0;
     }
     private void checkWin(){
@@ -272,40 +268,52 @@ public class GameController implements GameListener {
     }
 
     public void undo() {
-        if (Chessboard.historyAction.size() > 0) {
-            Action action = Chessboard.historyAction.get(Chessboard.currentTurn - 1);
-            if (action.getType() == Type.MOVE) {
-                model.moveChessPiece(action.getTo(), action.getFrom(),true);
-                view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
-            } else {
-                model.moveChessPiece(action.getTo(), action.getFrom(),true);
-                model.setChessPiece(action.getTo(),action.getCapturedChessPiece());
-                view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
-                view.setChessComponentAtGrid(action.getTo(), view.addChessComponent(action.getTo(),action.getCapturedChessPiece()));
+        int i = 1;
+        if(isAI)
+            i = 2;
+        for(int j = 0; j < i; j++){
+            if (Chessboard.historyAction.size() > 0) {
+                Action action = Chessboard.historyAction.get(Chessboard.currentTurn - 1);
+                if (action.getType() == Type.MOVE) {
+                    model.moveChessPiece(action.getTo(), action.getFrom(),true);
+                    view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+                } else {
+                    model.moveChessPiece(action.getTo(), action.getFrom(),true);
+                    model.setChessPiece(action.getTo(),action.getCapturedChessPiece());
+                    view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
+                    view.setChessComponentAtGrid(action.getTo(), view.addChessComponent(action.getTo(),action.getCapturedChessPiece()));
+                    
+                }
+                Chessboard.currentTurn -= 2;
+                swapColor(false);
+                view.repaint();
+                Chessboard.historyAction.remove(Chessboard.historyAction.size()-1);
+                System.out.println(Chessboard.historyAction);
+    
                 
             }
-            Chessboard.currentTurn -= 2;
-            swapColor(false);
-            view.repaint();
-            Chessboard.historyAction.remove(Chessboard.historyAction.size()-1);
-            System.out.println(Chessboard.historyAction);
-            
         }
     }
+
     public void redo(){
-        if(Chessboard.historyAction.size() - 1 > Chessboard.currentTurn){
-            Action action = Chessboard.historyAction.get(Chessboard.currentTurn);
-            if (action.getType() == Type.MOVE) {
-                model.moveChessPiece(action.getFrom(), action.getTo(),true);
-                view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
-            } else {
-                model.captureChessPiece(action.getFrom(), action.getTo(),true);
-                view.removeChessComponentAtGrid(action.getTo());
-                view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+        int i = 1;
+        if(isAI)
+            i = 2;
+        for(int j = 0; j < i; j++){
+            if(Chessboard.historyAction.size() - 1 > Chessboard.currentTurn){
+                Action action = Chessboard.historyAction.get(Chessboard.currentTurn);
+                if (action.getType() == Type.MOVE) {
+                    model.moveChessPiece(action.getFrom(), action.getTo(),true);
+                    view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+                } else {
+                    model.captureChessPiece(action.getFrom(), action.getTo(),true);
+                    view.removeChessComponentAtGrid(action.getTo());
+                    view.setChessComponentAtGrid(action.getTo(), view.removeChessComponentAtGrid(action.getFrom()));
+                }
+                swapColor(false);
+                view.repaint();
             }
-            swapColor(false);
-            view.repaint();
-        }
+    }
     }
     public boolean getIsAI(){return isAI;}
 }
