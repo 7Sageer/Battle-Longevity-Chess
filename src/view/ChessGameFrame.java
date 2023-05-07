@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import resourcePlayer.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -17,6 +18,7 @@ public class ChessGameFrame extends JFrame {
     private final int WIDTH;
     private final int HEIGTH;
     private final int BUTTON_INTERVAL = 80;
+    private final int BUTTON_FONT_SIZE = 30;
 
     private final int ONE_CHESS_SIZE;
     private GameController gameController;
@@ -76,7 +78,7 @@ public class ChessGameFrame extends JFrame {
         
         turnLabel.setLocation(HEIGTH, HEIGTH / 10);
         turnLabel.setSize(200, 60);
-        turnLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        turnLabel.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         add(turnLabel);
     }
     public void setTurnLabel(String text){
@@ -87,7 +89,7 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("Restart");
         button.setLocation(HEIGTH , HEIGTH / 10 + BUTTON_INTERVAL);
         button.setSize(200, 60);
-        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
         add(button);
 
@@ -111,10 +113,10 @@ public class ChessGameFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(400, 200));
         JLabel label = new JLabel(msg, SwingConstants.CENTER);
-        label.setFont(new Font("Rockwell", Font.BOLD, 30));
+        label.setFont(FontsManager.getFont(50,1));
         panel.add(label, BorderLayout.CENTER);
         JButton button = new JButton("OK");
-        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setFont(FontsManager.getFont(30,1));
         button.setBackground(Color.LIGHT_GRAY);
         button.addActionListener(e -> {
             dialog.dispose();
@@ -130,7 +132,7 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("Save");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 2);
        button.setSize(200, 60);
-       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
@@ -149,7 +151,7 @@ public class ChessGameFrame extends JFrame {
        JButton button = new JButton("Load");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 3);
        button.setSize(200, 60);
-       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
@@ -175,7 +177,7 @@ public class ChessGameFrame extends JFrame {
        JButton button = new JButton("Undo");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 4);
        button.setSize(200, 60);
-       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
        add(button);
 
@@ -188,7 +190,7 @@ public class ChessGameFrame extends JFrame {
    private void addRedoButton(){
        JButton button = new JButton("Redo");
        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 5);
-       button.setFont(new Font("Arial", Font.PLAIN, 20));
+       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
        button.setSize(200, 60);
        add(button);

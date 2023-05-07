@@ -92,13 +92,14 @@ public class ChessboardComponent extends JComponent {
             return "鼠";
     }
     public void renderPossibleMove(ArrayList<ChessboardPoint> possibleMovePoint){
-        SelectComponent cell;
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
                 if(possibleMovePoint.contains(new ChessboardPoint(i,j))){
-                    cell = new SelectComponent(Color.BLACK, calculatePoint(i, j), CHESS_SIZE);
-                    possibleMoveCell.add((SelectComponent) cell);
-                    this.add(cell);
+                    if(gridComponents[i][j].getComponents().length!=0){
+                        gridComponents[i][j].moveable = 2;
+                    }else{
+                        gridComponents[i][j].moveable = 1;
+                    }
                 }
             }
         }
@@ -106,9 +107,12 @@ public class ChessboardComponent extends JComponent {
 
     }
     public void removePossibleMove(){
-        CellComponent cell;
-        for(CellComponent c:possibleMoveCell){
-            this.remove(c);
+        for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(gridComponents[i][j].moveable != 0){
+                    gridComponents[i][j].moveable = 0;
+                }
+            }
         }
         repaint();
     }

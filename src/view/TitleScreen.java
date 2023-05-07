@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import resourcePlayer.*;
 import controller.GameController;
 import model.Chessboard;
 
@@ -12,6 +13,7 @@ public class TitleScreen extends JFrame {
     private JButton exitButton;
     private JButton aiButton;
     private JButton settingButton;
+    private float buttonfontSize = 40f;
 
     public TitleScreen() {
         super("Jungle Chess");
@@ -20,12 +22,12 @@ public class TitleScreen extends JFrame {
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JLabel titleLabel = new JLabel("Welcome to Jungle Chess!");
-        titleLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        JLabel titleLabel = new JLabel("Jungle Chess!");
+        titleLabel.setFont(FontsManager.getFont(25,0));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
         startButton = new JButton("Start 2p Game");
-        startButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        startButton.setFont(FontsManager.getFont(buttonfontSize,1));
         startButton.setBackground(Color.LIGHT_GRAY);
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -39,7 +41,7 @@ public class TitleScreen extends JFrame {
         });
 
         exitButton = new JButton("Exit Game");
-        exitButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        exitButton.setFont(FontsManager.getFont(buttonfontSize,1));
         exitButton.setBackground(Color.RED);
         exitButton.addActionListener(new ActionListener() {
             @Override
@@ -49,7 +51,7 @@ public class TitleScreen extends JFrame {
         });
 
         aiButton = new JButton("Start 1p Game");
-        aiButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        aiButton.setFont(FontsManager.getFont(buttonfontSize,1));
         aiButton.setBackground(Color.LIGHT_GRAY);
         aiButton.addActionListener(new ActionListener() {
             @Override
@@ -59,8 +61,8 @@ public class TitleScreen extends JFrame {
             }
         });
 
-        settingButton = new JButton("Setting");
-        settingButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        settingButton = new JButton("Settings");
+        settingButton.setFont(FontsManager.getFont(buttonfontSize,1));
         settingButton.setBackground(Color.LIGHT_GRAY);
         settingButton.addActionListener(new ActionListener() {
             @Override

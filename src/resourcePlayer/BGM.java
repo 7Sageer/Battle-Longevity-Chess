@@ -1,4 +1,4 @@
-package sound;
+package resourcePlayer;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -18,8 +18,11 @@ public class BGM {
                 Clip clip = AudioSystem.getClip();
                 BGM.clip = clip;
                 clip.open(audioInput);
+                FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                volumeControl.setValue((float) 0.5);
                 clip.start();
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
+
             }
 
         } catch (Exception ex) {

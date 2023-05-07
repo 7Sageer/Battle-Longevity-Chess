@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import controller.GameController;
 import model.Chessboard;
+import resourcePlayer.FontsManager;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 
 public class AIFrame extends JFrame {
 
+    private float buttonfontsize = 30f; 
     JButton backButton = new JButton();
     JButton easyButton = new JButton();
     JButton normalButton = new JButton();
@@ -27,14 +29,12 @@ public class AIFrame extends JFrame {
 
         JLabel titleLabel = new JLabel("Choose the level of AI!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(FontsManager.getFont(20,0));
 
-        // 对按钮进行美化处理
         backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(100, 40));
         backButton.setBackground(Color.LIGHT_GRAY);
-        backButton.setBorder(BorderFactory.createLineBorder(new Color(51, 97, 129), 2));
-        backButton.setFocusPainted(false);
+        backButton.setFont(FontsManager.getFont(buttonfontsize,1));
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +46,7 @@ public class AIFrame extends JFrame {
         easyButton = new JButton("Easy");
         easyButton.setPreferredSize(new Dimension(100, 40));
         easyButton.setBackground(Color.LIGHT_GRAY);
-        easyButton.setFocusPainted(false);
+        easyButton.setFont(FontsManager.getFont(buttonfontsize,1));
         easyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +61,7 @@ public class AIFrame extends JFrame {
         normalButton = new JButton("Normal");
         normalButton.setPreferredSize(new Dimension(100, 40));
         normalButton.setBackground(Color.LIGHT_GRAY);
-        normalButton.setFocusPainted(false);
+        normalButton.setFont(FontsManager.getFont(buttonfontsize,1));
         normalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,7 +76,7 @@ public class AIFrame extends JFrame {
         hardButton = new JButton("Hard");
         hardButton.setPreferredSize(new Dimension(100, 40));
         hardButton.setBackground(Color.LIGHT_GRAY);
-        hardButton.setFocusPainted(false);
+        hardButton.setFont(FontsManager.getFont(buttonfontsize,1));
         hardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

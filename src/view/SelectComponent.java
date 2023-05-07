@@ -19,12 +19,12 @@ public class SelectComponent extends CellComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponents(g);
+        super.paintComponent(g);
         g.setColor(background);
         Graphics2D g2d = (Graphics2D) g;
         //g2d.setColor(new Color(255, 255, 255, 255));
         // 设置线条宽度
-        g2d.setStroke(new BasicStroke(1.1f));
+        g2d.setStroke(new BasicStroke(3f));
         g2d.drawRect(0, 0, getWidth(), getHeight());
     }
 }
