@@ -52,12 +52,6 @@ public class CellComponent extends JPanel {
         setLocation(location);
         setSize(size, size);
         this.background = color;
-
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
         if(background == Color.LIGHT_GRAY){
             try {
                     File imageFile = new File("resource\\material\\lawn1.jpg");
@@ -65,7 +59,6 @@ public class CellComponent extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); // draw the image
         }else if(background == Color.CYAN){
             try {
                     File imageFile = new File("resource\\material\\river2.jpg");
@@ -73,7 +66,6 @@ public class CellComponent extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); // draw the image
         }else if(background == Color.ORANGE){
             try {
                     File imageFile = new File("resource\\material\\trap1.jpg");
@@ -81,7 +73,6 @@ public class CellComponent extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); // draw the image
         }else if(background == Color.BLUE||background == Color.RED){
             try {
                     File imageFile = new File("resource\\material\\den.jpg");
@@ -89,6 +80,14 @@ public class CellComponent extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if(image != null){
             g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); // draw the image
         }
         else{
@@ -97,7 +96,7 @@ public class CellComponent extends JPanel {
         }
         if(moveable != 0){
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f)); //Set opacity here, 0.5f for 50%
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); //Set opacity here, 0.5f for 50%
             if(moveable == 2)
                 g2d.setColor(Color.RED);
             else if(moveable == 1)

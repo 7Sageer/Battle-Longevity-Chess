@@ -48,6 +48,8 @@ public class ChessGameFrame extends JFrame {
         addLoadButton();
         addUndoButton();
         addRedoButton();
+        addSettingButton();
+        addBackButton();
 
     }
     public void setGameController(GameController gameController){
@@ -199,6 +201,35 @@ public class ChessGameFrame extends JFrame {
            System.out.println("Click redo");
            gameController.redo();
        });
+   }
+
+   private void addSettingButton(){
+    JButton button = new JButton("Settings");
+        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 6);
+        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setSize(200, 60);
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click settings");
+            SettingFrame settingFrame = new SettingFrame();
+        });
+   }
+
+   private void addBackButton(){
+    JButton button = new JButton("Back");
+        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 7);
+        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setSize(200, 60);
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click back");
+            dispose();
+            TitleScreen titleScreen = new TitleScreen();
+        });
    }
 
 

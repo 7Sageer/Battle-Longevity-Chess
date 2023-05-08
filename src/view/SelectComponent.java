@@ -6,6 +6,7 @@ import java.awt.*;
 
 /**
  * 继承自CellComponent，修改了paintComponent方法，使得绘制的是一个空心圆
+ * 现在已经弃用了，直接改变CellComponent
  */
 
 public class SelectComponent extends CellComponent {
