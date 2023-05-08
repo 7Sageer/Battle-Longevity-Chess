@@ -227,6 +227,7 @@ public class ChessGameFrame extends JFrame {
 
         button.addActionListener(e -> {
             System.out.println("Click back");
+            Chessboard.currentTurn = 0;
             dispose();
             TitleScreen titleScreen = new TitleScreen();
         });

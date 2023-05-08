@@ -18,7 +18,7 @@ public class TitleScreen extends JFrame {
     public TitleScreen() {
         super("Jungle Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(400,500));
+        setPreferredSize(new Dimension(400,600));
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -73,7 +73,7 @@ public class TitleScreen extends JFrame {
 
         
 
-        ImageIcon imageIcon = new ImageIcon("resource\\Elephant-red.png");
+        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\象.png");
         JLabel imageLabel = new JLabel(imageIcon);
         panel.add(imageLabel, BorderLayout.NORTH);
 

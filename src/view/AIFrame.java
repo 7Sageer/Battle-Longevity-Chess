@@ -90,7 +90,7 @@ public class AIFrame extends JFrame {
 
         // 对页面标签进行美化处理
         panel.add(titleLabel, BorderLayout.CENTER);
-        ImageIcon imageIcon = new ImageIcon("resource\\Elephant-blue.png");
+        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\狮.png");
         JLabel imageLabel = new JLabel(imageIcon);
         panel.add(imageLabel, BorderLayout.NORTH);
         // 对按钮进行布局
