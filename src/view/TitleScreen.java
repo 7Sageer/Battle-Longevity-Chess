@@ -18,7 +18,7 @@ public class TitleScreen extends JFrame {
     public TitleScreen() {
         super("Jungle Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(400,600));
+        setPreferredSize(new Dimension(400,700));
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

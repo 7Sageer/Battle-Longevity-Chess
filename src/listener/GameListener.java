@@ -1,5 +1,6 @@
 package listener;
 
+
 import model.ChessboardPoint;
 import view.CellComponent;
 import view.ChessComponent;
@@ -9,5 +10,6 @@ public interface GameListener {
 
 
     void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component);
+
 
 }

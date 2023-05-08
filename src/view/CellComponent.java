@@ -1,7 +1,12 @@
 package view;
 
 import javax.swing.*;
+
+import controller.GameController;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,38 +19,12 @@ import java.net.URL;
  * but this class only cares how to draw Cells on ChessboardComponent
  */
 
-// public class CellComponent extends JPanel {
-//     private Color background;
-//     public int moveable = 0;
-
-//     public CellComponent(Color background, Point location, int size) {
-//         setLayout(new GridLayout(1,1));
-//         setLocation(location);
-//         setSize(size, size);
-//         this.background = background;
-//     }
-
-//     @Override
-//     protected void paintComponent(Graphics g) {
-//         super.paintComponents(g);
-//         g.setColor(background);
-//         g.fillRect(1, 1, this.getWidth()-1, this.getHeight()-1);
-//         if(moveable != 0){
-//             Graphics2D g2d = (Graphics2D) g.create();
-//             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f)); //Set opacity here, 0.5f for 50%
-//             if(moveable == 2)
-//                 g2d.setColor(Color.RED);
-//             else if(moveable == 1)
-//                 g2d.setColor(Color.BLUE);
-//             g2d.fillRect(1, 1, this.getWidth()-1, this.getHeight()-1);
-//             g2d.dispose();
-//         }
-//     }
-// }
 public class CellComponent extends JPanel {
     private BufferedImage image; // declare BufferedImage instance variable
     public int moveable = 0;
     private Color background;
+    private boolean highlight = false;
+    public ChessboardComponent chessboardComponent;
 
     public CellComponent(Color color, Point location, int size) {
         setLayout(new GridLayout(1,1));
@@ -82,13 +61,44 @@ public class CellComponent extends JPanel {
             }
         }
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setHighlight();
+                repaint();
+            }
+            public void mouseExited(MouseEvent e) {
+                removeHighlight();
+                repaint();
+            }
+            public void mousePressed(MouseEvent e) {
+                chessboardComponent.MousePress(location);
+            }
+        });
+
+    }
+
+    public void rigisterChessboardComponent(ChessboardComponent chessboardComponent){
+        this.chessboardComponent = chessboardComponent;
+    }
+
+    public void setHighlight(){
+        this.highlight = true;
+    }
+
+    public void removeHighlight(){
+        this.highlight = false;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(image != null){
-            g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); // draw the image
+            if (highlight){
+                g.drawImage(image, -5, -5, getWidth()+5, getHeight()+5, this);
+            }else{
+                g.drawImage(image, 1, 1, getWidth() - 1, getHeight() - 1, this); 
+            }
         }
         else{
             g.setColor(background);
@@ -105,4 +115,8 @@ public class CellComponent extends JPanel {
             g2d.dispose();
         }
     }
+
+
+
+
 }

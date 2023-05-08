@@ -6,6 +6,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ public class ChessboardComponent extends JComponent {
     public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
 
     public ArrayList<SelectComponent> possibleMoveCell = new ArrayList<>();
-    private ArrayList<CellComponent> removedComponents = new ArrayList<>();
 
     private GameController gameController;
 
@@ -57,6 +57,7 @@ public class ChessboardComponent extends JComponent {
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
                 gridComponents[i][j].removeAll();
+                gridComponents[i][j].rigisterChessboardComponent(this);
 
                 if (grid[i][j].getPiece() != null) {
                     ChessPiece chessPiece = grid[i][j].getPiece();
@@ -187,6 +188,7 @@ public class ChessboardComponent extends JComponent {
         chess.setSelected(false);
         return chess;
     }
+
     public ChessComponent addChessComponent(ChessboardPoint point, ChessPiece piece){
         
         ChessComponent chess = new ChessComponent(
@@ -219,15 +221,36 @@ public class ChessboardComponent extends JComponent {
 
     @Override
     protected void processMouseEvent(MouseEvent e) {
+        //因为写了个鼠标悬停cell变大，引起了一些未知错误，所以这一段实质已经被弃用了，新的在下面
+        System.out.println(e.getX() +" "+ e.getY());
+        JComponent clickedComponent = (JComponent) getComponentAt(e.getX(), e.getY());
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-            JComponent clickedComponent = (JComponent) getComponentAt(e.getX(), e.getY());
+            
             if (clickedComponent.getComponentCount() == 0) {
                 System.out.print("None chess here and ");
                 gameController.onPlayerClickCell(getChessboardPoint(e.getPoint()), (CellComponent) clickedComponent);
             } else {
                 System.out.print("One chess here and ");
                 gameController.onPlayerClickChessPiece(getChessboardPoint(e.getPoint()), (ChessComponent) clickedComponent.getComponents()[0]);
-            }
+            } 
+
         }
     }
+
+
+    public void MousePress(Point location) {
+        JComponent clickedComponent = (JComponent) getComponentAt(location);
+        if (clickedComponent.getComponentCount() == 0) {
+            System.out.print("None chess here and ");
+            gameController.onPlayerClickCell(getChessboardPoint(location), (CellComponent) clickedComponent);
+        } else {
+            System.out.print("One chess here and ");
+            gameController.onPlayerClickChessPiece(getChessboardPoint(location), (ChessComponent) clickedComponent.getComponents()[0]);
+        } 
+    } 
+
+        
+    
+
+
 }

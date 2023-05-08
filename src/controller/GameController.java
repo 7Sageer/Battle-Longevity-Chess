@@ -5,6 +5,8 @@ import java.nio.*;
 import java.util.*;
 import java.util.regex.*;
 
+import javax.swing.JComponent;
+
 import listener.GameListener;
 import model.Constant;
 import model.PlayerColor;
@@ -196,6 +198,9 @@ public class GameController implements GameListener {
         }
 
     }
+
+
+
     public void saveGame(String path) throws IOException {
         File file = new File(path);
         FileWriter writer = new FileWriter(file);
@@ -316,4 +321,5 @@ public class GameController implements GameListener {
     }
     }
     public int getAIDepth(){return AIDepth;}
+
 }
