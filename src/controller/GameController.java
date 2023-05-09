@@ -335,7 +335,9 @@ public class GameController implements GameListener {
     }
     public int getAIDepth(){return AIDepth;}
 
-}
+
 public PlayerColor getCurrentPlayer(){//refresh currentPlay to TimeLimit
         return currentPlayer;
     }
+
+}
