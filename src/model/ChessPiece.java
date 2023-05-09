@@ -16,6 +16,8 @@ public class ChessPiece {
     }
 
     public boolean canCapture(ChessPiece target) {
+        if(this.owner == target.owner)
+            return false;
         if(this.rank == 8 && target.rank == 1)
             return false;
         if(this.rank == 1 && target.rank == 8)

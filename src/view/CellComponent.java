@@ -33,7 +33,7 @@ public class CellComponent extends JPanel {
         this.background = color;
         if(background == Color.LIGHT_GRAY){
             try {
-                    File imageFile = new File("resource\\material\\lawn1.jpg");
+                    File imageFile = new File("resource\\material\\lawn2.jpg");
                     image = ImageIO.read(imageFile); // set BufferedImage instance variable
             } catch (IOException e) {
                 e.printStackTrace();

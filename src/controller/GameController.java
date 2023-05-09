@@ -214,6 +214,10 @@ public class GameController implements GameListener {
     }
     public void loadGame(String path) throws IOException, InterruptedException {
         System.out.println(extractActions(path));
+        if(extractActions(path).size() == 0){
+            game.showDialog("Error:Invalid file path or no action");
+            return;
+        }
         this.model.initialize();
         this.view.initiateChessComponent(model);
         Chessboard.currentTurn = 0;
@@ -224,18 +228,27 @@ public class GameController implements GameListener {
                 model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                 view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
 
-            }else{
+            }else if(loadAction.get(i).getType() == Type.CAPTURE){
                 model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                 view.removeChessComponentAtGrid(loadAction.get(i).getTo());
                 view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+            }else{
+                game.showDialog("Error:Invalid File");
+                return;
             }
             swapColor(false);
             view.paintImmediately(0,0,2000,2000);
-            Thread.sleep(100);
+            Thread.sleep(300);
             
         }
 
     }
+
+    public void playBack() throws IOException, InterruptedException{
+        saveGame("temp.txt");
+        loadGame("temp.txt");
+    }
+
     public static ArrayList<Action> extractActions(String filePath) throws IOException {
         ArrayList<Action> actions = new ArrayList<>();
         File file = new File(filePath);

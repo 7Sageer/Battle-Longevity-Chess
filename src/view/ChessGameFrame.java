@@ -50,6 +50,8 @@ public class ChessGameFrame extends JFrame {
         addRedoButton();
         addSettingButton();
         addBackButton();
+        addPlayBackButton();
+        setBackground("resource\\background\\1.jpg");
 
     }
     public void setGameController(GameController gameController){
@@ -78,7 +80,7 @@ public class ChessGameFrame extends JFrame {
      */
     private void addLabel() {
         
-        turnLabel.setLocation(HEIGTH, HEIGTH / 10);
+        turnLabel.setLocation(HEIGTH, HEIGTH / 15);
         turnLabel.setSize(200, 60);
         turnLabel.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         add(turnLabel);
@@ -89,7 +91,7 @@ public class ChessGameFrame extends JFrame {
 
     private void addRestartButton() {
         JButton button = new JButton("Restart");
-        button.setLocation(HEIGTH , HEIGTH / 10 + BUTTON_INTERVAL);
+        button.setLocation(HEIGTH , HEIGTH / 15 + BUTTON_INTERVAL);
         button.setSize(200, 60);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
@@ -115,7 +117,7 @@ public class ChessGameFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(400, 200));
         JLabel label = new JLabel(msg, SwingConstants.CENTER);
-        label.setFont(FontsManager.getFont(50,1));
+        label.setFont(FontsManager.getFont(30,1));
         panel.add(label, BorderLayout.CENTER);
         JButton button = new JButton("OK");
         button.setFont(FontsManager.getFont(30,1));
@@ -132,13 +134,13 @@ public class ChessGameFrame extends JFrame {
 
     private void addSaveButton(){
         JButton button = new JButton("Save");
-       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 2);
-       button.setSize(200, 60);
-       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-       button.setBackground(Color.LIGHT_GRAY);
-       add(button);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 2);
+        button.setSize(200, 60);
+        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
+        button.setBackground(Color.LIGHT_GRAY);
+        add(button);
 
-       button.addActionListener(e -> {
+        button.addActionListener(e -> {
            System.out.println("Click load");
            String path = JOptionPane.showInputDialog(this,"Input Path here");
            try {
@@ -151,7 +153,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addLoadButton() {
        JButton button = new JButton("Load");
-       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 3);
+       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 3);
        button.setSize(200, 60);
        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
@@ -177,7 +179,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addUndoButton(){
        JButton button = new JButton("Undo");
-       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 4);
+       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 4);
        button.setSize(200, 60);
        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
@@ -191,7 +193,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addRedoButton(){
        JButton button = new JButton("Redo");
-       button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 5);
+       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 5);
        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
        button.setBackground(Color.LIGHT_GRAY);
        button.setSize(200, 60);
@@ -205,7 +207,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addSettingButton(){
     JButton button = new JButton("Settings");
-        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 6);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 6);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
         button.setSize(200, 60);
@@ -219,7 +221,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addBackButton(){
     JButton button = new JButton("Back");
-        button.setLocation(HEIGTH, HEIGTH / 10 + BUTTON_INTERVAL * 7);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 7);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
         button.setSize(200, 60);
@@ -231,6 +233,40 @@ public class ChessGameFrame extends JFrame {
             dispose();
             TitleScreen titleScreen = new TitleScreen();
         });
+   }
+
+   private void addPlayBackButton(){
+    JButton button = new JButton("PlayBack");
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 8);
+        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setSize(200, 60);
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click playback");
+            Chessboard.currentTurn = 0;
+            try {
+                gameController.playBack();
+            } catch (IOException | InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        });
+   }
+
+   public void setBackground(String filename){
+    if(filename == null){
+        
+    }
+    ImageIcon backgroundImage = new ImageIcon(filename);
+    JLabel backgroundLabel = new JLabel(backgroundImage);
+    backgroundLabel.setBounds(0, 0, WIDTH, HEIGTH);
+
+    System.out.println(WIDTH+" "+HEIGHT);
+    Image scaledImage = backgroundImage.getImage().getScaledInstance(WIDTH, HEIGTH, Image.SCALE_SMOOTH);
+    ImageIcon scaledBackgroundImage = new ImageIcon(scaledImage);
+    backgroundLabel.setIcon(scaledBackgroundImage);
+    this.add(backgroundLabel);
    }
 
 
