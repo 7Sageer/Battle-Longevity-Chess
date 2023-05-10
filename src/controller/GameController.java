@@ -66,8 +66,6 @@ public class GameController implements GameListener {
             //     game.showDialog("You are Blue, AI is Red");
             // }
         }
-        
-
 
     }
 
@@ -81,7 +79,7 @@ public class GameController implements GameListener {
     }
 
     // after a valid move swap the player 即下个回合(包含AI)
-    private void swapColor() {
+    protected void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
@@ -105,6 +103,7 @@ public class GameController implements GameListener {
         swapColor();
         view.repaint();
     }
+
     //重载一个没有AI的swapColor
     private void swapColor(boolean AI){
         checkWin();
@@ -209,7 +208,7 @@ public class GameController implements GameListener {
             System.out.println(Chessboard.historyAction.get(i));
             writer.write("\r");
         }
-    writer.close();
+        writer.close();
         
     }
     public void loadGame(String path) throws IOException, InterruptedException {
@@ -339,5 +338,4 @@ public class GameController implements GameListener {
 public PlayerColor getCurrentPlayer(){//refresh currentPlay to TimeLimit
         return currentPlayer;
     }
-
 }

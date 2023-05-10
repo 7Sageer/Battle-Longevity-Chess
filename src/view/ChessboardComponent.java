@@ -23,6 +23,7 @@ import static model.Constant.CHESSBOARD_ROW_SIZE;
 public class ChessboardComponent extends JComponent {
     private static CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
+    private static int theme = 0;
     public final static Set<ChessboardPoint> riverCell = new HashSet<>();
     public final static Set<ChessboardPoint> blueTrapCell = new HashSet<>();
     public final static Set<ChessboardPoint> redTrapCell = new HashSet<>();
@@ -209,6 +210,22 @@ public class ChessboardComponent extends JComponent {
     }
     private Point calculatePoint(int row, int col) {
         return new Point(col * CHESS_SIZE, row * CHESS_SIZE);
+    }
+
+    public static void changeTheme(){
+        for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(theme == 0){
+                    gridComponents[i][j].changeTheme(1);    
+                }
+                else{
+                    gridComponents[i][j].changeTheme(0);
+                }
+            }
+        }
+        theme = 1 - theme;
+        System.out.println("Theme changed");
+        
     }
 
 

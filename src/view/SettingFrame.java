@@ -12,11 +12,15 @@ import resourcePlayer.*;
 
 public class SettingFrame extends JFrame {
 
+    private static ChessGameFrame game;
+
     JButton backButton = new JButton();
+    JButton themeButton = new JButton();
 
 
     public SettingFrame(){
         super("Jungle Chess");
+
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(new Color(236, 242, 246));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -28,7 +32,6 @@ public class SettingFrame extends JFrame {
         backButton.setPreferredSize(new Dimension(100, 40));
         backButton.setBackground(Color.LIGHT_GRAY);
         backButton.setFont(FontsManager.getFont(40,1));
-        backButton.setBorder(BorderFactory.createLineBorder(new Color(51, 97, 129), 2));
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,10 +39,26 @@ public class SettingFrame extends JFrame {
             }
         });
 
+        themeButton = new JButton("Change Theme");
+        themeButton.setPreferredSize(new Dimension(200, 40));
+        themeButton.setBackground(Color.LIGHT_GRAY);
+        themeButton.setFont(FontsManager.getFont(30,1));
+
+        themeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChessboardComponent.changeTheme();
+                game.changeTheme();
+            }
+        });
+
+
         // Add a label to the volume slider
         JLabel volumeLabel = new JLabel("Volume:");
         volumeLabel.setFont(FontsManager.getFont(40,1));
         volumeLabel.setForeground(new Color(51, 97, 129));
+
+        
 
         
 
@@ -58,6 +77,7 @@ public class SettingFrame extends JFrame {
         
         buttonPanel.add(volumeLabel);
         buttonPanel.add(volumeSlider);
+        buttonPanel.add(themeButton);
         buttonPanel.add(backButton);
         
         panel.add(buttonPanel, BorderLayout.PAGE_END);
@@ -66,5 +86,9 @@ public class SettingFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public static void getGameFrame(ChessGameFrame game){
+        SettingFrame.game = game;
     }
 }

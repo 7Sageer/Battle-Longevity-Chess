@@ -25,50 +25,24 @@ public class CellComponent extends JPanel {
     private Color background;
     private boolean highlight = false;
     public ChessboardComponent chessboardComponent;
+    private int theme = 0;
 
     public CellComponent(Color color, Point location, int size) {
         setLayout(new GridLayout(1,1));
         setLocation(location);
         setSize(size, size);
         this.background = color;
-        if(background == Color.LIGHT_GRAY){
-            try {
-                    File imageFile = new File("resource\\material\\lawn2.jpg");
-                    image = ImageIO.read(imageFile); // set BufferedImage instance variable
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else if(background == Color.CYAN){
-            try {
-                    File imageFile = new File("resource\\material\\river2.jpg");
-                    image = ImageIO.read(imageFile); // set BufferedImage instance variable
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else if(background == Color.ORANGE){
-            try {
-                    File imageFile = new File("resource\\material\\trap1.jpg");
-                    image = ImageIO.read(imageFile); // set BufferedImage instance variable
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else if(background == Color.BLUE||background == Color.RED){
-            try {
-                    File imageFile = new File("resource\\material\\den.jpg");
-                    image = ImageIO.read(imageFile); // set BufferedImage instance variable
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
+        changeTheme(0);
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                setHighlight();
+                highlight = true;
                 repaint();
             }
             public void mouseExited(MouseEvent e) {
-                removeHighlight();
+                highlight = false;
                 repaint();
             }
             public void mousePressed(MouseEvent e) {
@@ -80,14 +54,6 @@ public class CellComponent extends JPanel {
 
     public void rigisterChessboardComponent(ChessboardComponent chessboardComponent){
         this.chessboardComponent = chessboardComponent;
-    }
-
-    public void setHighlight(){
-        this.highlight = true;
-    }
-
-    public void removeHighlight(){
-        this.highlight = false;
     }
 
     @Override
@@ -114,6 +80,71 @@ public class CellComponent extends JPanel {
             g2d.fillRect(1, 1, this.getWidth()-1, this.getHeight()-1);
             g2d.dispose();
         }
+    }
+
+    public void changeTheme(int type){
+        if(type == 0){
+            if(background == Color.LIGHT_GRAY){
+                try {
+                        File imageFile = new File("resource\\material\\lawn2.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.CYAN){
+                try {
+                        File imageFile = new File("resource\\material\\river2.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.ORANGE){
+                try {
+                        File imageFile = new File("resource\\material\\trap1.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.BLUE||background == Color.RED){
+                try {
+                        File imageFile = new File("resource\\material\\den.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else if(type == 1){
+            if(background == Color.LIGHT_GRAY){
+                try {
+                        File imageFile = new File("resource\\material\\autumnLawn.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.CYAN){
+                try {
+                        File imageFile = new File("resource\\material\\river2.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.ORANGE){
+                try {
+                        File imageFile = new File("resource\\material\\autumnTrap.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(background == Color.BLUE||background == Color.RED){
+                try {
+                        File imageFile = new File("resource\\material\\autumnDen.jpg");
+                        image = ImageIO.read(imageFile); // set BufferedImage instance variable
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        repaint();
     }
 
 

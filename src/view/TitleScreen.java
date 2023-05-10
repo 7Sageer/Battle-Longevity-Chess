@@ -36,6 +36,7 @@ public class TitleScreen extends JFrame {
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 0);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
+                SettingFrame.getGameFrame(mainFrame);
                 dispose();
             }
         });

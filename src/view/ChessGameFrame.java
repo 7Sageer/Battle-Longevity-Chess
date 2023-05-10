@@ -17,13 +17,19 @@ public class ChessGameFrame extends JFrame {
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
+    
     private final int BUTTON_INTERVAL = 80;
     private final int BUTTON_FONT_SIZE = 30;
 
     private final int ONE_CHESS_SIZE;
+
     private GameController gameController;
+    private static int theme = 0;
 
     private JLabel turnLabel = new JLabel();
+
+    private JLabel backgroundLabel = new JLabel();
+
 
 
     private ChessboardComponent chessboardComponent;
@@ -81,8 +87,9 @@ public class ChessGameFrame extends JFrame {
     private void addLabel() {
         
         turnLabel.setLocation(HEIGTH, HEIGTH / 15);
-        turnLabel.setSize(200, 60);
-        turnLabel.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
+        turnLabel.setSize(300, 60);
+        turnLabel.setFont(FontsManager.getFont(40,1));
+        turnLabel.setForeground(Color.BLACK);
         add(turnLabel);
     }
     public void setTurnLabel(String text){
@@ -255,18 +262,31 @@ public class ChessGameFrame extends JFrame {
    }
 
    public void setBackground(String filename){
-    if(filename == null){
-        
-    }
-    ImageIcon backgroundImage = new ImageIcon(filename);
-    JLabel backgroundLabel = new JLabel(backgroundImage);
-    backgroundLabel.setBounds(0, 0, WIDTH, HEIGTH);
+        if(filename == null){
+            
+        }
+        ImageIcon backgroundImage = new ImageIcon(filename);
+        backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setBounds(0, 0, WIDTH, HEIGTH);
 
-    System.out.println(WIDTH+" "+HEIGHT);
-    Image scaledImage = backgroundImage.getImage().getScaledInstance(WIDTH, HEIGTH, Image.SCALE_SMOOTH);
-    ImageIcon scaledBackgroundImage = new ImageIcon(scaledImage);
-    backgroundLabel.setIcon(scaledBackgroundImage);
-    this.add(backgroundLabel);
+        Image scaledImage = backgroundImage.getImage().getScaledInstance(WIDTH, HEIGTH, Image.SCALE_SMOOTH);
+        ImageIcon scaledBackgroundImage = new ImageIcon(scaledImage);
+        backgroundLabel.setIcon(scaledBackgroundImage);
+        this.add(backgroundLabel);
+        System.out.println("set background");
+    }
+
+   public void changeTheme(){
+        if(theme == 1){
+            this.remove(backgroundLabel);
+            setBackground("resource\\background\\1.jpg");
+        }
+        else{
+            this.remove(backgroundLabel);
+            setBackground("resource\\background\\5.jpg");
+        }
+        theme = 1 - theme;
+        repaint();
    }
 
 
