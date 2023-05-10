@@ -27,6 +27,7 @@ public class ChessGameFrame extends JFrame {
     private static int theme = 0;
 
     private JLabel turnLabel = new JLabel();
+    private JLabel timeLabel = new JLabel();
 
     private JLabel backgroundLabel = new JLabel();
 
@@ -47,8 +48,10 @@ public class ChessGameFrame extends JFrame {
 
 
         addChessboard();
-        addLabel();
+        addTurnLabel();
+        addTimeLabel();
         setTurnLabel("Turn1: BLUE");
+        setTimeLabel("Time Left: 30s");
         addRestartButton();
         addSaveButton();
         addLoadButton();
@@ -84,9 +87,9 @@ public class ChessGameFrame extends JFrame {
     /**
      * 在游戏面板中添加标签
      */
-    private void addLabel() {
+    private void addTurnLabel() {
         
-        turnLabel.setLocation(HEIGTH, HEIGTH / 15);
+        turnLabel.setLocation(HEIGTH - 100, HEIGTH / 15);
         turnLabel.setSize(300, 60);
         turnLabel.setFont(FontsManager.getFont(40,1));
         turnLabel.setForeground(Color.BLACK);
@@ -94,6 +97,18 @@ public class ChessGameFrame extends JFrame {
     }
     public void setTurnLabel(String text){
         turnLabel.setText(text);
+    }
+
+    private void addTimeLabel() {
+        
+        timeLabel.setLocation(HEIGTH + 100, HEIGTH / 15);
+        timeLabel.setSize(300, 60);
+        timeLabel.setFont(FontsManager.getFont(30,1));
+        timeLabel.setForeground(Color.BLACK);
+        add(timeLabel);
+    }
+    public void setTimeLabel(String text){
+        timeLabel.setText(text);
     }
 
     private void addRestartButton() {
@@ -113,6 +128,7 @@ public class ChessGameFrame extends JFrame {
             GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, AIdepth);
             mainFrame.setGameController(gameController);
             mainFrame.setVisible(true);
+            SettingFrame.getGameFrame(mainFrame);
             
         });
         
@@ -228,7 +244,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addBackButton(){
     JButton button = new JButton("Back");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 7);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 8);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
         button.setSize(200, 60);
@@ -244,7 +260,7 @@ public class ChessGameFrame extends JFrame {
 
    private void addPlayBackButton(){
     JButton button = new JButton("PlayBack");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 8);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 7);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
         button.setSize(200, 60);

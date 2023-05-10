@@ -13,9 +13,7 @@ public class Main {
             public void run() {
                 new BGM().playMusic("resource\\bgm.wav");
                 FontsManager.PixelFonts();
-                TitleScreen titleScreen = new TitleScreen();
-                
-                
+                new TitleScreen();
             }
 
 

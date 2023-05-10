@@ -11,6 +11,7 @@ import listener.GameListener;
 import model.Constant;
 import model.PlayerColor;
 import model.Action.Type;
+import resourcePlayer.Sound;
 import model.Chessboard;
 import model.ChessboardPoint;
 import model.Action;
@@ -32,10 +33,11 @@ public class GameController implements GameListener {
 
     private Chessboard model;
     private ChessboardComponent view;
-    private PlayerColor currentPlayer;
+    private PlayerColor currentPlayer = PlayerColor.BLUE;
     private ChessGameFrame game;
     private int AIDepth = 0;
     private PlayerColor AIcolor;
+
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
@@ -81,6 +83,11 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        if(!(AIDepth != 0 && currentPlayer == AIcolor)){
+            testTimer(30, currentPlayer,Chessboard.currentTurn);
+        }
+        
+
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
 
@@ -125,10 +132,12 @@ public class GameController implements GameListener {
     private void checkWin(){
         int temp = win();
         if (temp == 1) {
+            Sound.playSound("resource\\sounds\\winsquare.mp3");
             System.out.println("Blue Win!");
             game.showDialog("Blue Win!");
             System.exit(0);
         } else if (temp == 2) {
+            Sound.playSound("resource\\sounds\\winsquare.mp3");
             System.out.println("Red Win!");
             game.showDialog("Red Win!");
             System.exit(0);
@@ -136,7 +145,7 @@ public class GameController implements GameListener {
     }
 
     private void capture(ChessboardPoint from, ChessboardPoint to){
-
+        Sound.playSound("resource\\sounds\\capture.wav");
         model.captureChessPiece(from, to);
         view.removeChessComponentAtGrid(to);
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
@@ -149,6 +158,7 @@ public class GameController implements GameListener {
     
     private void move(ChessboardPoint from, ChessboardPoint to){
 
+        Sound.playSound("resource\\sounds\\lawn.wav");
         model.moveChessPiece(from, to);
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
         selectedPoint = null;
@@ -163,6 +173,8 @@ public class GameController implements GameListener {
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
             move(selectedPoint, point);
+            
+            
         }
     }
 
@@ -176,8 +188,7 @@ public class GameController implements GameListener {
                 ArrayList<Action> validAction = model.getValidAction(point);
                 ArrayList<ChessboardPoint> validPoint = new ArrayList<ChessboardPoint>();
                 for (int i = 0; i < validAction.size(); i++) {
-                    //if (validAction.get(i).getType() == Type.MOVE)
-                        validPoint.add(validAction.get(i).getTo());
+                    validPoint.add(validAction.get(i).getTo());
                 }
                 System.out.println(validPoint);
                 view.renderPossibleMove(validPoint);
@@ -191,7 +202,7 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         } else {
-
+            
             capture(selectedPoint, point);
             
         }
@@ -236,10 +247,12 @@ public class GameController implements GameListener {
                 return;
             }
             swapColor(false);
-            view.paintImmediately(0,0,2000,2000);
+            view.paintImmediately(0,0,3000,3000);
             Thread.sleep(300);
+            view.repaint();
             
         }
+        
 
     }
 
@@ -335,7 +348,28 @@ public class GameController implements GameListener {
     public int getAIDepth(){return AIDepth;}
 
 
-public PlayerColor getCurrentPlayer(){//refresh currentPlay to TimeLimit
-        return currentPlayer;
+
+    public void testTimer(int second, PlayerColor player, int turn){//if no input, time default limit to 30s
+        if(currentPlayer != player||Chessboard.currentTurn > turn + 1){
+            return;
+        }
+        if (second == 0){
+            swapColor(false);
+            return;
+        }
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {//build a thread
+                update(second - 1);
+                testTimer(second - 1, player, turn);
+            }
+        }, 1000);
     }
+
+    public void update(int timeLimit){
+        game.setTimeLabel("Time Left: " + timeLimit + "s");
+    }
+
 }

@@ -34,7 +34,6 @@ public class BGM {
 
         FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         volumeControl.setValue(20f * (float) Math.log10(d));
-        System.out.println("volume set to " + d);
         
     }
 }

@@ -14,8 +14,6 @@ public class SettingFrame extends JFrame {
 
     private static ChessGameFrame game;
 
-    JButton backButton = new JButton();
-    JButton themeButton = new JButton();
 
 
     public SettingFrame(){
@@ -28,7 +26,7 @@ public class SettingFrame extends JFrame {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(FontsManager.getFont(20,1));
 
-        backButton = new JButton("Back");
+        JButton backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(100, 40));
         backButton.setBackground(Color.LIGHT_GRAY);
         backButton.setFont(FontsManager.getFont(40,1));
@@ -39,7 +37,7 @@ public class SettingFrame extends JFrame {
             }
         });
 
-        themeButton = new JButton("Change Theme");
+        JButton themeButton = new JButton("Change Theme");
         themeButton.setPreferredSize(new Dimension(200, 40));
         themeButton.setBackground(Color.LIGHT_GRAY);
         themeButton.setFont(FontsManager.getFont(30,1));
@@ -71,14 +69,34 @@ public class SettingFrame extends JFrame {
             }
         });
 
+        JLabel soundLabel = new JLabel("Sounds:");
+        soundLabel.setFont(FontsManager.getFont(40,1));
+        soundLabel.setForeground(new Color(51, 97, 129));
+
+        
+
+        
+
+        JSlider soundSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        soundSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int value = ((JSlider) e.getSource()).getValue();
+                Sound.setVolume(value);
+            }
+        });
+
 
         JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 20, 20));
         buttonPanel.setBackground(new Color(236, 242, 246));
         
         buttonPanel.add(volumeLabel);
         buttonPanel.add(volumeSlider);
+        buttonPanel.add(soundLabel);
+        buttonPanel.add(soundSlider);
         buttonPanel.add(themeButton);
         buttonPanel.add(backButton);
+
         
         panel.add(buttonPanel, BorderLayout.PAGE_END);
 
