@@ -87,3 +87,50 @@ public class GameController implements GameListener {
         // TODO: Implement capture function
     }
 }
+public Chessboard getModel() {
+        return model;
+    }
+
+    public void setModel(Chessboard model) {
+        this.model = model;
+    }
+
+    public ChessboardComponent getView() {
+        return view;
+    }
+
+    public void setView(ChessboardComponent view) {
+        this.view = view;
+    }
+
+    public void setCurrentPlayer(PlayerColor currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public ChessGameFrame getGame() {
+        return game;
+    }
+
+    public void setGame(ChessGameFrame game) {
+        this.game = game;
+    }
+
+    public void setAIDepth(int AIDepth) {
+        this.AIDepth = AIDepth;
+    }
+
+    public PlayerColor getAIcolor() {
+        return AIcolor;
+    }
+
+    public void setAIcolor(PlayerColor AIcolor) {
+        this.AIcolor = AIcolor;
+    }
+
+    public ChessboardPoint getSelectedPoint() {
+        return selectedPoint;
+    }
+
+    public void setSelectedPoint(ChessboardPoint selectedPoint) {
+        this.selectedPoint = selectedPoint;
+    }
