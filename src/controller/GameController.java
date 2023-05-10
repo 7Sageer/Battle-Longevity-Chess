@@ -83,7 +83,9 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+
         if(!(AIDepth != 0 && currentPlayer == AIcolor)){
+            game.setTimeLabel("Time Left: " + 30 + "s");
             testTimer(30, currentPlayer,Chessboard.currentTurn);
         }
         
@@ -354,25 +356,28 @@ public class GameController implements GameListener {
             return;
         }
         if (second == 0){
-            swapColor(false);
+            swapColor();
             return;
         }
-
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {//build a thread
-                update(second - 1);
+                if(currentPlayer != player||Chessboard.currentTurn > turn + 1){
+                    return;
+                }
+                if (second == 0){
+                    swapColor();
+                    return;
+                }
+                game.setTimeLabel(String.format("Time Left: %ds", second - 1));
                 testTimer(second - 1, player, turn);
             }
         }, 1000);
     }
 
-    public void update(int timeLimit){
-        game.setTimeLabel("Time Left: " + timeLimit + "s");
-    }
 
-}
+
 public Chessboard getModel() {//getter and setter，下面都是
         return model;
     }
@@ -420,3 +425,4 @@ public Chessboard getModel() {//getter and setter，下面都是
     public void setSelectedPoint(ChessboardPoint selectedPoint) {
         this.selectedPoint = selectedPoint;
     }
+}
