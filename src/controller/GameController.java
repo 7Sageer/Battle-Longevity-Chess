@@ -158,7 +158,7 @@ public class GameController implements GameListener {
     }
 
     
-    private void move(ChessboardPoint from, ChessboardPoint to){
+    public void move(ChessboardPoint from, ChessboardPoint to){
 
         Sound.playSound("resource\\sounds\\lawn.wav");
         model.moveChessPiece(from, to);
