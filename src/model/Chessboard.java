@@ -10,7 +10,7 @@ import model.Action.Type;
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
-public class Chessboard {
+public class Chessboard implements Serializable {
     private Cell[][] grid;
     public static ArrayList<Action> historyAction = new ArrayList<Action>();
     public static int currentTurn = 0;
