@@ -36,7 +36,7 @@ public class ChessGameFrame extends JFrame {
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
-        setTitle("斗寿棋"); //设置标题
+        setTitle("Jungle Chess"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
         this.ONE_CHESS_SIZE = (HEIGTH * 4 / 5) / 9;
@@ -52,7 +52,7 @@ public class ChessGameFrame extends JFrame {
         addTurnLabel();
         addTimeLabel();
         setTurnLabel("Turn1: BLUE");
-        setTimeLabel("Time Left: 30s");
+        setTimeLabel("");
         addRestartButton();
         addSaveButton();
         addLoadButton();

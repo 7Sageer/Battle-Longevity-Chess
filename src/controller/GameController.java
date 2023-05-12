@@ -37,6 +37,7 @@ public class GameController implements GameListener {
     private ChessGameFrame game;
     private int AIDepth = 0;
     private PlayerColor AIcolor;
+    public static boolean isTimer = false;
 
 
     // Record whether there is a selected piece before
@@ -84,8 +85,8 @@ public class GameController implements GameListener {
     protected void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
-        if(!(AIDepth != 0 && currentPlayer == AIcolor)){
-            game.setTimeLabel("Time Left: " + 30 + "s");
+        if((!(AIDepth != 0 && currentPlayer == AIcolor))||isTimer){
+            game.setTimeLabel(String.format("Time Left: %ds", 30));
             testTimer(30, currentPlayer,Chessboard.currentTurn);
         }
         
@@ -352,15 +353,18 @@ public class GameController implements GameListener {
 
 
     public void testTimer(int second, PlayerColor player, int turn){//if no input, time default limit to 30s
-        if(currentPlayer != player||Chessboard.currentTurn > turn + 1){
+        if(currentPlayer != player||Chessboard.currentTurn > turn + 1||isTimer == false){
             return;
         }
+        
         if (second == 0){
             swapColor();
             return;
         }
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
+            
             @Override
             public void run() {//build a thread
                 if(currentPlayer != player||Chessboard.currentTurn > turn + 1){

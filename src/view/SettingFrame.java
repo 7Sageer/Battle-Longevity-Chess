@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
+import controller.GameController;
 import resourcePlayer.BGM;
 
 import java.awt.*;
@@ -24,22 +25,6 @@ public class SettingFrame extends JFrame {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(FontsManager.getFont(20,1));
 
-        JButton backButton = new JButton("back");
-        addButton(panel, backButton, 100, 40, 40, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-
-        JButton themeButton = new JButton("change theme");
-        addButton(panel, themeButton, 200, 40, 30, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ChessboardComponent.changeTheme();
-                game.changeTheme();
-            }
-        });
 
         JLabel volumeLabel = addLabel(panel, "volume:", 40, new Color(51, 97, 129));
         JSlider volumeSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, 50, new javax.swing.event.ChangeListener() {
@@ -59,6 +44,28 @@ public class SettingFrame extends JFrame {
             }
         });
 
+        JButton isTimerButton;
+        if (GameController.isTimer)
+            isTimerButton = new JButton("close timer");
+        else
+            isTimerButton = new JButton("open timer");
+        addButton(panel, isTimerButton, 100, 40, 30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameController.isTimer = !GameController.isTimer;
+                if(!GameController.isTimer){
+                    isTimerButton.setText("open timer");
+                    game.setTimeLabel("");
+                }else{
+                    isTimerButton.setText("close timer");
+                    game.setTimeLabel(String.format("Time Left: %ds", 30));
+                }
+
+            }
+        });
+
+
+        JButton themeButton = new JButton("change theme");
         addButton(panel, themeButton, 200, 40, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +73,8 @@ public class SettingFrame extends JFrame {
                 game.changeTheme();
             }
         });
+
+        JButton backButton = new JButton("back");
 
         addButton(panel, backButton, 100, 40, 40, new ActionListener() {
             @Override
@@ -78,7 +87,10 @@ public class SettingFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+
     }
+
+
 
     public static void getGameFrame(ChessGameFrame game){
         SettingFrame.game = game;
@@ -105,5 +117,12 @@ public class SettingFrame extends JFrame {
         slider.addChangeListener(listener);
         panel.add(slider);
         return slider;
+    }
+    private JComboBox<String> addComboBox(JPanel panel, String string, int fontSize, Color color, javax.swing.event.ChangeListener listener){
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{string});
+        comboBox.setFont(FontsManager.getFont(fontSize,1));
+        comboBox.setForeground(color);
+        panel.add(comboBox);
+        return comboBox;
     }
 }
