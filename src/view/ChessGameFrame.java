@@ -5,6 +5,7 @@ import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -89,7 +90,7 @@ public class ChessGameFrame extends JFrame {
      */
     private void addTurnLabel() {
         
-        turnLabel.setLocation(HEIGTH - 100, HEIGTH / 15);
+        turnLabel.setLocation(HEIGTH - 80, HEIGTH / 15);
         turnLabel.setSize(300, 60);
         turnLabel.setFont(FontsManager.getFont(40,1));
         turnLabel.setForeground(Color.BLACK);
@@ -155,118 +156,71 @@ public class ChessGameFrame extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void addSaveButton(){
-        JButton button = new JButton("Save");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 2);
+    private void addButton(String label, int interval, ActionListener listener) {
+        JButton button = new JButton(label);
+        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * interval);
         button.setSize(200, 60);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
         add(button);
-
-        button.addActionListener(e -> {
-           System.out.println("Click load");
-           String path = JOptionPane.showInputDialog(this,"Input Path here");
-           try {
-            gameController.saveGame(path);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-       });
+    
+        button.addActionListener(listener);
     }
-
-   private void addLoadButton() {
-       JButton button = new JButton("Load");
-       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 3);
-       button.setSize(200, 60);
-       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-       button.setBackground(Color.LIGHT_GRAY);
-       add(button);
-
-       button.addActionListener(e -> {
-           System.out.println("Click load");
-           JFileChooser chooser = new JFileChooser();
-           chooser.setCurrentDirectory(new File("."));
-           chooser.showOpenDialog(chooser);
-           File file = chooser.getSelectedFile();
-           
-           String path = file.toPath().toString();
-           try {
-            gameController.loadGame(path);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-       });
-   }
-
-   private void addUndoButton(){
-       JButton button = new JButton("Undo");
-       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 4);
-       button.setSize(200, 60);
-       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-       button.setBackground(Color.LIGHT_GRAY);
-       add(button);
-
-       button.addActionListener(e -> {
-           System.out.println("Click undo");
-           gameController.undo();
-       });
-   }
-
-   private void addRedoButton(){
-       JButton button = new JButton("Redo");
-       button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 5);
-       button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-       button.setBackground(Color.LIGHT_GRAY);
-       button.setSize(200, 60);
-       add(button);
-
-       button.addActionListener(e -> {
-           System.out.println("Click redo");
-           gameController.redo();
-       });
-   }
-
-   private void addSettingButton(){
-    JButton button = new JButton("Settings");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 6);
-        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-        button.setBackground(Color.LIGHT_GRAY);
-        button.setSize(200, 60);
-        add(button);
-
-        button.addActionListener(e -> {
+    
+    private void addSaveButton(){
+        addButton("Save", 2, e -> {
+            System.out.println("Click load");
+            String path = JOptionPane.showInputDialog(this,"Input Path here");
+            try {
+                gameController.saveGame(path);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+    
+    private void addLoadButton() {
+        addButton("Load", 3, e -> {
+            System.out.println("Click load");
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File("."));
+            chooser.showOpenDialog(chooser);
+            File file = chooser.getSelectedFile();
+    
+            String path = file.toPath().toString();
+            try {
+                gameController.loadGame(path);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+    
+    private void addUndoButton(){
+        addButton("Undo", 4, e -> {
+            System.out.println("Click undo");
+            gameController.undo();
+        });
+    }
+    
+    private void addRedoButton(){
+        addButton("Redo", 5, e -> {
+            System.out.println("Click redo");
+            gameController.redo();
+        });
+    }
+    
+    private void addSettingButton(){
+        addButton("Settings", 6, e -> {
             System.out.println("Click settings");
             SettingFrame settingFrame = new SettingFrame();
         });
-   }
-
-   private void addBackButton(){
-    JButton button = new JButton("Back");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 8);
-        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-        button.setBackground(Color.LIGHT_GRAY);
-        button.setSize(200, 60);
-        add(button);
-
-        button.addActionListener(e -> {
-            System.out.println("Click back");
-            Chessboard.currentTurn = 0;
-            dispose();
-            TitleScreen titleScreen = new TitleScreen();
-        });
-   }
-
-   private void addPlayBackButton(){
-    JButton button = new JButton("PlayBack");
-        button.setLocation(HEIGTH, HEIGTH / 15 + BUTTON_INTERVAL * 7);
-        button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-        button.setBackground(Color.LIGHT_GRAY);
-        button.setSize(200, 60);
-        add(button);
-
-        button.addActionListener(e -> {
+    }
+    
+    private void addPlayBackButton(){
+        addButton("PlayBack", 7, e -> {
             System.out.println("Click playback");
             Chessboard.currentTurn = 0;
             try {
@@ -275,7 +229,16 @@ public class ChessGameFrame extends JFrame {
                 e1.printStackTrace();
             }
         });
-   }
+    }
+    
+    private void addBackButton(){
+        addButton("Back", 8, e -> {
+            System.out.println("Click back");
+            Chessboard.currentTurn = 0;
+            dispose();
+            TitleScreen titleScreen = new TitleScreen();
+        });
+    }
 
    public void setBackground(String filename){
         if(filename == null){

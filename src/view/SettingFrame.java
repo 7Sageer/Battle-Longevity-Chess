@@ -14,35 +14,26 @@ public class SettingFrame extends JFrame {
 
     private static ChessGameFrame game;
 
-
-
     public SettingFrame(){
         super("Jungle Chess");
 
-        JPanel panel = new JPanel(new FlowLayout());
+        JPanel panel = new JPanel(new GridLayout(0, 1,5,10));
         panel.setBackground(new Color(236, 242, 246));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel titleLabel = new JLabel("Settings");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(FontsManager.getFont(20,1));
 
-        JButton backButton = new JButton("Back");
-        backButton.setPreferredSize(new Dimension(100, 40));
-        backButton.setBackground(Color.LIGHT_GRAY);
-        backButton.setFont(FontsManager.getFont(40,1));
-        backButton.addActionListener(new ActionListener() {
+        JButton backButton = new JButton("back");
+        addButton(panel, backButton, 100, 40, 40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
 
-        JButton themeButton = new JButton("Change Theme");
-        themeButton.setPreferredSize(new Dimension(200, 40));
-        themeButton.setBackground(Color.LIGHT_GRAY);
-        themeButton.setFont(FontsManager.getFont(30,1));
-
-        themeButton.addActionListener(new ActionListener() {
+        JButton themeButton = new JButton("change theme");
+        addButton(panel, themeButton, 200, 40, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessboardComponent.changeTheme();
@@ -50,18 +41,8 @@ public class SettingFrame extends JFrame {
             }
         });
 
-
-        // Add a label to the volume slider
-        JLabel volumeLabel = new JLabel("Volume:");
-        volumeLabel.setFont(FontsManager.getFont(40,1));
-        volumeLabel.setForeground(new Color(51, 97, 129));
-
-        
-
-        
-
-        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-        volumeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+        JLabel volumeLabel = addLabel(panel, "volume:", 40, new Color(51, 97, 129));
+        JSlider volumeSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, 50, new javax.swing.event.ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int value = ((JSlider) e.getSource()).getValue();
@@ -69,16 +50,8 @@ public class SettingFrame extends JFrame {
             }
         });
 
-        JLabel soundLabel = new JLabel("Sounds:");
-        soundLabel.setFont(FontsManager.getFont(40,1));
-        soundLabel.setForeground(new Color(51, 97, 129));
-
-        
-
-        
-
-        JSlider soundSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-        soundSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+        JLabel soundLabel = addLabel(panel, "sounds:", 40, new Color(51, 97, 129));
+        JSlider soundSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, 50, new javax.swing.event.ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int value = ((JSlider) e.getSource()).getValue();
@@ -86,19 +59,20 @@ public class SettingFrame extends JFrame {
             }
         });
 
+        addButton(panel, themeButton, 200, 40, 30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChessboardComponent.changeTheme();
+                game.changeTheme();
+            }
+        });
 
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 20, 20));
-        buttonPanel.setBackground(new Color(236, 242, 246));
-        
-        buttonPanel.add(volumeLabel);
-        buttonPanel.add(volumeSlider);
-        buttonPanel.add(soundLabel);
-        buttonPanel.add(soundSlider);
-        buttonPanel.add(themeButton);
-        buttonPanel.add(backButton);
-
-        
-        panel.add(buttonPanel, BorderLayout.PAGE_END);
+        addButton(panel, backButton, 100, 40, 40, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
 
         setContentPane(panel);
         pack();
@@ -108,5 +82,28 @@ public class SettingFrame extends JFrame {
 
     public static void getGameFrame(ChessGameFrame game){
         SettingFrame.game = game;
+    }
+
+    private void addButton(JPanel panel, JButton button, int width, int height, int fontSize, ActionListener listener) {
+        button.setPreferredSize(new Dimension(width, height));
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setFont(FontsManager.getFont(fontSize,1));
+        button.addActionListener(listener);
+        panel.add(button);
+    }
+
+    private JLabel addLabel(JPanel panel, String text, int fontSize, Color color) {
+        JLabel label = new JLabel(text);
+        label.setFont(FontsManager.getFont(fontSize,1));
+        label.setForeground(color);
+        panel.add(label);
+        return label;
+    }
+
+    private JSlider addSlider(JPanel panel, int orientation, int min, int max, int value, javax.swing.event.ChangeListener listener) {
+        JSlider slider = new JSlider(orientation, min, max, value);
+        slider.addChangeListener(listener);
+        panel.add(slider);
+        return slider;
     }
 }

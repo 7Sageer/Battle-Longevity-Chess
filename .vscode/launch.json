@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ServerDemo",
+            "request": "launch",
+            "mainClass": "controller.ServerDemo",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "ClientDemo",
+            "request": "launch",
+            "mainClass": "controller.ClientDemo",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
             "name": "AIFrame",
             "request": "launch",
             "mainClass": "view.AIFrame",

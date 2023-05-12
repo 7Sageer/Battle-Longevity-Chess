@@ -30,7 +30,6 @@ public class ChessboardComponent extends JComponent {
     public final static Set<ChessboardPoint> blueDenCell = new HashSet<>();
     public final static Set<ChessboardPoint> redDenCell = new HashSet<>();
 
-    public ArrayList<SelectComponent> possibleMoveCell = new ArrayList<>();
 
     private GameController gameController;
 

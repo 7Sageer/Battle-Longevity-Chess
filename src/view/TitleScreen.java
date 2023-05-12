@@ -9,11 +9,15 @@ import controller.GameController;
 import model.Chessboard;
 
 public class TitleScreen extends JFrame {
-    private JButton startButton;
-    private JButton exitButton;
-    private JButton aiButton;
-    private JButton settingButton;
     private float buttonfontSize = 40f;
+
+    private void addButton(JPanel panel, String buttonText, Color buttonColor, ActionListener listener) {
+        JButton button = new JButton(buttonText);
+        button.setFont(FontsManager.getFont(buttonfontSize,1));
+        button.setBackground(buttonColor);
+        button.addActionListener(listener);
+        panel.add(button);
+    }
 
     public TitleScreen() {
         super("Jungle Chess");
@@ -26,10 +30,26 @@ public class TitleScreen extends JFrame {
         titleLabel.setFont(FontsManager.getFont(25,0));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
-        startButton = new JButton("Start 2p Game");
-        startButton.setFont(FontsManager.getFont(buttonfontSize,1));
-        startButton.setBackground(Color.LIGHT_GRAY);
-        startButton.addActionListener(new ActionListener() {
+        
+
+        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\象.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        panel.add(imageLabel, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        buttonPanel.add(new JLabel()); // empty spacer
+        buttonPanel.add(new JLabel()); // empty spacer
+
+        buttonPanel.add(titleLabel);
+
+        addButton(buttonPanel, "Start 1p Game", Color.LIGHT_GRAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AIFrame aiFrame = new AIFrame();
+                dispose();
+            }
+        });
+        addButton(buttonPanel, "Start 2p Game", Color.LIGHT_GRAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
@@ -40,52 +60,22 @@ public class TitleScreen extends JFrame {
                 dispose();
             }
         });
-
-        exitButton = new JButton("Exit Game");
-        exitButton.setFont(FontsManager.getFont(buttonfontSize,1));
-        exitButton.setBackground(Color.RED);
-        exitButton.addActionListener(new ActionListener() {
+        
+        
+        addButton(buttonPanel, "Settings", Color.LIGHT_GRAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingFrame settingFrame = new SettingFrame();
+            }
+        });
+        addButton(buttonPanel, "Exit Game", Color.RED, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
-        aiButton = new JButton("Start 1p Game");
-        aiButton.setFont(FontsManager.getFont(buttonfontSize,1));
-        aiButton.setBackground(Color.LIGHT_GRAY);
-        aiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AIFrame aiFrame = new AIFrame();
-                dispose();
-            }
-        });
 
-        settingButton = new JButton("Settings");
-        settingButton.setFont(FontsManager.getFont(buttonfontSize,1));
-        settingButton.setBackground(Color.LIGHT_GRAY);
-        settingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingFrame settingFrame = new SettingFrame();
-            }
-        });
-
-        
-
-        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\象.png");
-        JLabel imageLabel = new JLabel(imageIcon);
-        panel.add(imageLabel, BorderLayout.NORTH);
-
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        buttonPanel.add(new JLabel()); // empty spacer
-        buttonPanel.add(new JLabel()); // empty spacer
-        buttonPanel.add(titleLabel);
-        buttonPanel.add(aiButton);
-        buttonPanel.add(startButton);
-        buttonPanel.add(settingButton);
-        buttonPanel.add(exitButton);
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         getContentPane().add(panel);

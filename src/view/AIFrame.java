@@ -1,7 +1,5 @@
 package view;
 
-import javax.swing.*;
-
 import controller.GameController;
 import model.Chessboard;
 import resourcePlayer.FontsManager;
@@ -10,9 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.*;
+
 public class AIFrame extends JFrame {
 
-    private float buttonfontsize = 30f; 
+    private float buttonfontsize = 30f;
     JButton backButton = new JButton();
     JButton easyButton = new JButton();
     JButton normalButton = new JButton();
@@ -31,23 +31,15 @@ public class AIFrame extends JFrame {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(FontsManager.getFont(20,0));
 
-        backButton = new JButton("Back");
-        backButton.setPreferredSize(new Dimension(100, 40));
-        backButton.setBackground(Color.LIGHT_GRAY);
-        backButton.setFont(FontsManager.getFont(buttonfontsize,1));
-        backButton.addActionListener(new ActionListener() {
+        addButton("Back", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TitleScreen titleScreen = new TitleScreen();
                 dispose();
             }
-        });
+        }, panel);
 
-        easyButton = new JButton("Easy");
-        easyButton.setPreferredSize(new Dimension(100, 40));
-        easyButton.setBackground(Color.LIGHT_GRAY);
-        easyButton.setFont(FontsManager.getFont(buttonfontsize,1));
-        easyButton.addActionListener(new ActionListener() {
+        addButton("Easy", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
@@ -56,13 +48,9 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        });
+        }, panel);
 
-        normalButton = new JButton("Normal");
-        normalButton.setPreferredSize(new Dimension(100, 40));
-        normalButton.setBackground(Color.LIGHT_GRAY);
-        normalButton.setFont(FontsManager.getFont(buttonfontsize,1));
-        normalButton.addActionListener(new ActionListener() {
+        addButton("Normal", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
@@ -71,13 +59,9 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        });
+        }, panel);
 
-        hardButton = new JButton("Hard");
-        hardButton.setPreferredSize(new Dimension(100, 40));
-        hardButton.setBackground(Color.LIGHT_GRAY);
-        hardButton.setFont(FontsManager.getFont(buttonfontsize,1));
-        hardButton.addActionListener(new ActionListener() {
+        addButton("Hard", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
@@ -86,22 +70,13 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        });
+        }, panel);
 
         // 对页面标签进行美化处理
         panel.add(titleLabel, BorderLayout.CENTER);
         ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\狮.png");
         JLabel imageLabel = new JLabel(imageIcon);
         panel.add(imageLabel, BorderLayout.NORTH);
-        // 对按钮进行布局
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 20, 20));
-        buttonPanel.setBackground(new Color(236, 242, 246));
-        buttonPanel.add(easyButton);
-        buttonPanel.add(normalButton);
-        buttonPanel.add(hardButton);
-        buttonPanel.add(backButton);
-
-        panel.add(buttonPanel, BorderLayout.PAGE_END);
 
         setContentPane(panel);
         pack();
@@ -109,5 +84,12 @@ public class AIFrame extends JFrame {
         setVisible(true);
     }
 
-
+    private void addButton(String text, float fontsize, Color color, ActionListener listener, JPanel panel) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(100, 40));
+        button.setBackground(color);
+        button.setFont(FontsManager.getFont(fontsize,1));
+        button.addActionListener(listener);
+        panel.add(button, BorderLayout.PAGE_END);
+    }
 }
