@@ -23,21 +23,23 @@ public class AIFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 设置背景颜色和内边距
-        JPanel panel = new JPanel(new FlowLayout());
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel buttonpanel = new JPanel(new GridLayout(0, 1, 5, 5));
+
+
         panel.setBackground(new Color(236, 242, 246));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titleLabel = new JLabel("Choose the level of AI!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(FontsManager.getFont(20,0));
+        titleLabel.setFont(FontsManager.getFont(40,1));
 
-        addButton("Back", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TitleScreen titleScreen = new TitleScreen();
-                dispose();
-            }
-        }, panel);
+        panel.add(titleLabel, BorderLayout.CENTER);
+        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\狮.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        panel.add(imageLabel, BorderLayout.NORTH);
+        panel.add(buttonpanel, BorderLayout.SOUTH);
 
         addButton("Easy", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
@@ -48,7 +50,7 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        }, panel);
+        }, buttonpanel);
 
         addButton("Normal", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
@@ -59,7 +61,7 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        }, panel);
+        }, buttonpanel);
 
         addButton("Hard", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
             @Override
@@ -70,13 +72,18 @@ public class AIFrame extends JFrame {
                 mainFrame.setVisible(true);
                 dispose();
             }
-        }, panel);
+        }, buttonpanel);
+
+        addButton("Back", buttonfontsize, Color.LIGHT_GRAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TitleScreen titleScreen = new TitleScreen();
+                dispose();
+            }
+        }, buttonpanel);
 
         // 对页面标签进行美化处理
-        panel.add(titleLabel, BorderLayout.CENTER);
-        ImageIcon imageIcon = new ImageIcon("resource\\chesspiece\\狮.png");
-        JLabel imageLabel = new JLabel(imageIcon);
-        panel.add(imageLabel, BorderLayout.NORTH);
+
 
         setContentPane(panel);
         pack();
