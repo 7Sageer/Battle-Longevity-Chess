@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import listener.GameListener;
 import model.Constant;
 import model.PlayerColor;
+import model.UserAdministrator;
 import model.Action.Type;
 import resourcePlayer.Sound;
 import model.Chessboard;
@@ -38,6 +39,7 @@ public class GameController implements GameListener {
     private int AIDepth = 0;
     private PlayerColor AIcolor;
     public static boolean isTimer = false;
+    private boolean isGameOver = false;
 
 
     // Record whether there is a selected piece before
@@ -83,6 +85,9 @@ public class GameController implements GameListener {
 
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
+        checkWin();
+        if (isGameOver)
+            return;
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
         if((!(AIDepth != 0 && currentPlayer == AIcolor))||isTimer){
@@ -101,7 +106,6 @@ public class GameController implements GameListener {
         }
     }
     private void AImove(){
-        checkWin();
         Action action = AI.findBestAction(model, AIDepth, AIcolor);
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
@@ -138,12 +142,25 @@ public class GameController implements GameListener {
             Sound.playSound("resource\\sounds\\winsquare.mp3");
             System.out.println("Blue Win!");
             game.showDialog("Blue Win!");
-            System.exit(0);
+            if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+                UserAdministrator.lose();
+            }
+            else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
+                UserAdministrator.win();
+            }
+            isGameOver = true;
+
         } else if (temp == 2) {
             Sound.playSound("resource\\sounds\\winsquare.mp3");
             System.out.println("Red Win!");
             game.showDialog("Red Win!");
-            System.exit(0);
+            if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+                UserAdministrator.win();
+            }
+            else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
+                UserAdministrator.lose();
+            }
+            isGameOver = true;
         }
     }
 
@@ -154,7 +171,6 @@ public class GameController implements GameListener {
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
         selectedPoint = null;
         swapColor();
-        checkWin();
         view.repaint();
     }
 
@@ -166,7 +182,6 @@ public class GameController implements GameListener {
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
         selectedPoint = null;
         swapColor();
-        checkWin();
         view.repaint();
     }
 
