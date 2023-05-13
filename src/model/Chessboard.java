@@ -2,8 +2,9 @@ package model;
 
 import view.ChessComponent;
 import view.ChessboardComponent;
-import java.util.ArrayList;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import model.Action.Type;
 
