@@ -108,11 +108,11 @@ public class ServerDemo {
 
 
         // 释放资源
-        thread1.interrupt();
-        thread2.interrupt();
-        thread3.interrupt();
-        thread4.interrupt();
-        thread5.interrupt();
-        serverSocket.close();
+//         thread1.interrupt();
+//         thread2.interrupt();
+//         thread3.interrupt();
+//         thread4.interrupt();
+//         thread5.interrupt();
+//         serverSocket.close();
     }
 }
