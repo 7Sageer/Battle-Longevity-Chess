@@ -104,13 +104,13 @@ public class ClientDemo {
             }
         });
 
-        threadClient1.interrupt();
-        threadClient2.interrupt();
-        threadClient3.interrupt();
-        threadClient4.interrupt();
-        threadClient5.interrupt();
-        // 释放资源
-        socket.close();
+//         threadClient1.interrupt();
+//         threadClient2.interrupt();
+//         threadClient3.interrupt();
+//         threadClient4.interrupt();
+//         threadClient5.interrupt();
+        // 释放资源，但是有时候会bug,故暂时通过推出程序来释放
+        //socket.close();
     }
 }
 
