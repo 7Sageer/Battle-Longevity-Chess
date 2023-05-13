@@ -83,39 +83,12 @@ public class SettingFrame extends JFrame {
             }
         });
 
-        JButton loginButton;
-        if(UserAdministrator.getCurrentUser() != null)
-            loginButton = new JButton("Logout");
-        else
-            loginButton = new JButton("Login");
-        addButton(panel, loginButton, 100, 40, 30, new ActionListener() {
+        JButton UserButton;
+        UserButton = new JButton("User");
+        addButton(panel, UserButton, 100, 40, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(UserAdministrator.getCurrentUser() != null){
-                    UserAdministrator.logout();
-                    JOptionPane.showMessageDialog(null, "Logout success","success", JOptionPane.INFORMATION_MESSAGE);
-                    loginButton.setText("Login");
-                    return;
-                }
-                JTextField usernameField = new JTextField();
-                JPasswordField passwordField = new JPasswordField();
-                Object[] message = {
-                        "Username:", usernameField,
-                        "Password:", passwordField
-                };
-                int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-                if (option == JOptionPane.OK_OPTION) {
-                    String username = usernameField.getText();
-                    String password = new String(passwordField.getPassword());
-                    // TODO: Add login logic here
-                    User user = UserAdministrator.login(username, password);
-                    if(user == null){
-                        JOptionPane.showMessageDialog(null, "Wrong password","error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }else
-                        JOptionPane.showMessageDialog(null, String.format("Login success\n") + user.toString(),"success", JOptionPane.INFORMATION_MESSAGE);
-                        loginButton.setText("Logout");
-                }
+                new UserFrame();
             }
 
         });

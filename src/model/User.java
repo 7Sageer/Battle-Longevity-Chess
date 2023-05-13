@@ -20,6 +20,10 @@ public class User {
         return String.format("%s,%s,%d,%d,%d", username, password, score, win, lose);
     }
 
+    public String toViewableString() {
+        return String.format("%15s%15s%15s%15s", username, score, win, lose);
+    }
+
     public String getUsername() {
         return username;
     }
@@ -42,6 +46,10 @@ public class User {
 
     public void setLose(int lose) {
         this.lose = lose;
+    }
+
+    public int getScore() {
+        return score;
     }
     
 }

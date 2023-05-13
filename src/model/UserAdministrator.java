@@ -33,6 +33,19 @@ public class UserAdministrator{
         return newUser;
     }
 
+    public static void logout(){
+        currentUser = null;
+    }
+
+    public static ArrayList<User> rank(){
+        ArrayList<User> rank = new ArrayList<User>();
+        for (User user : users) {
+            rank.add(user);
+        }
+        rank.sort((a, b) -> (b.getWin() - b.getLose()) - (a.getWin() - a.getLose()));
+        return rank;
+    }
+
     public static void saveData(){
         //save in a txt file          
         Path path = Paths.get("users.txt");
@@ -89,11 +102,11 @@ public class UserAdministrator{
         saveData();
     }
 
-    public static void logout(){
-        currentUser = null;
-    }
-
     public static User getCurrentUser(){
+        if(currentUser == null){
+            System.out.println("No user logged in");
+            return null;
+        }
         return currentUser;
     }
 }
