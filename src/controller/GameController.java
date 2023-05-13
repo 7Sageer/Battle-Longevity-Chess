@@ -141,7 +141,7 @@ public class GameController implements GameListener {
     private void checkWin(){
         int temp = win();
         if (temp == 1) {
-            Sound.playSound("resource\\sounds\\winsquare.mp3");
+            Sound.playSound("resource\\sounds\\winsquare.wav");
             System.out.println("Blue Win!");
             game.showDialog("Blue Win!");
             if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
@@ -153,7 +153,7 @@ public class GameController implements GameListener {
             isGameOver = true;
 
         } else if (temp == 2) {
-            Sound.playSound("resource\\sounds\\winsquare.mp3");
+            Sound.playSound("resource\\sounds\\winsquare.wav");
             System.out.println("Red Win!");
             game.showDialog("Red Win!");
             if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){

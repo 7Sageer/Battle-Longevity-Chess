@@ -20,6 +20,7 @@ public class UserFrame extends JFrame{
 
     public UserFrame(){
         super("Jungle Chess");
+        UserAdministrator.loadData();
 
         JPanel panel = new JPanel(new GridLayout(0, 1,5,10));
         panel.setBackground(new Color(236, 242, 246));

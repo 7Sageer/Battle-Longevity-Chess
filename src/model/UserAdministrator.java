@@ -83,6 +83,11 @@ public class UserAdministrator{
                 int lose = Integer.parseInt(data[4]);
                 int score = Integer.parseInt(data[2]);
                 User user = new User(username, password, score, win, lose);
+                for(int i = 0; i < users.size(); i++){
+                    if(users.get(i).getUsername().equals(username)){
+                        users.remove(i);
+                    }
+                }
                 users.add(user);
             }
             scanner.close();
