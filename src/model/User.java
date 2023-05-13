@@ -17,13 +17,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password=" + password +
-                ", score=" + score +
-                ", win=" + win +
-                ", lose=" + lose +
-                '}';
+        return String.format("%s,%s,%d,%d,%d", username, password, score, win, lose);
     }
 
     public String getUsername() {

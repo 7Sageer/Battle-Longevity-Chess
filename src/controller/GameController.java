@@ -90,9 +90,11 @@ public class GameController implements GameListener {
             return;
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
-        if((!(AIDepth != 0 && currentPlayer == AIcolor))||isTimer){
-            game.setTimeLabel(String.format("Time Left: %ds", 30));
-            testTimer(30, currentPlayer,Chessboard.currentTurn);
+        if((!(AIDepth != 0 && currentPlayer == AIcolor))){
+            if(isTimer){
+                game.setTimeLabel(String.format("Time Left: %ds", 30));
+                testTimer(30, currentPlayer,Chessboard.currentTurn);
+            }
         }
         
 
@@ -264,7 +266,8 @@ public class GameController implements GameListener {
                 game.showDialog("Error:Invalid File");
                 return;
             }
-            swapColor(false);
+            if(i != loadAction.size()-1)
+                swapColor(false);
             view.paintImmediately(0,0,3000,3000);
             Thread.sleep(300);
             view.repaint();

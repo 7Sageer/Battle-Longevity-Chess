@@ -26,7 +26,15 @@ public class SettingFrame extends JFrame {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setFont(FontsManager.getFont(20,1));
 
+        this.addComponent(panel);
+        setContentPane(panel);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
 
+    }
+
+    public void addComponent(JPanel panel){
         JLabel volumeLabel = addLabel(panel, "volume:", 40, new Color(51, 97, 129));
         JSlider volumeSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, 50, new javax.swing.event.ChangeListener() {
             @Override
@@ -121,12 +129,6 @@ public class SettingFrame extends JFrame {
                 dispose();
             }
         });
-
-        setContentPane(panel);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-
     }
 
 

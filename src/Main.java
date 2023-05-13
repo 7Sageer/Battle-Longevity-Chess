@@ -4,6 +4,7 @@ import view.TitleScreen;
 
 import javax.swing.*;
 
+import model.UserAdministrator;
 import resourcePlayer.*;
 
 public class Main {
@@ -13,6 +14,7 @@ public class Main {
             public void run() {
                 new BGM().playMusic("resource\\bgm.wav");
                 FontsManager.PixelFonts();
+                UserAdministrator.loadData();
                 new TitleScreen();
             }
 

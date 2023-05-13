@@ -1,5 +1,10 @@
 package model;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class UserAdministrator{
@@ -24,15 +29,64 @@ public class UserAdministrator{
         User newUser = new User(username, password, 0, 0, 0);
         users.add(newUser);
         currentUser = newUser;
+        saveData();
         return newUser;
+    }
+
+    public static void saveData(){
+        //save in a txt file          
+        Path path = Paths.get("users.txt");
+        File file = path.toFile();
+        try{
+            if(!file.exists()){
+                file.createNewFile();
+            }
+        FileWriter writer = new FileWriter(file);
+        for (User user : users) {
+            writer.write(user.toString() + "\n");
+        }
+        writer.close();
+
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+                
+    public static void loadData(){
+        //load from a txt file
+        Path path = Paths.get("users.txt");
+        File file = path.toFile();
+        try{
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            Scanner scanner = new Scanner(file);
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                String[] data = line.split(",");
+                String username = data[0];
+                String password = data[1];
+                int win = Integer.parseInt(data[3]);
+                int lose = Integer.parseInt(data[4]);
+                int score = Integer.parseInt(data[2]);
+                User user = new User(username, password, score, win, lose);
+                users.add(user);
+            }
+            scanner.close();
+
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public static void lose(){
         currentUser.setLose(currentUser.getLose() + 1);
+        saveData();
     }
 
     public static void win(){
         currentUser.setWin(currentUser.getWin() + 1);
+        saveData();
     }
 
     public static void logout(){
