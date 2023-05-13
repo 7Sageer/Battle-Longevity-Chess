@@ -3,6 +3,7 @@ package model;
 import view.ChessComponent;
 import view.ChessboardComponent;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import model.Action.Type;
 
