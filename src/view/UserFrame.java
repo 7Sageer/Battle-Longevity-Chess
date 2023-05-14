@@ -16,27 +16,22 @@ import javax.swing.JFrame;
 
 import resourcePlayer.FontsManager;
 
-public class UserFrame extends JFrame{
+public class UserFrame extends CommonFrame{
 
     public UserFrame(){
-        super("Jungle Chess");
+        super();
         UserAdministrator.loadData();
 
-        JPanel panel = new JPanel(new GridLayout(0, 1,5,10));
-        panel.setBackground(new Color(236, 242, 246));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        JLabel titleLabel = new JLabel("Settings");
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setFont(FontsManager.getFont(20,1));
-
-        this.addComponent(panel);
-        setContentPane(panel);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-
     }
-    private void addComponent(JPanel panel){
+
+    @Override
+    protected void addComponent(JPanel panel){
+        JLabel titleLabel = addLabel(panel, "Welcome Guest", 30 );
+        
+        if(UserAdministrator.getCurrentUser() != null)
+            titleLabel.setText("Welcome " + UserAdministrator.getCurrentUser().getUsername());
+        
+
         JButton loginButton;
         if(UserAdministrator.getCurrentUser() != null)
             loginButton = new JButton("Logout");
@@ -48,6 +43,7 @@ public class UserFrame extends JFrame{
                 if(UserAdministrator.getCurrentUser() != null){
                     UserAdministrator.logout();
                     JOptionPane.showMessageDialog(null, "Logout success","success", JOptionPane.INFORMATION_MESSAGE);
+                    titleLabel.setText("Welcome Guest");
                     loginButton.setText("Login");
                     return;
                 }
@@ -65,9 +61,11 @@ public class UserFrame extends JFrame{
                     if(user == null){
                         JOptionPane.showMessageDialog(null, "Wrong password","error", JOptionPane.ERROR_MESSAGE);
                         return;
-                    }else
+                    }else{
                         JOptionPane.showMessageDialog(null, String.format("Login success\n") + user.toString(),"success", JOptionPane.INFORMATION_MESSAGE);
                         loginButton.setText("Logout");
+                        titleLabel.setText("Welcome " + UserAdministrator.getCurrentUser().getUsername());
+                    }
                 }
             }
 
@@ -103,32 +101,4 @@ public class UserFrame extends JFrame{
 
     }
 
-    private JLabel addLabel(JPanel panel, String text, int fontSize, Color color) {
-        JLabel label = new JLabel(text);
-        label.setFont(FontsManager.getFont(fontSize,1));
-        label.setForeground(color);
-        panel.add(label);
-        return label;
-    }
-
-    private JSlider addSlider(JPanel panel, int orientation, int min, int max, int value, javax.swing.event.ChangeListener listener) {
-        JSlider slider = new JSlider(orientation, min, max, value);
-        slider.addChangeListener(listener);
-        panel.add(slider);
-        return slider;
-    }
-    private JComboBox<String> addComboBox(JPanel panel, String string, int fontSize, Color color, javax.swing.event.ChangeListener listener){
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{string});
-        comboBox.setFont(FontsManager.getFont(fontSize,1));
-        comboBox.setForeground(color);
-        panel.add(comboBox);
-        return comboBox;
-    }
-    private void addButton(JPanel panel, JButton button, int width, int height, int fontSize, ActionListener listener) {
-        button.setPreferredSize(new Dimension(width, height));
-        button.setBackground(Color.LIGHT_GRAY);
-        button.setFont(FontsManager.getFont(fontSize,1));
-        button.addActionListener(listener);
-        panel.add(button);
-    }
 }

@@ -106,6 +106,11 @@ public class GameController implements GameListener {
                 AImove();
             }
         }
+        try {
+            saveGame("temp.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     private void AImove(){
         Action action = AI.findBestAction(model, AIDepth, AIcolor);
@@ -278,7 +283,6 @@ public class GameController implements GameListener {
     }
 
     public void playBack() throws IOException, InterruptedException{
-        saveGame("temp.txt");
         loadGame("temp.txt");
     }
 
