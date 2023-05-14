@@ -1,1 +1,1 @@
-{from=(2,6) ,to=(3,6) ,chessPiece=BLUE Elephant,type=MOVE}{from=(6,6) ,to=(5,6) ,chessPiece=RED Rat,type=MOVE}{from=(3,6) ,to=(4,6) ,chessPiece=BLUE Elephant,type=MOVE}
+{from=(2,0) ,to=(3,0) ,chessPiece=BLUE Rat,type=MOVE}{from=(6,6) ,to=(5,6) ,chessPiece=RED Rat,type=MOVE}{from=(3,0) ,to=(4,0) ,chessPiece=null,type=MOVE}{from=(5,6) ,to=(4,6) ,chessPiece=null,type=MOVE}{from=(2,6) ,to=(2,5) ,chessPiece=BLUE Elephant,type=MOVE}{from=(4,6) ,to=(3,6) ,chessPiece=null,type=MOVE}{from=(0,6) ,to=(1,6) ,chessPiece=BLUE Tiger,type=MOVE}

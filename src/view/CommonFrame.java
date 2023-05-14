@@ -1,16 +1,12 @@
 package view;
 
+import resourcePlayer.FontsManager;
+import resourcePlayer.Sound;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-
-import controller.GameController;
-import model.*;
-import resourcePlayer.BGM;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import resourcePlayer.*;
 
 /**
  * 这是一个通用的窗口类，用于实现一些通用的功能，比如添加按钮，添加组件等

@@ -2,6 +2,8 @@ package view;
 
 import controller.GameController;
 import model.Chessboard;
+import resourcePlayer.FontsManager;
+import resourcePlayer.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import resourcePlayer.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体

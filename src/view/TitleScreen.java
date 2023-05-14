@@ -1,12 +1,13 @@
 package view;
 
+import controller.GameController;
+import model.Chessboard;
+import resourcePlayer.FontsManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import resourcePlayer.*;
-import controller.GameController;
-import model.Chessboard;
 
 public class TitleScreen extends CommonFrame {
     private float buttonfontSize = 40f;

@@ -1,16 +1,10 @@
 package view;
 
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.HeadlessException;
-
-import javax.swing.Icon;
-
 import resourcePlayer.FontsManager;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class PixelOptionPane extends JOptionPane {
         public static void showMessageDialog(String message, String title, int messageType,int fontSize) {

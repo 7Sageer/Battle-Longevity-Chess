@@ -1,18 +1,13 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import controller.GameController;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * This is the equivalent of the Cell class,

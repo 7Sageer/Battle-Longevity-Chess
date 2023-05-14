@@ -1,11 +1,10 @@
 package controller;
 
-import com.sun.tools.javac.Main;
 import model.Action;
+import model.Chessboard;
 import resourcePlayer.BGM;
 import resourcePlayer.FontsManager;
 import view.TitleScreen;
-import model.Chessboard;
 
 import javax.swing.*;
 import java.io.*;

@@ -1,16 +1,15 @@
 package controller;
 
 import model.Action;
+import model.Chessboard;
 import resourcePlayer.BGM;
 import resourcePlayer.FontsManager;
-import view.CellComponent;
 import view.TitleScreen;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.Socket;
 import java.net.ServerSocket;
-import model.Chessboard;
+import java.net.Socket;
 
 /**
  * TCP 接收数据步骤

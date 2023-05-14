@@ -1,14 +1,10 @@
 package model;
 
-import view.ChessComponent;
+import model.Action.Type;
 import view.ChessboardComponent;
 
 import java.io.Serializable;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import model.Action.Type;
 
 /**
  * This class store the real chess information.

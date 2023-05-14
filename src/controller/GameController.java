@@ -1,26 +1,20 @@
 package controller;
 
-import java.io.*;
-import java.nio.*;
-import java.util.*;
-import java.util.regex.*;
-
-import javax.swing.JComponent;
-
 import listener.GameListener;
-import model.Constant;
-import model.PlayerColor;
-import model.UserAdministrator;
+import model.*;
 import model.Action.Type;
 import resourcePlayer.Sound;
-import model.Chessboard;
-import model.ChessboardPoint;
-import model.Action;
-import model.AI;
 import view.CellComponent;
 import view.ChessComponent;
 import view.ChessGameFrame;
 import view.ChessboardComponent;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Controller is the connection between model and view,

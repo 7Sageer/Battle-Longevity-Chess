@@ -4,11 +4,10 @@ import controller.GameController;
 import model.Chessboard;
 import resourcePlayer.FontsManager;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
 
 public class AIFrame extends CommonFrame{
 

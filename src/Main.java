@@ -1,11 +1,9 @@
-
+import model.UserAdministrator;
+import resourcePlayer.BGM;
+import resourcePlayer.FontsManager;
 import view.TitleScreen;
 
-
 import javax.swing.*;
-
-import model.UserAdministrator;
-import resourcePlayer.*;
 
 public class Main {
     public static void main(String[] args) {

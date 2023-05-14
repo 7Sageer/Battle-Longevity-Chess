@@ -1,16 +1,13 @@
 package view;
 
+import controller.GameController;
+import resourcePlayer.BGM;
+import resourcePlayer.Sound;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-
-import controller.GameController;
-import model.*;
-import resourcePlayer.BGM;
-
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import resourcePlayer.*;
 
 public class SettingFrame extends CommonFrame {
 

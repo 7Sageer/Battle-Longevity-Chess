@@ -1,20 +1,12 @@
 package view;
 
-import javax.swing.*;
-
 import model.User;
 import model.UserAdministrator;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
-import resourcePlayer.FontsManager;
 
 public class UserFrame extends CommonFrame{
 
