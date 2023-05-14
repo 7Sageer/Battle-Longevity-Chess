@@ -1,11 +1,11 @@
 package controller;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import controller.GameController;
 import model.Chessboard;
 import view.ChessGameFrame;
 import view.ChessboardComponent;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TimeController extends GameController{//a class to limit the competition length
     Timer timer = new Timer();

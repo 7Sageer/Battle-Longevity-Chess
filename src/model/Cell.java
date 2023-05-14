@@ -20,4 +20,11 @@ public class Cell implements Serializable {
     public void removePiece() {
         this.piece = null;
     }
+    @Override
+    public String toString() {
+        if (piece == null) {
+            return "null";
+        }
+        return "1" + piece.toString();
+    }
 }

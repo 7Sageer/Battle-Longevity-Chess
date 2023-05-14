@@ -6,8 +6,8 @@ public class ChessPiece {
     private PlayerColor owner;
 
     // Elephant? Cat? Dog? ...
-    private String name;
-    private int rank;
+    public String name;
+    int rank;
 
     public ChessPiece(PlayerColor owner, String name, int rank) {
         this.owner = owner;
@@ -16,8 +16,16 @@ public class ChessPiece {
     }
 
     public boolean canCapture(ChessPiece target) {
-        // TODO: Finish this method!
-        return false;
+        if(this.owner == target.owner)
+            return false;
+        if(this.rank == 8 && target.rank == 1)
+            return false;
+        if(this.rank == 1 && target.rank == 8)
+            return true;
+        if(this.rank >= target.rank)
+            return true;
+        else
+            return false;
     }
 
     public String getName() {
@@ -26,5 +34,16 @@ public class ChessPiece {
 
     public PlayerColor getOwner() {
         return owner;
+    }
+    public ChessPiece clone() {
+        return new ChessPiece(owner, name, rank);
+    }
+    @Override
+    public String toString() {
+        return owner + " " + name;
+    }
+
+    public int getRank() {
+        return this.rank;
     }
 }

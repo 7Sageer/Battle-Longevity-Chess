@@ -1,0 +1,56 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "PixelOptionPane",
+            "request": "launch",
+            "mainClass": "view.PixelOptionPane",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "ServerDemo",
+            "request": "launch",
+            "mainClass": "controller.ServerDemo",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "ClientDemo",
+            "request": "launch",
+            "mainClass": "controller.ClientDemo",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "AIFrame",
+            "request": "launch",
+            "mainClass": "view.AIFrame",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "TitleScreen",
+            "request": "launch",
+            "mainClass": "view.TitleScreen",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        }
+    ]
+}

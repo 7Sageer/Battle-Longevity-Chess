@@ -20,5 +20,13 @@ public enum PlayerColor {
         return color;
     }
 
+    public PlayerColor getOppositePlayerColor() {
+        if (this == BLUE) {
+            return PlayerColor.RED;
+        } else {
+            return PlayerColor.BLUE;
+        }
+    }
+
 
 }
