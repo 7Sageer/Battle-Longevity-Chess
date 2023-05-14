@@ -36,4 +36,7 @@ public class Sound {
     public static void setVolume(float volume) {
         Sound.volume = volume;
     }
+    public static float getVolume() {
+        return volume;
+    }
 }

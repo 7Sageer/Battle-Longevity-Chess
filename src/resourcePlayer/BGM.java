@@ -19,7 +19,7 @@ public class BGM {
                 BGM.clip = clip;
                 clip.open(audioInput);
                 FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                volumeControl.setValue((float) 0.5);
+                volumeControl.setValue((float) 0.1);
                 clip.start();
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
 
@@ -31,9 +31,16 @@ public class BGM {
     }
 
     public static void setVolume(double d) {
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float dB = (float) (Math.log(d / 100) / Math.log(10.0) * 20.0);
+        System.out.println(dB);
+        gainControl.setValue(dB);
+    }
 
-        FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        volumeControl.setValue(20f * (float) Math.log10(d));
-        
+    public static double getVolume() {
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        double volume = Math.pow(10.0, gainControl.getValue() / 20.0);
+        System.out.println(volume);
+        return volume * 99;
     }
 }

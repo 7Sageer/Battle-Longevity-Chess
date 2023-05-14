@@ -84,4 +84,5 @@ public class CommonFrame extends JFrame {
         panel.add(imageLabel);
         
     }
+
 }

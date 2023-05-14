@@ -62,7 +62,8 @@ public class UserFrame extends CommonFrame{
                         JOptionPane.showMessageDialog(null, "Wrong password","error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }else{
-                        JOptionPane.showMessageDialog(null, String.format("Login success\n") + user.toString(),"success", JOptionPane.INFORMATION_MESSAGE);
+                        PixelOptionPane.showMessageDialog(String.format("Welcome %s!",user.getUsername()),"user", JOptionPane.INFORMATION_MESSAGE, 40);
+                        //JOptionPane.showMessageDialog(null, String.format("Login success\n") + user.toString(),"success", JOptionPane.INFORMATION_MESSAGE);
                         loginButton.setText("Logout");
                         titleLabel.setText("Welcome " + UserAdministrator.getCurrentUser().getUsername());
                     }

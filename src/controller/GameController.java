@@ -196,10 +196,10 @@ public class GameController implements GameListener {
     // click an empty cell
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
-        if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
-            move(selectedPoint, point);
-            
-            
+        if (selectedPoint != null) {
+            if (model.isValidMove(selectedPoint, point)) {
+                move(selectedPoint, point);
+            }
         }
     }
 
@@ -227,9 +227,8 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         } else {
-            
-            capture(selectedPoint, point);
-            
+            if(model.isValidCapture(selectedPoint, point))
+                capture(selectedPoint, point);
         }
 
     }

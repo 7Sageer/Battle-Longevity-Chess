@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PixelOptionPane",
+            "request": "launch",
+            "mainClass": "view.PixelOptionPane",
+            "projectName": "CS109-2023-Sping-ChessDemo_ef893412"
+        },
+        {
+            "type": "java",
             "name": "ServerDemo",
             "request": "launch",
             "mainClass": "controller.ServerDemo",

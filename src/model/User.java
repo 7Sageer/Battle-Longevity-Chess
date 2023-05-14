@@ -21,7 +21,7 @@ public class User {
     }
 
     public String toViewableString() {
-        return String.format("%15s%15s%15s%15s", username, score, win, lose);
+        return String.format("%5s%5s%5s%5s", username, score, win, lose);
     }
 
     public String getUsername() {

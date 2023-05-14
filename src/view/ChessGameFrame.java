@@ -5,6 +5,7 @@ import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +118,7 @@ public class ChessGameFrame extends JFrame {
         button.setLocation(HEIGTH , HEIGTH / 15 + BUTTON_INTERVAL);
         button.setSize(200, 60);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
-       button.setBackground(Color.LIGHT_GRAY);
+        button.setBackground(Color.LIGHT_GRAY);
         add(button);
 
         button.addActionListener(e -> {
@@ -162,6 +163,14 @@ public class ChessGameFrame extends JFrame {
         button.setSize(200, 60);
         button.setFont(FontsManager.getFont(BUTTON_FONT_SIZE,1));
         button.setBackground(Color.LIGHT_GRAY);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 播放声音
+                String soundPath = "resource\\sounds\\click-button.wav"; // 替换为您的声音文件路径
+                Sound.playSound(soundPath);
+            }
+        });
         add(button);
     
         button.addActionListener(listener);
