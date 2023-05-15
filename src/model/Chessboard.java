@@ -343,6 +343,22 @@ public class Chessboard implements Serializable {
             return calculateDistance(point, new ChessboardPoint(0, 3));
     }
 
+    public int caculateCaptureScore(ChessPiece chessPiece){
+        int score = 0;
+        ChessboardPoint point = getChessPieChessboardPoint(chessPiece);
+        for(int row = 0;row < Constant.CHESSBOARD_ROW_SIZE.getNum();row++){
+            for(int col = 0;col < Constant.CHESSBOARD_COL_SIZE.getNum();col++){
+                ChessboardPoint dest = new ChessboardPoint(row,col);
+                if(getChessPieceAt(dest) != null && getChessPieceAt(dest).getOwner() != chessPiece.getOwner()){
+                    if (chessPiece.canCapture(getChessPieceAt(dest))) {
+                        score += getChessPieceAt(dest).getRank() * (10 - calculateDistance(point, dest))^2;
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
     public ChessboardPoint getChessPieChessboardPoint(ChessPiece chessPiece){
         for(int row = 0;row < Constant.CHESSBOARD_ROW_SIZE.getNum();row++){
             for(int col = 0;col < Constant.CHESSBOARD_COL_SIZE.getNum();col++){

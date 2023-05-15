@@ -116,12 +116,12 @@ public class AI {
             if (chessPiece.getOwner() == player) {
                 score += 500;
                 score += chessPiece.rank * 100;
-                score -= chessboard.getEnemyDistance(chessPiece);
+                score += chessboard.caculateCaptureScore(chessPiece) * 5;
 
             } else {
                 score -= 500;
                 score -= chessPiece.rank * 100;
-                score += chessboard.getEnemyDistance(chessPiece);
+                score -= chessboard.caculateCaptureScore(chessPiece) * 5;
             }
         }
         return score;

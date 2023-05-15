@@ -94,12 +94,14 @@ public class GameController implements GameListener {
 
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
+        //view.paintImmediately(-1000, -1000, 3000, 3000);
 
         if(AIDepth != 0){
             if(currentPlayer == AIcolor){
                 AImove();
             }
         }
+        view.repaint();
         try {
             saveGame("temp.txt");
         } catch (IOException e) {
@@ -107,16 +109,24 @@ public class GameController implements GameListener {
         }
     }
     private void AImove(){
-        Action action = AI.findBestAction(model, AIDepth, AIcolor);
-        if(action.type == Type.MOVE){
-            move(action.getFrom(), action.getTo());
-        }
-        else if(action.type == Type.CAPTURE){
-            capture(action.getFrom(), action.getTo());
-        }
-        currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
-        swapColor();
-        view.repaint();
+        //view.repaint();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Action action = AI.findBestAction(model, AIDepth, AIcolor);
+                if(action.type == Type.MOVE){
+                    move(action.getFrom(), action.getTo());
+                }
+                else if(action.type == Type.CAPTURE){
+                    capture(action.getFrom(), action.getTo());
+                }
+                currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+                swapColor();
+                //view.repaint();
+            }
+        });
+        t.start();
+
     }
 
     //重载一个没有AI的swapColor
@@ -172,7 +182,7 @@ public class GameController implements GameListener {
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
         selectedPoint = null;
         swapColor();
-        view.repaint();
+        //view.repaint();
     }
 
     
@@ -183,7 +193,7 @@ public class GameController implements GameListener {
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));
         selectedPoint = null;
         swapColor();
-        view.repaint();
+        //view.repaint();
     }
 
 
