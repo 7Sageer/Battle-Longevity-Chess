@@ -11,7 +11,6 @@ public class AI {
         int index = (int)(Math.random() * allactions.size());
         return allactions.get(index);
     }
-//
 
     public static Action findBestAction(Chessboard chessboard, int depth, PlayerColor player) {
 
@@ -62,7 +61,7 @@ public class AI {
     
             bestScore = Math.max(bestScore, score);
             alpha = Math.max(alpha, bestScore);
-            if (beta >= alpha) 
+            if (beta <= alpha) 
                 break;   // beta cut-off
         }
         return bestScore;
@@ -115,13 +114,14 @@ public class AI {
                 continue;
             }
             if (chessPiece.getOwner() == player) {
-                score += 800;
+                score += 500;
                 score += chessPiece.rank * 100;
-                score -= chessboard.getEnemyDistance(chessPiece) * chessPiece.rank;
+                score -= chessboard.getEnemyDistance(chessPiece);
+
             } else {
-                score -= 800;
+                score -= 500;
                 score -= chessPiece.rank * 100;
-                score += chessboard.getEnemyDistance(chessPiece) * chessPiece.rank;
+                score += chessboard.getEnemyDistance(chessPiece);
             }
         }
         return score;

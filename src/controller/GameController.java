@@ -234,7 +234,7 @@ public class GameController implements GameListener {
         FileWriter writer = new FileWriter(file);
         for (int i = 0; i < Chessboard.historyAction.size(); i++) {
             writer.write(Chessboard.historyAction.get(i).toString());
-            System.out.println(Chessboard.historyAction.get(i));
+            //System.out.println(Chessboard.historyAction.get(i));
             writer.write("\r");
         }
         writer.close();
