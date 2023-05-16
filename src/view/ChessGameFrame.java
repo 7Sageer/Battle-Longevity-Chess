@@ -122,7 +122,12 @@ public class ChessGameFrame extends JFrame {
         add(button);
 
         button.addActionListener(e -> {
-            System.out.println("Click restart");
+            restart();
+        });  
+    }
+
+    public void restart(){
+        System.out.println("Click restart");
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
             int AIdepth = gameController.getAIDepth();
@@ -131,9 +136,6 @@ public class ChessGameFrame extends JFrame {
             mainFrame.setGameController(gameController);
             mainFrame.setVisible(true);
             SettingFrame.getGameFrame(mainFrame);
-            
-        });
-        
     }
     
     public void showDialog(String msg){

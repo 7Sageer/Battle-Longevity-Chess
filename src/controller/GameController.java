@@ -56,14 +56,14 @@ public class GameController implements GameListener {
         view.repaint();
         if (AIDepth != 0) {
             //random color
-            // if (Math.random() > 0.5) {
+            if (Math.random() > 0.5) {
                 AIcolor = PlayerColor.BLUE;
                 game.showDialog("You are Red, AI is Blue");
                 AImove();
-            // } else {
-            //     AIcolor = PlayerColor.RED;
-            //     game.showDialog("You are Blue, AI is Red");
-            // }
+            } else {
+                AIcolor = PlayerColor.RED;
+                game.showDialog("You are Blue, AI is Red");
+            }
         }
 
     }
@@ -110,10 +110,14 @@ public class GameController implements GameListener {
     }
     private void AImove(){
         //view.repaint();
-        Thread t = new Thread(new Runnable() {
+        Thread t= new Thread(new Runnable() {
             @Override
             public void run() {
                 Action action = AI.findBestAction(model, AIDepth, AIcolor);
+                if(action.score < 100000 || action.score > 100000){
+                    //checkWin();
+                    Thread.currentThread().interrupt();
+                }
                 if(action.type == Type.MOVE){
                     move(action.getFrom(), action.getTo());
                 }
@@ -121,6 +125,7 @@ public class GameController implements GameListener {
                     capture(action.getFrom(), action.getTo());
                 }
                 currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+
                 swapColor();
                 //view.repaint();
             }
@@ -149,29 +154,37 @@ public class GameController implements GameListener {
     }
     private void checkWin(){
         int temp = win();
+        if(Chessboard.currentTurn < 3)
+            return;
         if (temp == 1) {
             Sound.playSound("resource\\sounds\\winsquare.wav");
-            System.out.println("Blue Win!");
-            game.showDialog("Blue Win!");
-            if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
-                UserAdministrator.lose();
-            }
-            else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
-                UserAdministrator.win();
-            }
-            isGameOver = true;
+            System.out.println("Blue Wins!");
+            game.showDialog("Blue Wins!");
+            if(UserAdministrator.getCurrentUser() != null){
+                if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+                    UserAdministrator.lose();
+                }
+                else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
+                    UserAdministrator.win();
+                }
+        }
+        game.restart();
+            
+            
 
         } else if (temp == 2) {
             Sound.playSound("resource\\sounds\\winsquare.wav");
-            System.out.println("Red Win!");
-            game.showDialog("Red Win!");
-            if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+            System.out.println("Red Wins!");
+            game.showDialog("Red Wins!");
+            if(UserAdministrator.getCurrentUser() != null){
+                if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
                 UserAdministrator.win();
             }
             else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
                 UserAdministrator.lose();
-            }
-            isGameOver = true;
+            }}
+            
+            game.restart();
         }
     }
 
@@ -336,6 +349,7 @@ public class GameController implements GameListener {
                     model.moveChessPiece(action.getTo(), action.getFrom(),true);
                     view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));
                 } else {
+                    System.out.println(action);
                     model.moveChessPiece(action.getTo(), action.getFrom(),true);
                     model.setChessPiece(action.getTo(),action.getCapturedChessPiece());
                     view.setChessComponentAtGrid(action.getFrom(), view.removeChessComponentAtGrid(action.getTo()));

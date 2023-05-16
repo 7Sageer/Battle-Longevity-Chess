@@ -75,6 +75,16 @@ public class TitleScreen extends CommonFrame {
             }
         });
 
+        JButton helpbutton = new JButton("Help");
+
+        addButton(buttonPanel, helpbutton,200,50, 30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HelpFrame helpFrame = new HelpFrame();
+
+            }
+        });
+
         JButton exitbutton = new JButton("Exit Game");
         addButton(buttonPanel, exitbutton,200,50, 30, new ActionListener() {
             @Override

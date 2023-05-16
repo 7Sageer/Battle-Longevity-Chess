@@ -5,6 +5,7 @@ public class Action {
     private ChessboardPoint from;
     private ChessboardPoint to;
     private ChessPiece chessPiece;
+    public int score;
     public enum Type{MOVE, CAPTURE}
     public Type type;
     private ChessPiece capturedChessPiece;
@@ -15,9 +16,18 @@ public class Action {
         this.to = to;
         this.chessPiece = ChessBoard.getChessPieceAt(from);
         this.type = type;
-        if(this.type == type.CAPTURE){
+        if(this.type == Type.CAPTURE){
             this.capturedChessPiece = ChessBoard.getChessPieceAt(to);
         }
+    }
+    public Action(ChessboardPoint from, ChessboardPoint to, Type type, ChessPiece chessPiece) {
+        this.from = from;
+        this.to = to;
+        this.chessPiece = ChessBoard.getChessPieceAt(from);
+        this.type = type;
+        this.capturedChessPiece = chessPiece;
+    }
+    public Action() {
     }
     @Override
     public String toString() {
@@ -25,7 +35,7 @@ public class Action {
                 ",to=" + to +
                 ",chessPiece=" + chessPiece +
                 ",type=" + type +
-                (type == type.CAPTURE ? ",capturedChessPiece=" + capturedChessPiece : "") + "}";
+                (type == Type.CAPTURE ? ",capturedChessPiece=" + capturedChessPiece : "") + "}";
     }
     public ChessboardPoint getFrom() {
         return from;

@@ -42,6 +42,7 @@ public class AIFrame extends CommonFrame{
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 1);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
+                SettingFrame.getGameFrame(mainFrame);
                 dispose();
             }
         });
@@ -54,6 +55,7 @@ public class AIFrame extends CommonFrame{
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 3);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
+                SettingFrame.getGameFrame(mainFrame);
                 dispose();
             }
         });
@@ -66,6 +68,7 @@ public class AIFrame extends CommonFrame{
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 5);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
+                SettingFrame.getGameFrame(mainFrame);
                 dispose();
             }
         });

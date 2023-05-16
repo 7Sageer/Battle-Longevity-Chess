@@ -132,7 +132,7 @@ public class Chessboard implements Serializable {
                 historyAction.subList(historyAction.size() + currentTurn - historyAction.size(), historyAction.size()).clear();
                 System.out.println("clear");
             }
-            historyAction.add(new Action(src,dest,Type.CAPTURE));
+            historyAction.add(new Action(src,dest,Type.CAPTURE,getChessPieceAt(dest)));
             removeChessPiece(dest);
             setChessPiece(dest, removeChessPiece(src));
             currentTurn++;
@@ -338,9 +338,9 @@ public class Chessboard implements Serializable {
     public int getEnemyDistance(ChessPiece chessPiece) {
         ChessboardPoint point = getChessPieChessboardPoint(chessPiece);
         if(chessPiece.getOwner() == PlayerColor.BLUE)
-            return calculateDistance(point, new ChessboardPoint(8, 3));
-        else
             return calculateDistance(point, new ChessboardPoint(0, 3));
+        else
+            return calculateDistance(point, new ChessboardPoint(8, 3));
     }
 
     public int caculateCaptureScore(ChessPiece chessPiece){
