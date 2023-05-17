@@ -30,7 +30,6 @@ public class ChessComponent extends JComponent {
         this.selected = false;
         this.imageFile = new File("resource\\chesspiece\\" + name + ".png");
         if (imageFile.exists()) {
-            System.out.println("imageFile exists");
             image = null;
             try {
                     image = ImageIO.read(imageFile); // set BufferedImage instance variable

@@ -81,4 +81,10 @@ public class CommonFrame extends JFrame {
         
     }
 
+    protected void addTextField(JPanel panel, JTextField textField,  int fontSize) {
+        textField.setPreferredSize(new Dimension(200, 50));
+        textField.setFont(FontsManager.getFont(fontSize,1));
+        panel.add(textField);
+    }
+
 }

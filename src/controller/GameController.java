@@ -64,7 +64,7 @@ public class GameController implements GameListener {
                 AIcolor = PlayerColor.RED;
                 game.showDialog("You are Blue, AI is Red");
             }
-        }
+         }
 
     }
 
@@ -80,8 +80,6 @@ public class GameController implements GameListener {
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
         checkWin();
-        if (isGameOver)
-            return;
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
         if((!(AIDepth != 0 && currentPlayer == AIcolor))){
@@ -114,10 +112,7 @@ public class GameController implements GameListener {
             @Override
             public void run() {
                 Action action = AI.findBestAction(model, AIDepth, AIcolor);
-                if(action.score < 100000 || action.score > 100000){
-                    //checkWin();
-                    Thread.currentThread().interrupt();
-                }
+
                 if(action.type == Type.MOVE){
                     move(action.getFrom(), action.getTo());
                 }

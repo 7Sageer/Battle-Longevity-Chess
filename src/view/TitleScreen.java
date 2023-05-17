@@ -35,7 +35,6 @@ public class TitleScreen extends CommonFrame {
         titleLabel.setFont(FontsManager.getFont(23,0));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        buttonPanel.add(new JLabel()); // empty spacer
 
         buttonPanel.add(titleLabel);
 
@@ -63,6 +62,15 @@ public class TitleScreen extends CommonFrame {
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
+                dispose();
+            }
+        });
+
+        JButton onlinebutton = new JButton("Online Game");
+        addButton(buttonPanel, onlinebutton,200,50, 30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OnlineFrame onlineFrame = new OnlineFrame();
                 dispose();
             }
         });

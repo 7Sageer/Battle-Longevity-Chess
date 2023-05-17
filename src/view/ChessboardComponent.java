@@ -2,6 +2,7 @@ package view;
 
 
 import controller.GameController;
+import controller.Trainer;
 import model.Cell;
 import model.ChessPiece;
 import model.Chessboard;
@@ -32,6 +33,7 @@ public class ChessboardComponent extends JComponent {
 
 
     private GameController gameController;
+    private Trainer trainer;
 
     public ChessboardComponent(int chessSize) {
         CHESS_SIZE = chessSize;
@@ -265,6 +267,9 @@ public class ChessboardComponent extends JComponent {
         } 
     } 
 
+    public void registerTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
         
     
 

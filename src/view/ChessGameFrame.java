@@ -1,6 +1,7 @@
 package view;
 
 import controller.GameController;
+import controller.Trainer;
 import model.Chessboard;
 import resourcePlayer.FontsManager;
 import resourcePlayer.Sound;
@@ -278,6 +279,8 @@ public class ChessGameFrame extends JFrame {
         theme = 1 - theme;
         repaint();
    }
+public void registerTrainer(Trainer trainer) {
+}
 
 
 }
