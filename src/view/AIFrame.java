@@ -1,10 +1,15 @@
 package view;
 
 import controller.GameController;
+import model.AI;
+import model.AIModel;
 import model.Chessboard;
 import resourcePlayer.FontsManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +26,7 @@ public class AIFrame extends CommonFrame{
 
     @Override
     protected void addComponent(JPanel panel) {
-        panel.setPreferredSize(new Dimension(400, 600));
+        panel.setPreferredSize(new Dimension(400, 700));
 
         JLabel titleLabel = new JLabel("Choose the level of AI!");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -33,6 +38,19 @@ public class AIFrame extends CommonFrame{
         panel.add(imageLabel, BorderLayout.NORTH);
         
         JPanel buttonpanel = new JPanel(new GridLayout(0, 1, 5, 5));
+
+
+        JComboBox<String> comboBox = new JComboBox<>();
+        comboBox.addItem("basic");
+        comboBox.addItem("advanced");
+
+        addComboBox(buttonpanel, comboBox, 30, new ChangeListener() {
+            
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                AI.setModel(new AIModel(comboBox.getSelectedItem().toString()));
+            }
+        });
 
         JButton easybutton = new JButton("Easy");
         addButton(buttonpanel, easybutton, 300,200,30, new ActionListener() {

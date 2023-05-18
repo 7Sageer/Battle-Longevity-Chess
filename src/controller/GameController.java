@@ -56,6 +56,7 @@ public class GameController implements GameListener {
         view.repaint();
         if (AIDepth != 0) {
             //random color
+            AI.setModel(new AIModel("advanced"));
             if (Math.random() > 0.5) {
                 AIcolor = PlayerColor.BLUE;
                 game.showDialog("You are Red, AI is Blue");
@@ -64,9 +65,11 @@ public class GameController implements GameListener {
                 AIcolor = PlayerColor.RED;
                 game.showDialog("You are Blue, AI is Red");
             }
+            
          }
 
     }
+
 
     private void initialize() {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
@@ -261,34 +264,43 @@ public class GameController implements GameListener {
     public void loadGame(String path) throws IOException, InterruptedException {
         System.out.println(extractActions(path));
         if(extractActions(path).size() == 0){
-            game.showDialog("Error:Invalid file path or no action");
+            game.showDialog("Error:Invalid file or no action");
             return;
         }
         this.model.initialize();
         this.view.initiateChessComponent(model);
         Chessboard.currentTurn = 0;
+        ChessPiece chessPiece = null;
         
         ArrayList<Action> loadAction = extractActions(path);
         for (int i = 0; i < loadAction.size(); i++) {
-            if (loadAction.get(i).getType() == Type.MOVE){
-                model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
-
-            }else if(loadAction.get(i).getType() == Type.CAPTURE){
-                model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                view.removeChessComponentAtGrid(loadAction.get(i).getTo());
-                view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+            if(chessPiece == null || model.getChessPieceAt(loadAction.get(i).getFrom()) != null && model.getChessPieceAt(loadAction.get(i).getFrom()).getOwner()!=chessPiece.getOwner()){
+                chessPiece = model.getChessPieceAt(loadAction.get(i).getFrom());
+                if (loadAction.get(i).getType() == Type.MOVE){
+                    model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
+    
+                }else if(loadAction.get(i).getType() == Type.CAPTURE){
+                    model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                    view.removeChessComponentAtGrid(loadAction.get(i).getTo());
+                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+                }else{
+                    game.showDialog("Error:Invalid step");
+                    return;
+                }
             }else{
-                game.showDialog("Error:Invalid File");
+                game.showDialog("Error:Step lost");
                 return;
             }
-            if(i != loadAction.size()-1)
-                swapColor(false);
-            view.paintImmediately(0,0,3000,3000);
+            swapColor(false);
+            view.paintImmediately(-1000,-1000,3000,3000);
             Thread.sleep(300);
             view.repaint();
+               
+            }
+
             
-        }
+        
         
 
     }

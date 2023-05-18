@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import listener.GameListener;
 import model.*;
 import model.Action.Type;
@@ -27,8 +29,9 @@ public class Trainer {
     private PlayerColor currentPlayer = PlayerColor.BLUE;
     private ChessGameFrame game;
     private int AIDepth = 0;
-    private PlayerColor AIcolor;
-    public static boolean isTimer = false;
+    public static AIModel modelA = new AIModel("basic");
+    public static AIModel modelB = new AIModel("advanced");
+    
     //增加了构造器的参数（添加game用于显示对话框）
     public Trainer(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
         start(view, model, game, AIDepth);
@@ -48,12 +51,11 @@ public class Trainer {
 
     public static void main(String[] args) {
         FontsManager.PixelFonts();
-        UserAdministrator.loadData();
         ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
         mainFrame.setVisible(true);
+        AI.setModel(modelA);
         Trainer trainer = new Trainer(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 5);
         mainFrame.registerTrainer(trainer);
-
     }
 
 
@@ -73,6 +75,8 @@ public class Trainer {
             capture(action.getFrom(), action.getTo());
         }
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        AI.setModel(currentPlayer == PlayerColor.BLUE ? modelA : modelB);
+        //System.out.println(AI.model);
 
         if(win() == 0){
             AImove();
@@ -92,19 +96,46 @@ public class Trainer {
             return 1;
         if(model.getAllValidAction(currentPlayer).isEmpty())
             return currentPlayer == PlayerColor.BLUE ? 2 : 1;
+        if(model.currentTurn >= 100){
+            return model.evaluateDraw() > 0 ? 1 : 2;
+        }
         return 0;
     }
     private void checkWin(){
         int temp = win();
-        if(Chessboard.currentTurn < 3)
+        if (temp == 0) {
             return;
-        if (temp == 1) {
+        } else if (temp == 1) {
             System.out.println("Blue Wins!");
-            game.restart();
+            //modelB = AIModel.radientDescent(modelB, modelA);
+            
+            // try {
+            //     modelA.saveModel();
+            //     modelB.saveModel();
+            // } catch (IOException e) {
+            //     e.printStackTrace();
+            // }
         } else if (temp == 2) {
-            System.out.println("Red Wins!");          
-            game.restart();
-        }
+            System.out.println(modelA);
+            System.out.println(modelB);
+            System.out.println("Red Wins!"); 
+            //modelA = AIModel.radientDescent(modelA, modelB);
+            // try {
+            //     modelB.saveModel();
+            //     modelA.saveModel();
+            // } catch (IOException e) {
+            //     e.printStackTrace();
+            // }
+        } 
+        game.dispose();
+        Chessboard.currentTurn = 0;
+        System.out.println(modelA);
+        System.out.println(modelB);
+        FontsManager.PixelFonts();
+        ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+        mainFrame.setVisible(true);
+        Trainer trainer = new Trainer(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 5);
+        mainFrame.registerTrainer(trainer);
     }
 
     private void capture(ChessboardPoint from, ChessboardPoint to){

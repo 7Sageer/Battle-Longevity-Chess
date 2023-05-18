@@ -65,8 +65,7 @@ public class CommonFrame extends JFrame {
         panel.add(slider);
         return slider;
     }
-    protected JComboBox<String> addComboBox(JPanel panel, String string, int fontSize,  javax.swing.event.ChangeListener listener){
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{string});
+    protected JComboBox<String> addComboBox(JPanel panel, JComboBox comboBox, int fontSize,  javax.swing.event.ChangeListener listener){
         comboBox.setFont(FontsManager.getFont(fontSize,1));
         comboBox.setForeground(new Color(51, 97, 129));
         panel.add(comboBox);

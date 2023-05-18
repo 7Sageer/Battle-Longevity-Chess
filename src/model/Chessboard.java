@@ -85,6 +85,7 @@ public class Chessboard implements Serializable {
     }
 
     private int calculateDistance(ChessboardPoint src, ChessboardPoint dest) {
+        //if(getChessPieceAt(src).rank == 1)
         return Math.abs(src.getRow() - dest.getRow()) + Math.abs(src.getCol() - dest.getCol());
     }
 
@@ -338,12 +339,12 @@ public class Chessboard implements Serializable {
     public int getEnemyDistance(ChessPiece chessPiece) {
         ChessboardPoint point = getChessPieChessboardPoint(chessPiece);
         if(chessPiece.getOwner() == PlayerColor.BLUE)
-            return calculateDistance(point, new ChessboardPoint(0, 3));
-        else
             return calculateDistance(point, new ChessboardPoint(8, 3));
+        else
+            return calculateDistance(point, new ChessboardPoint(0, 3));
     }
 
-    public int caculateCaptureScore(ChessPiece chessPiece){
+    public int caculateCaptureScore(ChessPiece chessPiece, AIModel model){
         int score = 0;
         ChessboardPoint point = getChessPieChessboardPoint(chessPiece);
         for(int row = 0;row < Constant.CHESSBOARD_ROW_SIZE.getNum();row++){
@@ -351,7 +352,7 @@ public class Chessboard implements Serializable {
                 ChessboardPoint dest = new ChessboardPoint(row,col);
                 if(getChessPieceAt(dest) != null && getChessPieceAt(dest).getOwner() != chessPiece.getOwner()){
                     if (chessPiece.canCapture(getChessPieceAt(dest))) {
-                        score += getChessPieceAt(dest).getRank() * (10 - calculateDistance(point, dest))^2;
+                        score += model.distanceWeight[chessPiece.getRank()][getChessPieceAt(dest).rank] * (10 - calculateDistance(point, dest)) * (10 - calculateDistance(point, dest)) ;
                     }
                 }
             }
@@ -370,6 +371,20 @@ public class Chessboard implements Serializable {
         return null;
     }
 
+    public int evaluateDraw(){
+        int score = 0;
+        for(int row = 0;row < Constant.CHESSBOARD_ROW_SIZE.getNum();row++){
+            for(int col = 0;col < Constant.CHESSBOARD_COL_SIZE.getNum();col++){
+                if(grid[row][col].getPiece() != null){
+                    if(grid[row][col].getPiece().getOwner() == PlayerColor.BLUE){
+                        score += grid[row][col].getPiece().getRank();
+                    }else
+                        score -= grid[row][col].getPiece().getRank();
+                }
+            }
+        }
+        return score;
+    }
 
 
 }

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 
 public class AI {
-    private final static int windowsize = 200;
+    public static AIModel model;
+    private final static int windowsize = 400;
+    public static void setModel(AIModel amodel){
+        model = amodel;
+    }
     public static Action findRandomAction(Chessboard chessboard, int depth, PlayerColor player) {
         ArrayList<Action> allactions = chessboard.getAllValidAction(player);
         System.out.println(allactions.size());
@@ -17,10 +21,10 @@ public class AI {
     public static Action findBestAction(Chessboard chessboard, int depth, PlayerColor player) {
 
         Action bestAction = null;
-        int alpha, beta;
+        double alpha, beta;
 
         if(depth > 3){
-            int originalscore = max (chessboard, depth - 2, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+            Double originalscore = max (chessboard, depth - 2, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
             alpha = originalscore - windowsize;
             beta = originalscore + windowsize;
         }else{
@@ -28,12 +32,12 @@ public class AI {
             beta = Integer.MAX_VALUE;
         }
 
-        int bestScore;
+        double bestScore;
         bestScore = Integer.MAX_VALUE;
         for (Action action : chessboard.getAllValidAction(player)) {
             Chessboard newChessboard = chessboard.clone();
             newChessboard.AImove(action);
-            int score = max(newChessboard, depth - 1, alpha, beta, player.getOppositePlayerColor());
+            double score = max(newChessboard, depth - 1, alpha, beta, player.getOppositePlayerColor());
             if (alpha >= score) {
                 //System.out.print("alpha cut faild");
                 score = max(newChessboard, depth - 1, Integer.MIN_VALUE, alpha, player.getOppositePlayerColor());
@@ -54,16 +58,16 @@ public class AI {
         return bestAction;
     }
 
-    static int max(Chessboard chessboard, int depth, int alpha, int beta, PlayerColor player) {
+    static double max(Chessboard chessboard, int depth, double alpha, double beta, PlayerColor player) {
         //System.out.print(depth);
         if (depth == 0 || chessboard.isBlueWin()||chessboard.isRedWin()) 
             return evaluate(chessboard, player);
     
-        int bestScore = Integer.MIN_VALUE;
+        double bestScore = Integer.MIN_VALUE;
         for (Action action : chessboard.getAllValidAction(player)) {
             Chessboard newChessboard = chessboard.clone();
             newChessboard.AImove(action);
-            int score;  
+            double score;  
             score = min(newChessboard, depth - 1, alpha, beta, player.getOppositePlayerColor());
     
             bestScore = Math.max(bestScore, score);
@@ -74,17 +78,17 @@ public class AI {
         return bestScore;
     }
     
-    static int min(Chessboard chessboard, int depth, int alpha, int beta, PlayerColor player) {
+    static double min(Chessboard chessboard, int depth, double alpha, double beta, PlayerColor player) {
         // 同max函数,对alpha和beta进行相反的比较和更新
         //System.out.print(depth);
         if (depth == 0 || chessboard.isBlueWin()||chessboard.isRedWin()) 
             return evaluate(chessboard, player);
         
-        int bestScore = Integer.MAX_VALUE;
+        double bestScore = Integer.MAX_VALUE;
         for (Action action : chessboard.getAllValidAction(player)) {
             Chessboard newChessboard = chessboard.clone();
             newChessboard.AImove(action);
-            int score;
+            double score;
             score = max(newChessboard, depth - 1, alpha, beta, player.getOppositePlayerColor());
             bestScore = Math.min(bestScore, score);
             beta = Math.min(beta, bestScore);
@@ -121,16 +125,14 @@ public class AI {
                 continue;
             }
             if (chessPiece.getOwner() == player) {
-                score += 500;
-                score += chessPiece.rank * 100;
-                score += chessboard.caculateCaptureScore(chessPiece) * 5;
-                score -= chessboard.getEnemyDistance(chessPiece);
+                score += model.playerWeight[chessPiece.rank];
+                score += chessboard.caculateCaptureScore(chessPiece,model) * 5;
+                score -= chessboard.getEnemyDistance(chessPiece) * model.dendistanceWeight[chessPiece.rank];
 
             } else {
-                score -= 500;
-                score -= chessPiece.rank * 100;
-                score -= chessboard.caculateCaptureScore(chessPiece) * 5;
-                score += chessboard.getEnemyDistance(chessPiece);
+                score -= model.playerWeight[chessPiece.rank];
+                score -= chessboard.caculateCaptureScore(chessPiece,model) * 5;
+                score += chessboard.getEnemyDistance(chessPiece) * model.dendistanceWeight[chessPiece.rank];
             }
         }
         return score;
