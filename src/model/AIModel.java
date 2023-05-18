@@ -68,6 +68,14 @@ public class AIModel{
         return model;
     }
 
+    public void copyModel(AIModel model){
+        this.name = model.name;
+        this.playerWeight = model.playerWeight;
+        this.oppositeWeight = model.oppositeWeight;
+        this.distanceWeight = model.distanceWeight;
+        this.dendistanceWeight = model.dendistanceWeight;
+    }
+
     private void initialize(){
         for(int i = 0; i < 9; i++){
             playerWeight[i] = 500 + 100 * i;
@@ -122,9 +130,10 @@ public class AIModel{
     }
 
     public static void main(String[] args) {
-        AIModel model = new AIModel("advanced");
-        model.initialize();
-        model = model.setModel(model);
+        AIModel model = new AIModel("modelB");
+        // model.initialize();
+        // model = model.setModel(model);
+        model.copyModel(new AIModel("basic"));
         try {
             model.saveModel();
             model.loadModel();

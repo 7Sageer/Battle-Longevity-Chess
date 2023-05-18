@@ -29,8 +29,8 @@ public class Trainer {
     private PlayerColor currentPlayer = PlayerColor.BLUE;
     private ChessGameFrame game;
     private int AIDepth = 0;
-    public static AIModel modelA = new AIModel("basic");
-    public static AIModel modelB = new AIModel("advanced");
+    public static AIModel modelA = new AIModel("modelA");
+    public static AIModel modelB = new AIModel("modelB");
     
     //增加了构造器的参数（添加game用于显示对话框）
     public Trainer(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
@@ -107,25 +107,25 @@ public class Trainer {
             return;
         } else if (temp == 1) {
             System.out.println("Blue Wins!");
-            //modelB = AIModel.radientDescent(modelB, modelA);
+            modelB = AIModel.radientDescent(modelB, modelA);
             
-            // try {
-            //     modelA.saveModel();
-            //     modelB.saveModel();
-            // } catch (IOException e) {
-            //     e.printStackTrace();
-            // }
+            try {
+                modelA.saveModel();
+                modelB.saveModel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (temp == 2) {
             System.out.println(modelA);
             System.out.println(modelB);
             System.out.println("Red Wins!"); 
-            //modelA = AIModel.radientDescent(modelA, modelB);
-            // try {
-            //     modelB.saveModel();
-            //     modelA.saveModel();
-            // } catch (IOException e) {
-            //     e.printStackTrace();
-            // }
+            modelA = AIModel.radientDescent(modelA, modelB);
+            try {
+                modelB.saveModel();
+                modelA.saveModel();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } 
         game.dispose();
         Chessboard.currentTurn = 0;
