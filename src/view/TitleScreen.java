@@ -10,15 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TitleScreen extends CommonFrame {
-    private float buttonfontSize = 40f;
-
-    private void addButton(JPanel panel, String buttonText, Color buttonColor, ActionListener listener) {
-        JButton button = new JButton(buttonText);
-        button.setFont(FontsManager.getFont(buttonfontSize,1));
-        button.setBackground(buttonColor);
-        button.addActionListener(listener);
-        panel.add(button);
-    }
 
     public TitleScreen() {
         super();
@@ -48,7 +39,7 @@ public class TitleScreen extends CommonFrame {
         addButton(buttonPanel, AIbutton,200,50, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AIFrame aiFrame = new AIFrame();
+                new AIFrame();
                 dispose();
             }
         });
@@ -70,7 +61,7 @@ public class TitleScreen extends CommonFrame {
         addButton(buttonPanel, onlinebutton,200,50, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OnlineFrame onlineFrame = new OnlineFrame();
+                new OnlineFrame();
             }
         });
         
@@ -78,7 +69,7 @@ public class TitleScreen extends CommonFrame {
         addButton(buttonPanel, settingbutton,200,50, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SettingFrame settingFrame = new SettingFrame();
+                new SettingFrame();
             }
         });
 
@@ -87,7 +78,7 @@ public class TitleScreen extends CommonFrame {
         addButton(buttonPanel, helpbutton,200,50, 30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                HelpFrame helpFrame = new HelpFrame();
+                new HelpFrame();
 
             }
         });

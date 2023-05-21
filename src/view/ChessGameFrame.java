@@ -131,7 +131,7 @@ public class ChessGameFrame extends JFrame {
         System.out.println("Click restart");
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-            int AIdepth = gameController.getAIDepth();
+            int AIdepth = gameController.getgamemode();
             Chessboard.currentTurn = 0;
             GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, AIdepth);
             mainFrame.setGameController(gameController);
@@ -227,7 +227,7 @@ public class ChessGameFrame extends JFrame {
     private void addSettingButton(){
         addButton("Settings", 6, e -> {
             System.out.println("Click settings");
-            SettingFrame settingFrame = new SettingFrame();
+            new SettingFrame();
         });
     }
     
@@ -248,7 +248,7 @@ public class ChessGameFrame extends JFrame {
             System.out.println("Click back");
             Chessboard.currentTurn = 0;
             dispose();
-            TitleScreen titleScreen = new TitleScreen();
+            new TitleScreen();
         });
     }
 

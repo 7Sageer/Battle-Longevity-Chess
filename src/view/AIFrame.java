@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 
 public class AIFrame extends CommonFrame{
 
-    private float buttonfontsize = 30f;
-
     public AIFrame() {
         super();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +49,20 @@ public class AIFrame extends CommonFrame{
                 AI.setModel(new AIModel(comboBox.getSelectedItem().toString()));
             }
         });
+
+        JButton idiotbutton = new JButton("Idiot");
+        addButton(buttonpanel, idiotbutton, 300,200,30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 100);
+                mainFrame.setGameController(gameController);
+                mainFrame.setVisible(true);
+                SettingFrame.getGameFrame(mainFrame);
+                dispose();
+            }
+        });
+
 
         JButton easybutton = new JButton("Easy");
         addButton(buttonpanel, easybutton, 300,200,30, new ActionListener() {
@@ -95,7 +107,7 @@ public class AIFrame extends CommonFrame{
         addButton(buttonpanel, backbutton, 300,200,30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TitleScreen titleScreen = new TitleScreen();
+                new TitleScreen();
                 dispose();
             }
         });

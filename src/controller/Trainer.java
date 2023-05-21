@@ -2,13 +2,9 @@ package controller;
 
 import java.io.IOException;
 
-import listener.GameListener;
 import model.*;
 import model.Action.Type;
 import resourcePlayer.FontsManager;
-import resourcePlayer.Sound;
-import view.CellComponent;
-import view.ChessComponent;
 import view.ChessGameFrame;
 import view.ChessboardComponent;
 
@@ -96,7 +92,7 @@ public class Trainer {
             return 1;
         if(model.getAllValidAction(currentPlayer).isEmpty())
             return currentPlayer == PlayerColor.BLUE ? 2 : 1;
-        if(model.currentTurn >= 100){
+        if(Chessboard.currentTurn >= 100){
             return model.evaluateDraw() > 0 ? 1 : 2;
         }
         return 0;

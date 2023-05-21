@@ -33,8 +33,6 @@ public class ChessboardComponent extends JComponent {
 
 
     private GameController gameController;
-    private Trainer trainer;
-
     public ChessboardComponent(int chessSize) {
         CHESS_SIZE = chessSize;
         int width = CHESS_SIZE * 7;
@@ -268,7 +266,6 @@ public class ChessboardComponent extends JComponent {
     } 
 
     public void registerTrainer(Trainer trainer) {
-        this.trainer = trainer;
     }
         
     

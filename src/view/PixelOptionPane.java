@@ -39,7 +39,8 @@ public class PixelOptionPane extends JOptionPane {
 
         public static void main(String[] args) {
             FontsManager.PixelFonts();
-            new PixelOptionPane().showMessageDialog("Hello", "Title", JOptionPane.INFORMATION_MESSAGE,40);
+            new PixelOptionPane();
+            PixelOptionPane.showMessageDialog("Hello", "Title", JOptionPane.INFORMATION_MESSAGE,40);
         }
 
         

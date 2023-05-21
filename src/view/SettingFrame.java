@@ -18,8 +18,8 @@ public class SettingFrame extends CommonFrame {
     }
 
     public void addComponent(JPanel panel){
-        JLabel volumeLabel = addLabel(panel, "volume:", 40);
-        JSlider volumeSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, (int)BGM.getVolume(), new javax.swing.event.ChangeListener() {
+        addLabel(panel, "volume:", 40);
+        addSlider(panel, JSlider.HORIZONTAL, 0, 100, (int)BGM.getVolume(), new javax.swing.event.ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int value = ((JSlider) e.getSource()).getValue();
@@ -27,8 +27,8 @@ public class SettingFrame extends CommonFrame {
             }
         });
 
-        JLabel soundLabel = addLabel(panel, "sounds:", 40);
-        JSlider soundSlider = addSlider(panel, JSlider.HORIZONTAL, 0, 100, (int)Sound.getVolume(), new javax.swing.event.ChangeListener() {
+        addLabel(panel, "sounds:", 40);
+        addSlider(panel, JSlider.HORIZONTAL, 0, 100, (int)Sound.getVolume(), new javax.swing.event.ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int value = ((JSlider) e.getSource()).getValue();

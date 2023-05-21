@@ -20,7 +20,7 @@ public class CellComponent extends JPanel {
     private Color background;
     private boolean highlight = false;
     public ChessboardComponent chessboardComponent;
-    private int theme = 0;
+    //private int theme = 0;
 
     public CellComponent(Color color, Point location, int size) {
         setLayout(new GridLayout(1,1));
