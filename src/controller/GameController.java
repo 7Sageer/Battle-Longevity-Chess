@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
  * [in this demo the request methods are onPlayerClickCell() and onPlayerClickChessPiece()]
  *
 */
+
 public class GameController implements GameListener {
 
 
@@ -30,31 +31,30 @@ public class GameController implements GameListener {
     private ChessboardComponent view;
     private PlayerColor currentPlayer = PlayerColor.BLUE;
     private ChessGameFrame game;
-    private int AIDepth = 0;
+    private int gamemode = 0;
     private PlayerColor AIcolor;
     public static boolean isTimer = false;
-    private boolean isGameOver = false;
 
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
 
     //增加了构造器的参数（添加game用于显示对话框）
-    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
-        start(view, model, game, AIDepth);
+    public GameController(ChessboardComponent view, Chessboard model, ChessGameFrame game, int gamemode) {
+        start(view, model, game, gamemode);
     }
 
-    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
+    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, int gamemode) {
         this.view = view;
         this.model = model;
         this.game = game;
         this.currentPlayer = PlayerColor.BLUE;
-        this.AIDepth = AIDepth;
+        this.gamemode = gamemode;
+
         view.registerController(this);
-        initialize();
         view.initiateChessComponent(model);
         view.repaint();
-        if (AIDepth != 0) {
+        if (gamemode != 0) {
             //random color
             AI.setModel(new AIModel("advanced"));
             if (Math.random() > 0.5) {
@@ -70,22 +70,12 @@ public class GameController implements GameListener {
 
     }
 
-
-    private void initialize() {
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                //目前没想到怎么用，用于读档？
-                //读档写完了，好像还是没用
-            }
-        }
-    }
-
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
         checkWin();
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
-        if((!(AIDepth != 0 && currentPlayer == AIcolor))){
+        if((!((gamemode != 0||gamemode < 200) && currentPlayer == AIcolor))){
             if(isTimer){
                 game.setTimeLabel(String.format("Time Left: %ds", 30));
                 testTimer(30, currentPlayer,Chessboard.currentTurn);
@@ -97,9 +87,13 @@ public class GameController implements GameListener {
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
         //view.paintImmediately(-1000, -1000, 3000, 3000);
 
-        if(AIDepth != 0){
+        if((gamemode != 0||gamemode < 200)){
             if(currentPlayer == AIcolor){
                 AImove();
+            }
+        }else if(gamemode >= 200){
+            if(currentPlayer == AIcolor){
+                networkMove();
             }
         }
         view.repaint();
@@ -109,12 +103,33 @@ public class GameController implements GameListener {
             e.printStackTrace();
         }
     }
+    
+    private void networkMove(){
+        Action action = new Action();
+        //wait to do: recieve action from network
+        //to do: recieve action from network
+        if(action.type == Type.MOVE){
+            move(action.getFrom(), action.getTo());
+        }
+        else if(action.type == Type.CAPTURE){
+            capture(action.getFrom(), action.getTo());
+        }
+        //to do: send action to network
+        swapColor();
+        
+    }
+
     private void AImove(){
         //view.repaint();
         Thread t= new Thread(new Runnable() {
             @Override
             public void run() {
-                Action action = AI.findBestAction(model, AIDepth, AIcolor);
+                Action action = new Action();
+                if(gamemode == 100){
+                    action = AI.findRandomAction(model, gamemode, currentPlayer);
+                }else{
+                    action = AI.findBestAction(model, gamemode, currentPlayer);
+                }
 
                 if(action.type == Type.MOVE){
                     move(action.getFrom(), action.getTo());
@@ -159,10 +174,10 @@ public class GameController implements GameListener {
             System.out.println("Blue Wins!");
             game.showDialog("Blue Wins!");
             if(UserAdministrator.getCurrentUser() != null){
-                if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+                if(AIcolor == PlayerColor.BLUE&&gamemode!=0){
                     UserAdministrator.lose();
                 }
-                else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
+                else if(AIcolor == PlayerColor.RED&&gamemode!=0){
                     UserAdministrator.win();
                 }
         }
@@ -175,10 +190,10 @@ public class GameController implements GameListener {
             System.out.println("Red Wins!");
             game.showDialog("Red Wins!");
             if(UserAdministrator.getCurrentUser() != null){
-                if(AIcolor == PlayerColor.BLUE&&AIDepth!=0){
+                if(AIcolor == PlayerColor.BLUE&&gamemode!=0){
                 UserAdministrator.win();
             }
-            else if(AIcolor == PlayerColor.RED&&AIDepth!=0){
+            else if(AIcolor == PlayerColor.RED&&gamemode!=0){
                 UserAdministrator.lose();
             }}
             
@@ -331,7 +346,7 @@ public class GameController implements GameListener {
             int fromY = Integer.parseInt(matcher.group(2));
             int toX = Integer.parseInt(matcher.group(3));
             int toY = Integer.parseInt(matcher.group(4));
-            PlayerColor color = matcher.group(5).equals("BLUE") ? PlayerColor.BLUE : PlayerColor.RED;
+            //PlayerColor color = matcher.group(5).equals("BLUE") ? PlayerColor.BLUE : PlayerColor.RED;
             if(matcher.group(7).toUpperCase().equals("MOVE"))
                 actions.add(new Action(new ChessboardPoint(fromX, fromY), new ChessboardPoint(toX, toY), Type.MOVE));
             else
@@ -347,7 +362,7 @@ public class GameController implements GameListener {
 
     public void undo() {
         int i = 1;
-        if(AIDepth != 0&&Chessboard.currentTurn!=1)
+        if(gamemode != 0&&Chessboard.currentTurn!=1)
             i = 2;
         for(int j = 0; j < i; j++){
             if (Chessboard.historyAction.size() > 0) {
@@ -376,7 +391,7 @@ public class GameController implements GameListener {
 
     public void redo(){
         int i = 1;
-        if(AIDepth != 0)
+        if(gamemode != 0)
             i = 2;
         for(int j = 0; j < i; j++){
             if(Chessboard.historyAction.size() - 1 > Chessboard.currentTurn){
@@ -394,7 +409,7 @@ public class GameController implements GameListener {
             }
     }
     }
-    public int getAIDepth(){return AIDepth;}
+    public int getgamemode(){return gamemode;}
 
 
 
@@ -456,8 +471,8 @@ public Chessboard getModel() {//getter and setter，下面都是
         this.game = game;
     }
 
-    public void setAIDepth(int AIDepth) {
-        this.AIDepth = AIDepth;
+    public void setgamemode(int gamemode) {
+        this.gamemode = gamemode;
     }
 
     public PlayerColor getAIcolor() {
