@@ -30,8 +30,7 @@ Jungle Chess，又称斗寿棋，是一种现代中国棋类游戏。游戏在�
 ## 游戏初始化
 游戏开始时，所有16个棋子都放置在棋盘上。初始状态如下图所示：
 
-![Initial State of Jungle](https://pic.ntimg.cn/file/20200410/23136264_173349327424_2.jpg)
-
+![Initial State of Jungle](https://github.com/7Sageer/Battle-Longevity-Chess/blob/main/%E7%A4%BA%E4%BE%8B%E5%9B%BE.jpg)
 ## 棋子移动
 每回合玩家可以移动一枚自己的棋子到相邻的空格或者吃掉对手的一枚棋子。但是需要注意以下规则：
 

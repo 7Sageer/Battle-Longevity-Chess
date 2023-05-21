@@ -12,6 +12,7 @@ public class NetWork {
     public void chatOutput(Socket socket) {
         Thread thread = new Thread(() -> {
             try {
+//                socket.shutdownInput();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 String line;
@@ -20,6 +21,7 @@ public class NetWork {
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
                 }
+//                socket.shutdownOutput();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -31,11 +33,13 @@ public class NetWork {
     public void chatInput(Socket socket) {
         Thread thread = new Thread(() -> {
             try {
+//                socket.shutdownOutput();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String line;
                 while ((line = bufferedReader.readLine()) != null){
                     System.out.println(line);
                 }
+//                socket.shutdownInput();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,6 +50,7 @@ public class NetWork {
     public void actionOutput(Socket socket){
         Thread thread = new Thread(() ->{
            try {
+//               socket.shutdownInput();
                FileInputStream fileInputStream = new FileInputStream("temp.txt");
                int integer;
                while ((integer = fileInputStream.read()) != 0){
@@ -55,6 +60,7 @@ public class NetWork {
                    }
                    objectOutput.flush();
                }
+//               socket.shutdownOutput();
            }catch (IOException e){
                e.printStackTrace();
            }
@@ -63,17 +69,19 @@ public class NetWork {
     }
 
     public Action actionInput(Socket socket) {
+
         Thread thread = new Thread(() -> {
             try {
+//                socket.shutdownOutput();
                 ObjectInput objectInput = new ObjectInputStream(new ObjectInputStream(socket.getInputStream()));
                 NetWork.action = (Action) objectInput.readObject();
+//                socket.shutdownInput();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         });
-        thread.start();
         return action;
     }
 }
