@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 public class TitleScreen extends CommonFrame {
 
@@ -49,7 +50,12 @@ public class TitleScreen extends CommonFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 0);
+                GameController gameController = null;
+                try {
+                    gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 0);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);

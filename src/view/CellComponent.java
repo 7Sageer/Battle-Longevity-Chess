@@ -41,7 +41,11 @@ public class CellComponent extends JPanel {
                 repaint();
             }
             public void mousePressed(MouseEvent e) {
-                chessboardComponent.MousePress(location);
+                try {
+                    chessboardComponent.MousePress(location);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 

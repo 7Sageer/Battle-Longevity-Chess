@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -123,11 +124,15 @@ public class ChessGameFrame extends JFrame {
         add(button);
 
         button.addActionListener(e -> {
-            restart();
+            try {
+                restart();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });  
     }
 
-    public void restart(){
+    public void restart() throws FileNotFoundException {
         System.out.println("Click restart");
             dispose();
             ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
@@ -213,14 +218,22 @@ public class ChessGameFrame extends JFrame {
     private void addUndoButton(){
         addButton("Undo", 4, e -> {
             System.out.println("Click undo");
-            gameController.undo();
+            try {
+                gameController.undo();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
     
     private void addRedoButton(){
         addButton("Redo", 5, e -> {
             System.out.println("Click redo");
-            gameController.redo();
+            try {
+                gameController.redo();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
     

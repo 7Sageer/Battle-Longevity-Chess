@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicReference;
 public class NetWork implements Serializable{
+    File file = new File("src/substitute");
     public static Action action = null;
     //聊天输出
     public void chatOutput(Socket socket) {
@@ -50,15 +51,17 @@ public class NetWork implements Serializable{
     }
 
     public void actionOutput(Socket socket) throws IOException, ClassNotFoundException {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        FileInputStream fileInputStream = new FileInputStream("template");
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        String s = null;
-        while ((s = (String) objectInputStream.readObject()) != null){
-            if(Chessboard.currentTurn > 0){
-                objectOutputStream.writeObject(Chessboard.historyAction.get(Chessboard.currentTurn - 1));
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            FileInputStream fileInputStream = new FileInputStream(file);
+            while (true) {
+                if (Chessboard.currentTurn > 0) {
+                    objectOutputStream.writeObject(Chessboard.historyAction.get(Chessboard.currentTurn - 1));
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write("");
+                    fileWriter.flush();
+                    fileWriter.close();
+                }
             }
-        }
     }
         public Action actionInput (Socket socket) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());

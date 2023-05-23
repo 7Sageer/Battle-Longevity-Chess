@@ -3,21 +3,26 @@ package model;
 import model.Action.Type;
 import view.ChessboardComponent;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
 public class Chessboard implements Serializable {
+    File file = new File("substitute");
     private Cell[][] grid;
     public static ArrayList<Action> historyAction = new ArrayList<Action>();
     public static int currentTurn = 0;
-
-    public Chessboard() {
+    public Chessboard() throws FileNotFoundException {
         initialize();
     }
+    private FileOutputStream fileOutputStream = new FileOutputStream("substitute");
+    public static ObjectOutputStream actionObjectOutputStream;
+
+
     public void initialize() {
         grid = new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
         initGrid();
@@ -124,7 +129,7 @@ public class Chessboard implements Serializable {
         currentTurn++;
     }
 
-    public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) {
+    public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) throws IOException {
         if (!isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");
         }else{
@@ -134,6 +139,7 @@ public class Chessboard implements Serializable {
                 System.out.println("clear");
             }
             historyAction.add(new Action(src,dest,Type.CAPTURE,getChessPieceAt(dest)));
+            actionObjectOutputStream.writeObject(historyAction.get(historyAction.size() - 1));
             removeChessPiece(dest);
             setChessPiece(dest, removeChessPiece(src));
             currentTurn++;
@@ -316,7 +322,12 @@ public class Chessboard implements Serializable {
 
     public Chessboard clone(){
         // 创建一个新的棋盘对象
-        Chessboard clonedBoard = new Chessboard();
+        Chessboard clonedBoard = null;
+        try {
+            clonedBoard = new Chessboard();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         // 遍历整个棋盘
         for (int row = 0; row < Constant.CHESSBOARD_ROW_SIZE.getNum(); row++) {
             for (int col = 0; col < Constant.CHESSBOARD_COL_SIZE.getNum(); col++) {
