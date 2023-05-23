@@ -47,17 +47,8 @@ public class OnlineFrame extends CommonFrame {
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
-                Thread thread1 = new Thread(() -> {
-                    netWork.actionOutput(socket);
-                });
-                Thread thread2 = new Thread(() ->{//创建一个用来移动棋子的线程
-                    Action action = null;
-                    while ((action = netWork.actionInput(socket)) != null){//无限使用的触发器
-                        gameController.networkMove(action);
-                    }
-                });
-                thread1.start();
-                thread2.start();
+                netWork.actionOutput(socket);
+                    gameController.networkMove(netWork.actionInput(socket));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }finally {
@@ -82,26 +73,14 @@ public class OnlineFrame extends CommonFrame {
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
-                Thread thread1 = new Thread(() -> {
-                    netWork.actionOutput(socket);
-                });
-                Thread thread2 = new Thread(() ->{
-                    Action action = null;
-                    while ((action = netWork.actionInput(socket)) != null){
-                        gameController.networkMove(action);
-                    }
-                });
-                thread1.start();
-                thread2.start();
+                netWork.actionOutput(socket);
+                gameController.networkMove(netWork.actionInput(socket));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }finally {
 //                System.out.println(ip);
                 dispose();
             }
-
-
-
             //start game
 
         });
