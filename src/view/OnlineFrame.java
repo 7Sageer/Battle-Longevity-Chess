@@ -11,6 +11,7 @@ import model.Chessboard;
 
 import java.awt.FlowLayout;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -36,9 +37,11 @@ public class OnlineFrame extends CommonFrame {
 
             //todo: connect as server//这里其实直接启动棋盘就行
             //start game
-            ServerSocket serverSocket = null;
+
+
+
             try {//尝试启动联网并且开启棋盘
-                serverSocket = new ServerSocket(9002);
+                ServerSocket serverSocket = new ServerSocket(9002);
                 Socket socket = serverSocket.accept();
                 NetWork netWork = new NetWork();
                 netWork.actionOutput(socket);
@@ -47,11 +50,25 @@ public class OnlineFrame extends CommonFrame {
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
-                netWork.actionOutput(socket);
-                    gameController.networkMove(netWork.actionInput(socket));
-            } catch (IOException ex) {
+                Thread thread = new Thread(() -> {
+                    try {
+                        netWork.actionOutput(socket);
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+                Thread thread1 = new Thread(() -> {
+                    try {
+                        gameController.networkMove(netWork.actionInput(socket));
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+                thread.start();
+                thread1.start();
+            } catch (IOException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
-            }finally {
+            } finally {
 //                System.out.println(ip);
                 dispose();
             }
@@ -73,11 +90,27 @@ public class OnlineFrame extends CommonFrame {
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
-                netWork.actionOutput(socket);
-                gameController.networkMove(netWork.actionInput(socket));
-            } catch (IOException ex) {
+                Thread thread = new Thread(() -> {
+                    try {
+                        netWork.actionOutput(socket);
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+                Thread thread1 = new Thread(() -> {
+                    if(netWork.getAction() != null) {
+                        try {
+                            gameController.networkMove(netWork.actionInput(socket));
+                        } catch (IOException | ClassNotFoundException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                });
+                thread.start();
+                thread1.start();
+            } catch (IOException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
-            }finally {
+            } finally {
 //                System.out.println(ip);
                 dispose();
             }
