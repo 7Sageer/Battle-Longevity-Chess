@@ -57,6 +57,7 @@ public class NetWork {
                    ObjectOutput objectOutput = new ObjectOutputStream(socket.getOutputStream());
                    if(Chessboard.historyAction.size() > 0) {
                        objectOutput.writeObject(Chessboard.historyAction.get(Chessboard.currentTurn));
+                       System.out.println("Output Success");
                    }
                    objectOutput.flush();
                }
@@ -76,6 +77,7 @@ public class NetWork {
                 ObjectInput objectInput = new ObjectInputStream(new ObjectInputStream(socket.getInputStream()));
                 NetWork.action = (Action) objectInput.readObject();
 //                socket.shutdownInput();
+                System.out.println("Input Success");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {

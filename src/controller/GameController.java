@@ -10,6 +10,7 @@ import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,11 +92,12 @@ public class GameController implements GameListener {
             if(currentPlayer == AIcolor){
                 AImove();
             }
-        }else if(gamemode >= 200){
-            if(currentPlayer == AIcolor){
-                networkMove();
-            }
         }
+//        else if(gamemode >= 200){
+//            if(currentPlayer == AIcolor){
+//                networkMove();
+//            }
+//        }
         view.repaint();
         try {
             saveGame("temp.txt");
@@ -104,8 +106,8 @@ public class GameController implements GameListener {
         }
     }
     
-    private void networkMove(){
-        Action action = new Action();
+    public void networkMove(Action action){
+
         //wait to do: recieve action from network
         //to do: recieve action from network
         if(action.type == Type.MOVE){
@@ -236,6 +238,7 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
+
         if (selectedPoint == null) {
             if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                 selectedPoint = point;
@@ -250,12 +253,28 @@ public class GameController implements GameListener {
                 //
                 component.setSelected(true);
                 component.repaint();
+                try{//作为传输对象的监视器，一旦检测到文件有输入流则激活对象传输
+                    FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
+                    fileOutputStream.write(114514);
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
             view.removePossibleMove();
             component.setSelected(false);
             component.repaint();
+            try{//作为传输对象的监视器，一旦检测到文件有输入流则激活对象传输
+                FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
+                fileOutputStream.write(114514);
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             if(model.isValidCapture(selectedPoint, point))
                 capture(selectedPoint, point);
