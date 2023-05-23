@@ -2,12 +2,14 @@ package controller;
 
 import model.Action;
 import model.Chessboard;
+import model.ChessboardPoint;
+import view.OnlineFrame;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicReference;
-public class NetWork {
-    public static Action action;
+public class NetWork implements Serializable{
+    public static Action action = null;
     //聊天输出
     public void chatOutput(Socket socket) {
         Thread thread = new Thread(() -> {
@@ -47,44 +49,27 @@ public class NetWork {
         thread.start();
     }
 
-    public void actionOutput(Socket socket){
-        Thread thread = new Thread(() ->{
-           try {
-//               socket.shutdownInput();
-               FileInputStream fileInputStream = new FileInputStream("temp.txt");
-               int integer;
-               while ((integer = fileInputStream.read()) != 0){
-                   ObjectOutput objectOutput = new ObjectOutputStream(socket.getOutputStream());
-                   if(Chessboard.historyAction.size() > 0) {
-                       objectOutput.writeObject(Chessboard.historyAction.get(Chessboard.currentTurn));
-                       System.out.println("Output Success");
-                   }
-                   objectOutput.flush();
-               }
-//               socket.shutdownOutput();
-           }catch (IOException e){
-               e.printStackTrace();
-           }
-        });
-        thread.start();
-    }
-
-    public Action actionInput(Socket socket) {
-
-        Thread thread = new Thread(() -> {
-            try {
-//                socket.shutdownOutput();
-                ObjectInput objectInput = new ObjectInputStream(new ObjectInputStream(socket.getInputStream()));
-                NetWork.action = (Action) objectInput.readObject();
-//                socket.shutdownInput();
-                System.out.println("Input Success");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+    public void actionOutput(Socket socket) throws IOException, ClassNotFoundException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        FileInputStream fileInputStream = new FileInputStream("template");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        String s = null;
+        while ((s = (String) objectInputStream.readObject()) != null){
+            if(Chessboard.currentTurn > 0){
+                objectOutputStream.writeObject(Chessboard.historyAction.get(Chessboard.currentTurn - 1));
             }
-        });
-        thread.start();
-        return action;
+        }
     }
+        public Action actionInput (Socket socket) throws IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        Action action1 = null;
+        while ((action1 = (Action) objectInputStream.readObject()) != null){
+            action = (Action) objectInputStream.readObject();
+            return action;
+        }
+            return null;
+        }
+        public Action getAction () {
+            return action;
+        }
 }

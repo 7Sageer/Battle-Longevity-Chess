@@ -20,7 +20,7 @@ import java.net.Socket;
  * 4.释放资源
  */
 public class ServerDemo {
-    public static void linkStart() throws IOException {
+    public static void linkStart() throws IOException, ClassNotFoundException {
 
         // 创建服务端socket对象
         ServerSocket serverSocket = new ServerSocket(9002);

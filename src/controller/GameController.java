@@ -253,28 +253,30 @@ public class GameController implements GameListener {
                 //
                 component.setSelected(true);
                 component.repaint();
-                try{//作为传输对象的监视器，一旦检测到文件有输入流则激活对象传输
-                    FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
-                    fileOutputStream.write(114514);
-                }catch (FileNotFoundException e){
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    String test = "success input";
+//                    FileOutputStream fileOutputStream = new FileOutputStream("template");
+//                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//                    objectOutputStream.writeObject(test);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
             view.removePossibleMove();
             component.setSelected(false);
             component.repaint();
-            try{//作为传输对象的监视器，一旦检测到文件有输入流则激活对象传输
-                FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
-                fileOutputStream.write(114514);
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
+            try {
+                String test = "success input";
+                FileOutputStream fileOutputStream = new FileOutputStream("template");
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(test);
+                objectOutputStream.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
         } else {
             if(model.isValidCapture(selectedPoint, point))
                 capture(selectedPoint, point);

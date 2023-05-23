@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
  */
 public class ClientDemo {
 
-    public static void linkStart() throws IOException {
+    public static void linkStart() throws IOException, ClassNotFoundException {
         // 创建客户端socket对象
         // 创建流套接字并将其连接到指定IP地址的指定端口号
 
