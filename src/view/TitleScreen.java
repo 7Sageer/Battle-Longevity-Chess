@@ -62,6 +62,7 @@ public class TitleScreen extends CommonFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new OnlineFrame();
+                dispose();
             }
         });
         

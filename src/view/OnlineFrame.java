@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.GameController;
+import controller.Server;
 import model.Chessboard;
 
 import java.awt.FlowLayout;
@@ -32,11 +33,11 @@ public class OnlineFrame extends CommonFrame {
             //todo: connect as server
 
             //start game
-            // ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-            // GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 200);
-            // mainFrame.setGameController(gameController);
-            // mainFrame.setVisible(true);
-            // SettingFrame.getGameFrame(mainFrame);
+            ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 200);
+            mainFrame.setGameController(gameController);
+            mainFrame.setVisible(true);
+            SettingFrame.getGameFrame(mainFrame);
             
             dispose();
         });
@@ -48,11 +49,11 @@ public class OnlineFrame extends CommonFrame {
             //todo: connect as client
 
             //start game
-            // ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-            // GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 201);
-            // mainFrame.setGameController(gameController);
-            // mainFrame.setVisible(true);
-            // SettingFrame.getGameFrame(mainFrame);
+            ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
+            GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 201);
+            mainFrame.setGameController(gameController);
+            mainFrame.setVisible(true);
+            SettingFrame.getGameFrame(mainFrame);
             
             
             dispose();

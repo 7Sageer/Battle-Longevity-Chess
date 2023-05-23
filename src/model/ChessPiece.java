@@ -1,7 +1,8 @@
 package model;
 
+import java.io.Serializable;
 
-public class ChessPiece {
+public class ChessPiece implements Serializable {
     // the owner of the chess
     private PlayerColor owner;
 
