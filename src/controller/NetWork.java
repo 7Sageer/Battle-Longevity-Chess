@@ -84,6 +84,7 @@ public class NetWork {
                 throw new RuntimeException(e);
             }
         });
+        thread.start();
         return action;
     }
 }
