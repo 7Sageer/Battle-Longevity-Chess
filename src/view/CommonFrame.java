@@ -44,7 +44,7 @@ public class CommonFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 播放声音
-                String soundPath = "resource\\sounds\\click-button.wav"; // 替换为您的声音文件路径
+                String soundPath = "resource\\sounds\\click-button.wav"; 
                 Sound.playSound(soundPath);
             }
         });

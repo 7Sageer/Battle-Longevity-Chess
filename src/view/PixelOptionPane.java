@@ -27,6 +27,11 @@ public class PixelOptionPane extends JOptionPane {
             button.setPreferredSize(new Dimension(200, 80));
             button.setBackground(Color.LIGHT_GRAY);
             button.addActionListener(e -> dialog.dispose());
+            button.addActionListener(e -> {
+                // 播放声音
+                String soundPath = "resource\\sounds\\click-button.wav"; 
+                resourcePlayer.Sound.playSound(soundPath);
+            });
             dialog.add(button, "South");
 
             
