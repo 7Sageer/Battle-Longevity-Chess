@@ -72,7 +72,7 @@ public class GameController implements GameListener {
     }
 
     // after a valid move swap the player 即下个回合(包含AI)
-    protected void swapColor() throws FileNotFoundException {
+    protected void swapColor() {
         checkWin();
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
@@ -106,7 +106,7 @@ public class GameController implements GameListener {
         }
     }
     
-    public void networkMove(Action action) throws IOException {
+    public void networkMove(Action action){
 
         //wait to do: recieve action from network
         //to do: recieve action from network
@@ -134,26 +134,14 @@ public class GameController implements GameListener {
                 }
 
                 if(action.type == Type.MOVE){
-                    try {
-                        move(action.getFrom(), action.getTo());
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                    move(action.getFrom(), action.getTo());
                 }
                 else if(action.type == Type.CAPTURE){
-                    try {
-                        capture(action.getFrom(), action.getTo());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    capture(action.getFrom(), action.getTo());
                 }
                 currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
 
-                try {
-                    swapColor();
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                swapColor();
                 //view.repaint();
             }
         });
@@ -162,7 +150,7 @@ public class GameController implements GameListener {
     }
 
     //重载一个没有AI的swapColor
-    private void swapColor(boolean AI) throws FileNotFoundException {
+    private void swapColor(boolean AI){
         checkWin();
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         view.removePossibleMove();
@@ -179,7 +167,7 @@ public class GameController implements GameListener {
             return currentPlayer == PlayerColor.BLUE ? 2 : 1;
         return 0;
     }
-    private void checkWin() throws FileNotFoundException {
+    private void checkWin(){
         int temp = win();
         if(Chessboard.currentTurn < 3)
             return;
@@ -215,7 +203,7 @@ public class GameController implements GameListener {
         }
     }
 
-    private void capture(ChessboardPoint from, ChessboardPoint to) throws IOException {
+    private void capture(ChessboardPoint from, ChessboardPoint to){
         Sound.playSound("resource\\sounds\\capture.wav");
         model.captureChessPiece(from, to);
         view.removeChessComponentAtGrid(to);
@@ -226,7 +214,7 @@ public class GameController implements GameListener {
     }
 
     
-    public void move(ChessboardPoint from, ChessboardPoint to) throws FileNotFoundException {
+    public void move(ChessboardPoint from, ChessboardPoint to){
 
         Sound.playSound("resource\\sounds\\lawn.wav");
         model.moveChessPiece(from, to);
@@ -239,7 +227,7 @@ public class GameController implements GameListener {
 
     // click an empty cell
     @Override
-    public void onPlayerClickCell(ChessboardPoint point, CellComponent component) throws FileNotFoundException {
+    public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if (selectedPoint != null) {
             if (model.isValidMove(selectedPoint, point)) {
                 move(selectedPoint, point);
@@ -249,7 +237,7 @@ public class GameController implements GameListener {
 
     // click a cell with a chess
     @Override
-    public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) throws IOException {
+    public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
 
         if (selectedPoint == null) {
             if (model.getChessPieceOwner(point).equals(currentPlayer)) {
@@ -281,7 +269,7 @@ public class GameController implements GameListener {
             component.repaint();
             try {
                 String test = "success input";
-                FileOutputStream fileOutputStream = new FileOutputStream("templatel");
+                FileOutputStream fileOutputStream = new FileOutputStream("template");
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(test);
                 objectOutputStream.close();
@@ -393,7 +381,7 @@ public class GameController implements GameListener {
         return actions;
     }
 
-    public void undo() throws FileNotFoundException {
+    public void undo() {
         int i = 1;
         if(gamemode != 0&&Chessboard.currentTurn!=1)
             i = 2;
@@ -422,7 +410,7 @@ public class GameController implements GameListener {
         }
     }
 
-    public void redo() throws FileNotFoundException {
+    public void redo(){
         int i = 1;
         if(gamemode != 0)
             i = 2;
@@ -446,7 +434,7 @@ public class GameController implements GameListener {
 
 
 
-    public void testTimer(int second, PlayerColor player, int turn) throws FileNotFoundException {//if no input, time default limit to 30s
+    public void testTimer(int second, PlayerColor player, int turn){//if no input, time default limit to 30s
         if(currentPlayer != player||Chessboard.currentTurn > turn + 1||isTimer == false){
             return;
         }
@@ -465,19 +453,11 @@ public class GameController implements GameListener {
                     return;
                 }
                 if (second == 0){
-                    try {
-                        swapColor();
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                    swapColor();
                     return;
                 }
                 game.setTimeLabel(String.format("Time Left: %ds", second - 1));
-                try {
-                    testTimer(second - 1, player, turn);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                testTimer(second - 1, player, turn);
             }
         }, 1000);
     }

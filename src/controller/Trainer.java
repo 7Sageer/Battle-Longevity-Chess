@@ -29,11 +29,11 @@ public class Trainer {
     public static AIModel modelB = new AIModel("modelB");
     
     //增加了构造器的参数（添加game用于显示对话框）
-    public Trainer(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) throws IOException {
+    public Trainer(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
         start(view, model, game, AIDepth);
     }
 
-    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) throws IOException {
+    public void start(ChessboardComponent view, Chessboard model, ChessGameFrame game, int AIDepth) {
         this.view = view;
         this.model = model;
         this.game = game;
@@ -45,7 +45,7 @@ public class Trainer {
         AImove();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         FontsManager.PixelFonts();
         ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
         mainFrame.setVisible(true);
@@ -56,7 +56,7 @@ public class Trainer {
 
 
     // after a valid move swap the player 即下个回合(包含AI)
-    private void AImove() throws IOException {
+    private void AImove(){
         view.repaint();
         Action action = AI.findBestAction(model, AIDepth, currentPlayer);
         if(action == null){
@@ -97,7 +97,7 @@ public class Trainer {
         }
         return 0;
     }
-    private void checkWin() throws IOException {
+    private void checkWin(){
         int temp = win();
         if (temp == 0) {
             return;
@@ -134,7 +134,7 @@ public class Trainer {
         mainFrame.registerTrainer(trainer);
     }
 
-    private void capture(ChessboardPoint from, ChessboardPoint to) throws IOException {
+    private void capture(ChessboardPoint from, ChessboardPoint to){
         model.captureChessPiece(from, to);
         view.removeChessComponentAtGrid(to);
         view.setChessComponentAtGrid(to, view.removeChessComponentAtGrid(from));

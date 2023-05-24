@@ -39,8 +39,6 @@ public class ServerDemo {
 
         netWork.actionOutput(socket);
         netWork.actionInput(socket);
-        netWork.chatInput(socket);
-        netWork.chatOutput(socket);
 
     }
 }

@@ -40,8 +40,6 @@ public class ClientDemo {
         });
         netWork.actionOutput(socket);
         netWork.actionInput(socket);
-        netWork.chatInput(socket);
-        netWork.chatOutput(socket);
     }
 }
 
