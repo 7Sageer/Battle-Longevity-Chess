@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
-public class Chessboard {
+public class Chessboard implements Serializable {
     private Cell[][] grid;
     public static ArrayList<Action> historyAction = new ArrayList<Action>();
     public static int currentTurn = 0;
@@ -188,7 +188,9 @@ public class Chessboard {
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         if((ChessboardComponent.redTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.BLUE)||(ChessboardComponent.blueTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.RED))
             return false;
-        if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest)||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
+        if(ChessboardComponent.riverCell.contains(dest)&&ChessboardComponent.riverCell.contains(src)&&getChessPieceAt(dest)!=null)
+            return calculateDistance(src, dest) == 1;
+        if(ChessboardComponent.riverCell.contains(src)||(ChessboardComponent.riverCell.contains(dest))||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
             return false;
 
         if(canJumpRiver(src, dest) && getChessPieceAt(src).canCapture(getChessPieceAt(dest))){

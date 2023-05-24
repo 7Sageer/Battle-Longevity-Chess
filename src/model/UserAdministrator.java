@@ -1,13 +1,14 @@
 package model;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class UserAdministrator{
+public class UserAdministrator implements Serializable {
     private static ArrayList<User> users = new ArrayList<User>();
     private static User currentUser = null;
 

@@ -8,7 +8,7 @@ public class Action implements Serializable {
     private ChessboardPoint to;
     private ChessPiece chessPiece;
     public int score;
-    public enum Type {MOVE, CAPTURE}
+    public enum Type{MOVE, CAPTURE}
     public Type type;
     private ChessPiece capturedChessPiece;
 

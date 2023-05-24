@@ -10,12 +10,12 @@ import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.IOException;
 
 /**
  * Controller is the connection between model and view,
@@ -35,8 +35,6 @@ public class GameController implements GameListener {
     private int gamemode = 0;
     private PlayerColor AIcolor;
     public static boolean isTimer = false;
-    private Server server;
-    private Client client;
 
 
     // Record whether there is a selected piece before
@@ -57,34 +55,19 @@ public class GameController implements GameListener {
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
-        if (gamemode != 0 && gamemode < 200) {
+        if (gamemode != 0) {
             //random color
             AI.setModel(new AIModel("advanced"));
-            // if (Math.random() > 0.5) {
-            //     AIcolor = PlayerColor.BLUE;
-            //     game.showDialog("You are Red, AI is Blue");
-            //     AImove();
-            // } else {
+            if (Math.random() > 0.5) {
+                AIcolor = PlayerColor.BLUE;
+                game.showDialog("You are Red, AI is Blue");
+                AImove();
+            } else {
                 AIcolor = PlayerColor.RED;
                 game.showDialog("You are Blue, AI is Red");
-            //}
+            }
             
          }
-        if(gamemode == 200){
-            
-                // 等待客户端连接  
-            System.out.println("Server started. Waiting for client connection...");
-            server = new Server(9211);
-            System.out.println("Client connected, ip: " + server.clientSocket.getInetAddress().getHostAddress());
-            
-        }else if(gamemode == 201){
-            String ipAddress = "127.0.0.1";
-            System.out.println("Connecting to server: " + ipAddress + " on port 9211");
-            client = new Client(ipAddress,9211);
-            System.out.println("Connected to server: " + ipAddress);
-            networkMove();
-        }
-                
 
     }
 
@@ -98,8 +81,6 @@ public class GameController implements GameListener {
             if(isTimer){
                 game.setTimeLabel(String.format("Time Left: %ds", 30));
                 testTimer(30, currentPlayer,Chessboard.currentTurn);
-            }else{
-                game.setTimeLabel("");
             }
         }
         
@@ -107,34 +88,41 @@ public class GameController implements GameListener {
         view.removePossibleMove();
         game.setTurnLabel("Turn" + Chessboard.currentTurn + ": "  + currentPlayer);
         //view.paintImmediately(-1000, -1000, 3000, 3000);
-        if((gamemode != 0&&gamemode < 200)){
+
+        if((gamemode != 0||gamemode < 200)){
             if(currentPlayer == AIcolor){
                 AImove();
             }
-        }else if(gamemode == 200){
-            if(currentPlayer == PlayerColor.BLUE){
-                networkMove();
-            }else if(currentPlayer == PlayerColor.RED){
-                try {
-                    System.out.println("send action");
-                    System.out.println(Chessboard.historyAction.get(Chessboard.currentTurn-1));
-                    server.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
-                    //server.outputStream.close(); 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }else if(gamemode == 201){
-            if(currentPlayer == PlayerColor.RED){
-                networkMove();
-            }else if(currentPlayer == PlayerColor.BLUE){
-                try {
-                    client.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+        // }else if(gamemode == 200){
+        //     if(currentPlayer == PlayerColor.BLUE){
+        //         networkMove();
+        //     }else if(currentPlayer == PlayerColor.RED){
+        //         try {
+        //             System.out.println("send action");
+        //             System.out.println(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //             server.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //             //server.outputStream.close(); 
+        //         } catch (IOException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }else if(gamemode == 201){
+        //     if(currentPlayer == PlayerColor.RED){
+        //         networkMove();
+        //     }else if(currentPlayer == PlayerColor.BLUE){
+        //         try {
+        //             client.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //         } catch (IOException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
+//        else if(gamemode >= 200){
+//            if(currentPlayer == AIcolor){
+//                networkMove();
+//            }
+//        }
         view.repaint();
         try {
             saveGame("temp.txt");
@@ -143,18 +131,20 @@ public class GameController implements GameListener {
         }
     }
     
-    private void networkMove(){
-        Action action = null;
-        try {
-            if(gamemode == 200){
-                action = server.receiveAction();
-            }
-            else if(gamemode == 201){
-                action = client.receiveAction();
-            }
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
+    public void networkMove(Action action){
+
+        //wait to do: recieve action from network
+        //to do: recieve action from network
+        // try {
+        //     if(gamemode == 200){
+        //         action = server.receiveAction();
+        //     }
+        //     else if(gamemode == 201){
+        //         action = client.receiveAction();
+        //     }
+        // } catch (ClassNotFoundException | IOException e) {
+        //     e.printStackTrace();
+        // }
 
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
@@ -162,7 +152,7 @@ public class GameController implements GameListener {
         else if(action.type == Type.CAPTURE){
             capture(action.getFrom(), action.getTo());
         }
-
+        //to do: send action to network
         swapColor();
         
     }
@@ -284,6 +274,7 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
+
         if (selectedPoint == null) {
             if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                 selectedPoint = point;
@@ -298,12 +289,30 @@ public class GameController implements GameListener {
                 //
                 component.setSelected(true);
                 component.repaint();
+//                try {
+//                    String test = "success input";
+//                    FileOutputStream fileOutputStream = new FileOutputStream("template");
+//                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//                    objectOutputStream.writeObject(test);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
             view.removePossibleMove();
             component.setSelected(false);
             component.repaint();
+            try {
+                String test = "success input";
+                FileOutputStream fileOutputStream = new FileOutputStream("template");
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(test);
+                objectOutputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         } else {
             if(model.isValidCapture(selectedPoint, point))
                 capture(selectedPoint, point);
@@ -340,27 +349,19 @@ public class GameController implements GameListener {
             if(chessPiece == null || model.getChessPieceAt(loadAction.get(i).getFrom()) != null && model.getChessPieceAt(loadAction.get(i).getFrom()).getOwner()!=chessPiece.getOwner()){
                 chessPiece = model.getChessPieceAt(loadAction.get(i).getFrom());
                 if (loadAction.get(i).getType() == Type.MOVE){
-                    try{
-                        model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                    try{model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                         view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
-
-                    }catch(Exception e){
-                        game.showDialog("Error:Invalid action");
-                        return;
-                    }
+                        }catch(Exception e){
+                            game.showDialog("Error:Invalid step");
+                            return;
+                        }
                         
                 }else if(loadAction.get(i).getType() == Type.CAPTURE){
-                    try{
-                        model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                        view.removeChessComponentAtGrid(loadAction.get(i).getTo());
-                        view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
-
-                    }catch(Exception e){
-                        game.showDialog("Error:Invalid action");
-                        return;
-                    }
+                    model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                    view.removeChessComponentAtGrid(loadAction.get(i).getTo());
+                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
                 }else{
-                    game.showDialog("Error:Invalid type");
+                    game.showDialog("Error:Invalid step");
                     return;
                 }
             }else{
@@ -549,8 +550,5 @@ public Chessboard getModel() {//getter and setter，下面都是
 
     public void setSelectedPoint(ChessboardPoint selectedPoint) {
         this.selectedPoint = selectedPoint;
-    }
-
-    public void handleAction(Action action) {
     }
 }

@@ -1,6 +1,8 @@
 package model;
 
-public enum Constant {
+import java.io.Serializable;
+
+public enum Constant implements Serializable {
     CHESSBOARD_ROW_SIZE(9),CHESSBOARD_COL_SIZE(7);
 
     private final int num;

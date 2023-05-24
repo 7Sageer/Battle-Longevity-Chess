@@ -15,8 +15,6 @@ public class Main {
                 UserAdministrator.loadData();
                 new TitleScreen();
             }
-
-
         });
     }
 }
