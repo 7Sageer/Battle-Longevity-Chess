@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.GameController;
-import controller.Server;
 import model.Chessboard;
 
 import java.awt.FlowLayout;

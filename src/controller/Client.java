@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import model.Action;
+import model.ChessboardPoint;
+import model.Action.Type;
 
 public class Client {
     Socket socket;
@@ -22,21 +24,16 @@ public class Client {
         }
     }
 
-    public void sendAction(Action action) throws IOException {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream())) {
-            // 向输出流发送Action对象
-            outputStream.writeObject(action);
-            outputStream.flush();
-        }
-    }
-
+        
     public Action receiveAction() throws IOException, ClassNotFoundException {
         // 从输入流中接收Action对象
-        inputStream = new ObjectInputStream(socket.getInputStream());
-        if (socket.isClosed()) {
-            throw new IOException("Socket is closed");
-        }
-        Action action = (Action) inputStream.readObject();
+        //inputStream = new ObjectInputStream(socket.getInputStream());
+        Action action = new Action(new ChessboardPoint(2, 6), new ChessboardPoint(3, 6),Type.MOVE);
+        // action = (Action) inputStream.readObject();
+        // if(inputStream.available() == 0) {
+        //     System.out.println("No data received.");
+        // }
+        // 不要在这里关闭inputStream
         return action;
     }
 
@@ -51,4 +48,23 @@ public class Client {
             socket.close();
         }
     }
+
+    public void sendAction(Action action) throws IOException {
+        try {
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            // 向输出流发送Action对象
+            outputStream.writeObject(action);
+            outputStream.flush();
+        } finally {
+            if (outputStream != null) {
+                outputStream.flush();
+            }
+            if (socket.isClosed()) {
+                System.out.println("Connection closed.");
+            }
+        }
+    }
+            
 }
+        
+        

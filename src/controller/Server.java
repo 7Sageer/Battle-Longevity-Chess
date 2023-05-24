@@ -27,13 +27,27 @@ public class Server {
     public Action receiveAction() throws IOException, ClassNotFoundException {
         // 从输入流中接收Action对象
         inputStream = new ObjectInputStream(clientSocket.getInputStream());
-        Action action = (Action) inputStream.readObject();
-        inputStream.close();
+        Action action = null;
+        if (inputStream.available() > 0) {
+            action = (Action) inputStream.readObject();
+        }
+        // 不要在这里关闭inputStream
         return action;
     }
 
+    public void close() throws IOException {
+        if (inputStream != null) {
+            inputStream.close();
+        }
+        if (outputStream != null) {
+            outputStream.close();
+        }
+        if (clientSocket != null) {
+            clientSocket.close();
+        }
+    }
+
     public void sendAction(Action action) throws IOException {
-        ObjectOutputStream outputStream = null;
         try {
             outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             // 向输出流发送Action对象
@@ -41,8 +55,13 @@ public class Server {
             outputStream.flush();
         } finally {
             if (outputStream != null) {
-                outputStream.close();
+                outputStream.flush();
+            }
+            if (clientSocket.isClosed()) {
+                System.out.println("Connection closed.");
             }
         }
     }
+            
 }
+

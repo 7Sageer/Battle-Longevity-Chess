@@ -11,16 +11,11 @@ import view.ChessboardComponent;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Controller is the connection between model and view,
@@ -65,14 +60,14 @@ public class GameController implements GameListener {
         if (gamemode != 0 && gamemode < 200) {
             //random color
             AI.setModel(new AIModel("advanced"));
-            if (Math.random() > 0.5) {
-                AIcolor = PlayerColor.BLUE;
-                game.showDialog("You are Red, AI is Blue");
-                AImove();
-            } else {
+            // if (Math.random() > 0.5) {
+            //     AIcolor = PlayerColor.BLUE;
+            //     game.showDialog("You are Red, AI is Blue");
+            //     AImove();
+            // } else {
                 AIcolor = PlayerColor.RED;
                 game.showDialog("You are Blue, AI is Red");
-            }
+            //}
             
          }
         if(gamemode == 200){
@@ -95,13 +90,16 @@ public class GameController implements GameListener {
 
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
-        checkWin();
+        
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        checkWin();
 
         if((!((gamemode != 0||gamemode < 200) && currentPlayer == AIcolor))){
             if(isTimer){
                 game.setTimeLabel(String.format("Time Left: %ds", 30));
                 testTimer(30, currentPlayer,Chessboard.currentTurn);
+            }else{
+                game.setTimeLabel("");
             }
         }
         
@@ -121,6 +119,7 @@ public class GameController implements GameListener {
                     System.out.println("send action");
                     System.out.println(Chessboard.historyAction.get(Chessboard.currentTurn-1));
                     server.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+                    //server.outputStream.close(); 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -163,7 +162,6 @@ public class GameController implements GameListener {
         else if(action.type == Type.CAPTURE){
             capture(action.getFrom(), action.getTo());
         }
-        //to do: send action to network
 
         swapColor();
         
@@ -342,15 +340,27 @@ public class GameController implements GameListener {
             if(chessPiece == null || model.getChessPieceAt(loadAction.get(i).getFrom()) != null && model.getChessPieceAt(loadAction.get(i).getFrom()).getOwner()!=chessPiece.getOwner()){
                 chessPiece = model.getChessPieceAt(loadAction.get(i).getFrom());
                 if (loadAction.get(i).getType() == Type.MOVE){
-                    model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
-    
+                    try{
+                        model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                        view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
+
+                    }catch(Exception e){
+                        game.showDialog("Error:Invalid action");
+                        return;
+                    }
+                        
                 }else if(loadAction.get(i).getType() == Type.CAPTURE){
-                    model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                    view.removeChessComponentAtGrid(loadAction.get(i).getTo());
-                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+                    try{
+                        model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                        view.removeChessComponentAtGrid(loadAction.get(i).getTo());
+                        view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));                
+
+                    }catch(Exception e){
+                        game.showDialog("Error:Invalid action");
+                        return;
+                    }
                 }else{
-                    game.showDialog("Error:Invalid step");
+                    game.showDialog("Error:Invalid type");
                     return;
                 }
             }else{
