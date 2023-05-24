@@ -11,8 +11,6 @@ import model.ChessboardPoint;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -246,25 +244,17 @@ public class ChessboardComponent extends JComponent {
             
             if (clickedComponent.getComponentCount() == 0) {
                 System.out.print("None chess here and ");
-                try {
-                    gameController.onPlayerClickCell(getChessboardPoint(e.getPoint()), (CellComponent) clickedComponent);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
+                gameController.onPlayerClickCell(getChessboardPoint(e.getPoint()), (CellComponent) clickedComponent);
             } else {
                 System.out.print("One chess here and ");
-                try {
-                    gameController.onPlayerClickChessPiece(getChessboardPoint(e.getPoint()), (ChessComponent) clickedComponent.getComponents()[0]);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                gameController.onPlayerClickChessPiece(getChessboardPoint(e.getPoint()), (ChessComponent) clickedComponent.getComponents()[0]);
             } 
 
         }
     }
 
 
-    public void MousePress(Point location) throws IOException {
+    public void MousePress(Point location) {
         JComponent clickedComponent = (JComponent) getComponentAt(location);
         if (clickedComponent.getComponentCount() == 0) {
             System.out.print("None chess here and ");

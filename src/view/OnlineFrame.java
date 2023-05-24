@@ -38,42 +38,45 @@ public class OnlineFrame extends CommonFrame {
             //todo: connect as server//这里其实直接启动棋盘就行
             //start game
 
-
-
             try {//尝试启动联网并且开启棋盘
                 ServerSocket serverSocket = new ServerSocket(9002);
                 Socket socket = serverSocket.accept();
-                NetWork netWork = new NetWork();
-                netWork.actionOutput(socket);
+
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 200);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
+
+                NetWork netWork = new NetWork();
+
                 Thread thread = new Thread(() -> {
                     try {
-                        netWork.actionOutput(socket);
+                        while (true) {
+                            netWork.actionOutput(socket);
+                        }
                     } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                 });
                 Thread thread1 = new Thread(() -> {
                     try {
-                        gameController.networkMove(netWork.actionInput(socket));
-                    } catch (IOException | ClassNotFoundException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                });
-                thread.start();
-                thread1.start();
-            } catch (IOException | ClassNotFoundException ex) {
+                        int i = 0;
+                            while(true) {
+                                gameController.networkMove(netWork.actionInput(socket));
+                            }
+                        } catch (IOException | ClassNotFoundException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+
+                    thread.start();
+                    thread1.start();
+
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
-            } finally {
-//                System.out.println(ip);
-                dispose();
             }
-
-
+//            dispose();
         });
 
         JButton confirmButton2 = new JButton("Confirm as client");
@@ -81,45 +84,41 @@ public class OnlineFrame extends CommonFrame {
             String ip = ipTextField.getText();
             //开始联网，启用socket
             //todo: connect as client
+
+
             try {//尝试启动联网并启动棋盘
                 Socket socket = new Socket(ip, 9002);
-                NetWork netWork = new NetWork();
-                netWork.actionOutput(socket);//开启向主机传输Action的线程
+
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), mainFrame, 201);
                 mainFrame.setGameController(gameController);
                 mainFrame.setVisible(true);
                 SettingFrame.getGameFrame(mainFrame);
+
+                NetWork netWork = new NetWork();
+
                 Thread thread = new Thread(() -> {
                     try {
-                        netWork.actionOutput(socket);
+                            netWork.actionOutput(socket);
                     } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                 });
                 Thread thread1 = new Thread(() -> {
-                    if(netWork.getAction() != null) {
-                        try {
+                    try {
                             gameController.networkMove(netWork.actionInput(socket));
-                        } catch (IOException | ClassNotFoundException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
                     }
                 });
                 thread.start();
                 thread1.start();
-            } catch (IOException | ClassNotFoundException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
-            } finally {
-//                System.out.println(ip);
-                dispose();
             }
-            //start game
-
+//            dispose();
         });
-
         panel.add(buttonPanel);
-
     }
 
 }
