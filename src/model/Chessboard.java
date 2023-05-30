@@ -188,7 +188,9 @@ public class Chessboard implements Serializable {
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         if((ChessboardComponent.redTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.BLUE)||(ChessboardComponent.blueTrapCell.contains(src)&&getChessPieceAt(src).getOwner()==PlayerColor.RED))
             return false;
-        if(ChessboardComponent.riverCell.contains(src)||ChessboardComponent.riverCell.contains(dest)||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
+        if(ChessboardComponent.riverCell.contains(dest)&&ChessboardComponent.riverCell.contains(src)&&getChessPieceAt(dest)!=null)
+            return calculateDistance(src, dest) == 1;
+        if(ChessboardComponent.riverCell.contains(src)||(ChessboardComponent.riverCell.contains(dest))||getChessPieceAt(src) == null || getChessPieceAt(dest) == null)
             return false;
 
         if(canJumpRiver(src, dest) && getChessPieceAt(src).canCapture(getChessPieceAt(dest))){

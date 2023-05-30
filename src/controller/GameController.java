@@ -73,8 +73,9 @@ public class GameController implements GameListener {
 
     // after a valid move swap the player 即下个回合(包含AI)
     protected void swapColor() {
-        checkWin();
+        
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        checkWin();
 
         if((!((gamemode != 0||gamemode < 200) && currentPlayer == AIcolor))){
             if(isTimer){
@@ -93,6 +94,30 @@ public class GameController implements GameListener {
                 AImove();
             }
         }
+        // }else if(gamemode == 200){
+        //     if(currentPlayer == PlayerColor.BLUE){
+        //         networkMove();
+        //     }else if(currentPlayer == PlayerColor.RED){
+        //         try {
+        //             System.out.println("send action");
+        //             System.out.println(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //             server.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //             //server.outputStream.close(); 
+        //         } catch (IOException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }else if(gamemode == 201){
+        //     if(currentPlayer == PlayerColor.RED){
+        //         networkMove();
+        //     }else if(currentPlayer == PlayerColor.BLUE){
+        //         try {
+        //             client.sendAction(Chessboard.historyAction.get(Chessboard.currentTurn-1));
+        //         } catch (IOException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
 //        else if(gamemode >= 200){
 //            if(currentPlayer == AIcolor){
 //                networkMove();
@@ -110,6 +135,17 @@ public class GameController implements GameListener {
 
         //wait to do: recieve action from network
         //to do: recieve action from network
+        // try {
+        //     if(gamemode == 200){
+        //         action = server.receiveAction();
+        //     }
+        //     else if(gamemode == 201){
+        //         action = client.receiveAction();
+        //     }
+        // } catch (ClassNotFoundException | IOException e) {
+        //     e.printStackTrace();
+        // }
+
         if(action.type == Type.MOVE){
             move(action.getFrom(), action.getTo());
         }
@@ -313,9 +349,13 @@ public class GameController implements GameListener {
             if(chessPiece == null || model.getChessPieceAt(loadAction.get(i).getFrom()) != null && model.getChessPieceAt(loadAction.get(i).getFrom()).getOwner()!=chessPiece.getOwner()){
                 chessPiece = model.getChessPieceAt(loadAction.get(i).getFrom());
                 if (loadAction.get(i).getType() == Type.MOVE){
-                    model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
-                    view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
-    
+                    try{model.moveChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
+                        view.setChessComponentAtGrid(loadAction.get(i).getTo(), view.removeChessComponentAtGrid(loadAction.get(i).getFrom()));
+                        }catch(Exception e){
+                            game.showDialog("Error:Invalid step");
+                            return;
+                        }
+                        
                 }else if(loadAction.get(i).getType() == Type.CAPTURE){
                     model.captureChessPiece(loadAction.get(i).getFrom(), loadAction.get(i).getTo());
                     view.removeChessComponentAtGrid(loadAction.get(i).getTo());

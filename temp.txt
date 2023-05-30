@@ -1,1 +1,1 @@
-{from=(2,6) ,to=(3,6) ,chessPiece=BLUE Elephant,type=MOVE}
+{from=(3,3) ,to=(4,3) ,chessPiece=null,type=MOVE}{from=(4,3) ,to=(5,3) ,chessPiece=null,type=MOVE}

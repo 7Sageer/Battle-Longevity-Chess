@@ -41,6 +41,8 @@ public class AIFrame extends CommonFrame{
         JComboBox<String> comboBox = new JComboBox<>();
         comboBox.addItem("basic");
         comboBox.addItem("advanced");
+        comboBox.addItem("modelA");
+        comboBox.addItem("modelB");
 
         addComboBox(buttonpanel, comboBox, 30, new ChangeListener() {
             
