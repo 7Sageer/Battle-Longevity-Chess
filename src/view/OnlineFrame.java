@@ -6,12 +6,10 @@ import javax.swing.JTextField;
 
 import controller.GameController;
 import controller.NetWork;
-import model.Action;
 import model.Chessboard;
 
 import java.awt.FlowLayout;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 

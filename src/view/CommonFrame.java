@@ -1,5 +1,6 @@
 package view;
 
+
 import resourcePlayer.FontsManager;
 import resourcePlayer.Sound;
 
@@ -44,7 +45,7 @@ public class CommonFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 播放声音
-                String soundPath = "resource\\sounds\\click-button.wav"; 
+                String soundPath = "resource\\sounds\\click-button.wav"; // 替换为您的声音文件路径
                 Sound.playSound(soundPath);
             }
         });
@@ -65,7 +66,7 @@ public class CommonFrame extends JFrame {
         panel.add(slider);
         return slider;
     }
-    protected JComboBox<String> addComboBox(JPanel panel, JComboBox comboBox, int fontSize,  javax.swing.event.ChangeListener listener){
+    protected JComboBox<String> addComboBox(JPanel panel, JComboBox<String> comboBox, int fontSize, javax.swing.event.ChangeListener listener){
         comboBox.setFont(FontsManager.getFont(fontSize,1));
         comboBox.setForeground(new Color(51, 97, 129));
         panel.add(comboBox);
